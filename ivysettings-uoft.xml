@@ -1,0 +1,16 @@
+<ivysettings>
+  <include url="${ivy.default.settings.dir}/ivysettings.xml"/>
+  <property name="nexus-server" value="brickyard.library.utoronto.ca"/>
+  <credentials host="${nexus-server}"
+    realm="Nexus Repository Manager"
+    username="${nexus.user}"
+    passwd="${nexus.pass}"/>
+  <resolvers>
+    <ibiblio name="nexus" m2compatible="true"
+      root="https://${nexus-server}/content/groups/public"/>
+    <ibiblio name="nexus-snapshots" m2compatible="true"
+      root="https://${nexus-server}/content/repositories/snapshots"/>
+    <ibiblio name="nexus-releases" m2compatible="true"
+      root="https://${nexus-server}/content/repositories/releases"/>
+  </resolvers>
+</ivysettings>

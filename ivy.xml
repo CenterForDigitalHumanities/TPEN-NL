@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module version="2.0">
+  <info organisation="ca.utoronto.library" module="t-pen-newberry" revision="2.0"/>
+  <publications>
+    <artifact type="pom" ext="pom" conf="default"/>
+    <artifact type="war" ext="war" conf="default"/>
+  </publications>
+  <dependencies>
+    <dependency org="org.apache.tomcat" name="tomcat-catalina" rev="7.0.52"/>
+  </dependencies>
+</ivy-module>
