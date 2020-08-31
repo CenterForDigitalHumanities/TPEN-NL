@@ -1,0 +1,10 @@
+build.xml
+.settings/
+build/
+'Source Packages/java/version.properties'
+WebContent/WEB-INF/classes/
+.project
+.classpath
+/dist/
+nbproject/
+*.properties

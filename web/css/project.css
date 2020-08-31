@@ -1,0 +1,435 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Jun 11, 2018, 2:43:11 PM
+    Author     : bhaberbe
+*/
+
+    #backToTranscribe{
+        color:black;
+    }
+    #folioManagement{
+        display: none;
+        position: absolute;
+        top:100px;
+        z-index: 1000;
+        background: url("images/ui-bg_dots-medium_75_ffebb9_4x4.png") repeat scroll 50% 50% #FFEBB9;
+        padding:8px;
+        box-shadow: 1px 1px 1px 1px;
+        width: 60%;
+    }
+    #projectMetadataWrapper{
+        position: fixed;
+        z-index: 3;
+        top: 100px;
+        left: 0;
+        right: 0;
+        max-width: 80%;
+        margin: 0 auto;
+        display: none;
+        border: 2px solid #002a5c;
+    }
+    #projectUserManagement{
+        position: fixed;
+        z-index: 3;
+        top: 100px;
+        left: 0;
+        right: 0;
+        max-width: 80%;
+        margin: 0 auto;
+        display: none;
+        border: 2px solid #002a5c;
+        background-color: white;
+        padding: 0px 12px;
+        color: #002a5c;
+    }
+
+    #newProjectMetadata{
+        margin-left: 22px;
+    }
+
+    .label{
+        font-size: 11pt;
+        color: #002a5c;
+        font-weight: bold;
+        text-align: right;
+        display: inline-block;
+        width: 131px;
+    }
+    .val{
+        font-size: 10pt;
+        width: 60%;
+    }
+
+    .promoteUser{
+        font-weight: bold;
+    }
+    .closeBtn{position: absolute;  top: 10px;  right:10px; z-index:1000; cursor:pointer;}
+    #publicProjectNotice, .permitRead, .permitModify, .permitCopy, .permitButtons, .permitMetadata, .permitAdmin, .isMember, .mustBeAdmin{display:none;}
+    #footer { width: 1010px; position: fixed;left:0;right:0; bottom:0;margin: 0 auto;}
+    #foot { background: url(images/footer.png) top left no-repeat;position:relative;padding:50px 125px; }
+    #button { text-decoration: none; }
+    body,#wrapper {height: 100%;max-height: 100%;overflow: visible;}
+    #project, #ms, #team, #options, #export { margin: 0; padding: 0;}
+    #ms li, #export li, #team li{padding: 0.4em; padding-left: 1.5em; height: 100%;overflow: hidden; position: relative;margin-right: 1%; background: #BFBFBF; display: inline-table; color: #002a5c; border: none;}
+    #project li ul,#ms li ul,#team li ul, #options li ul, #export li ul {padding: 0;margin: 0;}
+    #project li ul li,#ms li ul li,#team li ul li,  #export li ul li {list-style:outside none;padding: 2px 0px 2px 4px;width:100%;height:100%;}
+    #options li{
+        padding: 0.4em; 
+        padding-left: 1.5em; 
+        max-height: 590px; 
+        overflow-y: auto; 
+        position: relative;
+        margin-right: 1%; 
+        width: 43%;
+        border-right: 1px solid #BFBFBF;
+        display: inline-table;
+    }
+    #project li{
+        padding: 0.4em; 
+        padding-left: 1.5em; 
+        max-height: 590px; 
+        overflow-y: auto; 
+        position: relative;
+        margin-right: 1%; 
+        width: 43%;
+        border-right: 1px solid #BFBFBF;
+        display: inline-table !important;
+    }
+    #team li{padding: 0.4em; padding-left: 1.5em; height: 100%; width: 97%; overflow: hidden; position: relative;margin-right: 1%; background: #BFBFBF; color: #002a5c;}
+    #project li{
+        width: 43%;
+    }
+
+    #project div.tall {position: absolute;right:0;width: 29%;}
+    #project div.tall li {position: absolute;right:20px;height:48%;margin:0;width:100%;min-height: 120px;}
+    #project div.tall li:last-child {bottom:-13px;min-height: 80px;}
+    #projectList {max-height: 300px;overflow-y:scroll; max-width: 95%;}
+    #projectList li {    
+        margin: 0;
+        border: none;
+        display: block;
+    }
+    a.tpenButton,button.tpenButton {padding: 2px 27px 2px 10px; margin:2px; display:block;text-align: center; text-decoration: none;min-width: 90px;min-height:16px; cursor:pointer; height: 35px; line-height: 35px;}
+    .delete{   
+        z-index: 1000;
+        cursor: pointer;
+        color: red;
+        background-color: white;
+        display: inline-block;
+    }
+    .stretch {font-size: 0.8em !important;}
+    .shrink {width: 3em !important;font-size: 0.8em !important;}
+    .grow {width:7em !important;}
+    .bold, span.bold input {font-weight: bold; border: none;}
+    span.bold input {width: 60px; font-size: .8em;}
+    .ui-icon-closethick:hover {background-image: url(css/custom-theme/images/ui-icons_cd0a0a_256x240.png);}
+    .disabled { margin: 0 3px 3px 23px; padding: 0.4em; padding-left: 1.5em; font-size: 1.4em; height: 18px;width:650px;}
+    #addToProject,#addingTools {position: fixed; top:25%; left:25%; width:50%; display: none;z-index: 501;}
+    #addingTools {
+        box-shadow: 0 0 0 2000px rgba(0,0,0,.4);
+        padding: 10px;
+    }
+    #addToolCommit, #addToolPreview {
+        display: block;
+        float: left;
+    }
+    #addToolName, #addToolURL {
+        display: block;
+        width: 50%;
+    }
+    #addToolFrame{
+        float: right;
+        height: 350px;
+        width: 50%;
+        position: relative;}
+    #addToProject:after {
+        content: "";
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        pointer-events:none;
+        z-index: 500;
+        box-shadow: 0 0 200px black inset;
+        top: 0;
+        left: 0;}
+    #form {height: 425px; margin: 0 auto; width:515px;border-width: 1px; 
+           -webkit-box-shadow: -1px -1px 12px black;
+           -moz-box-shadow: -1px -1px 12px black;
+           box-shadow: -1px -1px 12px black;
+    }
+    .delete {position:absolute;top:6px;right:6px;}
+    input.text {width:100%;}
+    #logFilter a:not(#openNote) {width:46%;float:left;margin-left: 1%;}
+    #closePopup:hover {color: crimson;cursor: pointer;}
+    .label {text-align: right; margin-right: 15px;}
+    #inviteFeedback span {display:block;}
+    #currentSetting {font-weight: bold;}
+    #currentSetting:before {content:'Currently set to: "';color:black;font-weight: normal;}
+    #currentSetting:after {content:'"';color:black;font-weight: normal;}
+    .loadingBook {background-position: center center !important;}
+    #xmlImport,#xmlValidate,#linebreaking,#wordbreak,#inviteUser,#template {margin:-4px 5px 2px;background: url(images/linen.png);padding:6px 2px 2px;display:none;overflow: hidden;z-index: 1; border: 1px solid #A68329;
+                                                                            -moz-box-shadow: -1px -1px 2px black;
+                                                                            -webkit-box-shadow: -1px -1px 2px black; 
+                                                                            box-shadow:-1px -1px 2px black;}
+    #xmlImportBtn,#xmlValidateBtn,#linebreakingBtn,#wordbreakBtn,#inviteUserBtn,#templateBtn {padding:2px;text-align: center;position: relative;z-index: 1;cursor: pointer;width:100%;-o-box-sizing:border-box;-webkit-box-sizing:border-box;-moz-box-sizing:-ms-border-box;box-sizing:border-box;}
+    #template label {width: 100%;}
+    #template textarea {height: 3em;max-width: 100%;}
+    .format{padding:2px;text-align: center;position: relative;z-index: 1;cursor: pointer;}
+    .formatDiv{margin:-4px 5px 2px;clear:left;background: url(images/linen.png);padding:6px 2px 2px;display:none;overflow: hidden;z-index: 1; border: 1px solid #A68329;
+               -moz-box-shadow: -1px -1px 2px black;
+               -webkit-box-shadow: -1px -1px 2px black; 
+               box-shadow:-1px -1px 2px black;}
+    #pdfOptions {display:block;}
+    #exportLinebreakString,#exportWordbreak{width: 40px;}
+    #quickExport span.choices {width:32%;float:left;position:relative;padding:15px 0;margin-bottom: -4px;}
+    #quickExport {position:relative;}
+    #quickExport input[type=radio] {visibility:visible;position: absolute;}
+    .xmlRemove {display: none;clear: left;}
+    .xmlShow {clear:left;}
+    .xmlTags, .specialCharacters {display:block;}
+    #quickExport h4 {position: relative;margin-bottom: 0;}
+    .xmlFormat span {display: block;float:left;clear:left;width:40%;max-height: 18px;overflow: hidden;}
+    #pageRange select {max-width: 175px;position: absolute;left:110px;}
+    #exportTags select {position: absolute;right: 90px;}
+    #samplePreview {overflow: hidden;position: relative;}
+    #samplePreview img {width: auto;height: auto; position: absolute;left:0;top:30px;}
+    #samplePreview h3 {position:relative;z-index: 1;}
+    #samplePreview img, #samplePreview h3 {cursor: -moz-zoom-in, move;}
+    #export label {font-weight: normal;width:auto;margin:0; padding:0;line-height: 24px; float: none;} /* override defaults */
+    #export h3 {margin-top: 1em;margin-bottom: 0;}
+    #export button {padding:8px 4px;width:33%;margin:0px;height:50px;}
+    .xmlDisclaimer {display:none;float: left;clear: left;}
+    #exportAlert {display: none;width:100%;}
+    .partnerListing {width:100%;padding:2px;}
+    .partnerName {width:100%;font-size: 125%;font-family: serif;display: block;}
+    .partnerDescription {width:100%;padding:3px;margin:2px;display: block;white-space: normal;}
+    .partnerSelected {background: green;}
+    #QENI {overflow: auto;width: 100%;}
+    #tpenSubmit,#disconnect {width:100%;margin-bottom: 1.25em;}
+    #deleteConnection{display: none;}
+    span + h4[id] {margin-top:1.25em;}
+    .projectTools,.userTools {font-weight: normal;width: auto;padding: 0;clear: left;}
+    #customHeader {margin: 1em;background-color: rgba(255,255,255,.5);padding: .5em;display: block;color: gray;border:thin solid gray;overflow: auto;text-overflow:ellipsis;max-height: 300px;font-size: smaller;}
+    #projectOrdering {position: fixed !important;width:50% !important;right:auto !important;} /* battling weird Chrome bug */ 
+
+.tpenButton{
+    color: white !important;
+}
+
+.tpenButton:hover{
+    background-color: #D14836;
+}
+.pageCover{
+        width: 100%;
+        height: 2000px;
+        z-index: 2;
+        background-color: rgba(0,0,0,.7);
+        position: absolute;
+        top: -20px;
+        display: none;
+}
+.projectTitle{
+    margin-left: 22px;
+    color: #002a5c;
+}
+.popHdr{
+    border-bottom: 1px solid #002a5c;
+    color: #002a5c;
+}
+.noBottom{
+    margin-bottom: 3px;
+}
+
+#activeProjectName{
+    text-decoration:underline;
+}
+
+#projectMembers li{
+    border: none !important;
+}
+
+/* jQuery.css overwrites for the tab interface */
+.ui-tabs{
+    padding: .2em .2em .2em 0em !important;
+}
+.ui-tabs .ui-tabs-nav {
+    background: white !important;
+    border: none !important;
+    padding: 0px 0px 0px 2px !important;
+}
+
+.ui-tabs .ui-tabs-nav li{
+    top: -3px !important;
+    border-top: none !important;
+    border-left: 1px solid #BFBFBF;
+    border-right: 1px solid #BFBFBF; 
+}
+
+.ui-tabs .ui-tabs-nav li:hover{
+    color: #e21635;
+}
+
+.ui-tabs .ui-tabs-nav li a{
+    padding: 0 10px;
+    display: block;
+    float: left;
+    height: 1.5em;
+    line-height: 1.5em;
+    margin-right: 1px;
+    text-decoration: none;
+    background-color: #f5f5f5;
+    border-color: #ccc;
+    font-size: 15px;
+    font-weight: 300;
+    cursor: pointer;
+    transition: color 800ms;
+}
+
+.ui-tabs .ui-tabs-nav li.ui-tabs-selected a{
+    background-color:white !important;
+    color: black !important;
+}
+
+.ui-tabs .ui-tabs-nav li.ui-tabs-selected a:hover{
+    border-color: #ccc;
+    color: black !important;
+    cursor: default;
+}
+
+.ui-tabs .ui-tabs-nav li a:hover, .ui-tabs .ui-tabs-nav li a:focus {
+    background-color: #eee;
+    border-color: #BFBFBF;
+    color: #e21635;
+}
+
+
+.ui-state-default, .ui-widget-content, .ui-widget-header .ui-state-default{
+    background: white !important;
+}
+
+.ui-tabs-panel{
+    color: #002a5c !important;
+    background: #BFBFBF !important;
+}
+
+#tabs{
+    border-top: 1px solid #BFBFBF;
+    border-left: none !important;
+    border-right: none !important;
+    border-bottom: none !important;
+    margin: 0px 1%;
+}
+.ui-corner-bottom{
+    background-color: white !important;
+}
+.topTabs ul li{
+     color: #002a5c;
+     //background-color: #D14836;
+}
+.ui-widget-content a {
+     color: white;
+}
+.ui-tabs .ui-tabs-nav li a{
+    color: #002a5c;
+}
+
+h3, h2{
+    /*border-bottom: 1px solid #002a5c;*/
+    border-bottom: 1px solid lightblue; /*their color under header*/
+    /*border-bottom: 1px solid #ddd; /*their color separating sections*/
+}
+p{
+    font-size: 12pt;
+}
+
+/*        .ui-state-active a, .ui-state-active a:link{
+    color: #002a5c !important;
+}*/
+#site-name {
+margin: 0;
+padding: 0;
+font-size: 220%;
+font-weight: normal !important;
+font-family: 'EB Garamond', serif !important;
+text-align: center;
+box-sizing: border-box;
+}
+
+#logo{
+padding: 5px 1%;
+height: 100px;
+}
+#logo img{
+width: 50px;
+height: 65px;
+}
+.red{
+color: #b43d2e
+}
+
+#site-name a{
+color: black;
+}
+
+.specialCharacters li, .xmlTags li{
+    border-right: none !important;
+    cursor: default;
+}
+.removechar{
+    right: 0px;
+    position: absolute;
+    color: red;
+    font-size: 11pt;
+    font-weight: bold;
+    padding: 3px;
+    cursor: pointer !important;
+}
+.removechar:hover{
+    background-color:black;
+}
+.optionCnfrm{
+    width: 209px;
+    display: block;
+    position: absolute;
+    height: auto;
+    z-index: 5;
+    background-color: gray;
+    color: #002a5c;
+    padding: 5px 12px;
+    border: 2px solid black;
+    box-shadow: 0px 0px 13px 4px black;
+}
+.optionCnfrm input{
+    display: inline-block;
+    margin: 0px 2px;
+}
+#adduname, #addfname{
+    margin-bottom: 5px;
+}
+.tpenButton{
+    font-weight: bold;
+    color:white;
+    border-radius: 4px;
+    padding-bottom: 4px;
+    padding-left: 6px;
+    padding-right: 6px;
+    padding-top: 4px;
+    height: 35px;
+    background-clip: border-box;
+    background-origin: padding-box;
+    cursor: pointer;
+    background-color: #272727;
+    border: none;
+    display: block;
+/*    line-height: 35px;*/
+}
+.tpenButton[disabled]{
+    background-color: red;
+}
+.tpenButton[disabled]:hover{
+    background-color: red;
+}
