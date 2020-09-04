@@ -34,7 +34,7 @@ public class TokenManager{
     private String currentRefreshToken = "";
     private String registeredAgent = "";
     private String canvasPrefix = "";
-    private String propFileLocation = "tiny.properties";
+    private String propFileLocation = "";
     private String testingFlag = "";
     private Properties props = new Properties();
     

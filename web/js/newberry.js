@@ -27,7 +27,7 @@
     var imgTopPositionRatio = 0;
     var navMemory = 0;
     var zoomLock = false;
-    var annoBaseCheck = "http://store.rerum.io/v1/";
+    var annoBaseCheck = "http://devstore.rerum.io/v1/";
     var controlsMemory = {
         minLines : false,
         zenLine  : false,
@@ -4432,7 +4432,7 @@ function toggleLineCol(){
                     var newAnnoList = 
                     {
                         "@type" : "sc:AnnotationList",
-                        "@context" : "http://store.rerum.io/v1/context.json",
+                        "@context" : "http://devstore.rerum.io/v1/context.json",
                         "on" : onCanvas,
 //                           "originalAnnoID" : "",
 //                            "version" : 1,
