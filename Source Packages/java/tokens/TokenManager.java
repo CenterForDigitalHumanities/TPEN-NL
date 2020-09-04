@@ -36,6 +36,9 @@ public class TokenManager{
     private String canvasPrefix = "";
     private String propFileLocation = "";
     private String testingFlag = "";
+    private String database = "";
+    private String dbuser = "";
+    private String dbpwd = "";
     private Properties props = new Properties();
     
     /**
@@ -69,6 +72,9 @@ public class TokenManager{
         registeredAgent = props.getProperty("TPEN_NL_AGENT");
         canvasPrefix = props.getProperty("PALEO_CANVAS_ID_PREFIX");
         testingFlag = props.getProperty("TESTING");
+        database = props.getProperty("DATABASE");
+        dbuser = props.getProperty("DBUSER");
+        dbpwd = props.getProperty("DBPASSWORD");
         input.close();
         
 //        System.out.println("Read in props.  Here is my token info");
@@ -134,7 +140,6 @@ public class TokenManager{
         Date tokenEXPClaim;
         long expires;
         try {
-            System.out.println("Check if token is expired");
             DecodedJWT recievedToken = JWT.decode(currentAccessToken);
             tokenEXPClaim = recievedToken.getExpiresAt();
             expires = tokenEXPClaim.getTime();
