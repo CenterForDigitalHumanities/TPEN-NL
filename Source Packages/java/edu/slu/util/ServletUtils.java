@@ -85,24 +85,6 @@ public class ServletUtils {
 				return Integer.parseInt(uidStr.toString());
 			}
 		}
-		// if paleo session id has been passed in, use that to kick off a new user session
-		String sessionId = req.getParameter("session_id");
-		if (sessionId != null && !sessionId.isEmpty()) {
-			HttpSession paleoSession = (HttpSession) req
-					.getServletContext().getAttribute(sessionId);
-
-			if (paleoSession != null) {
-				Object uidStr = paleoSession.getAttribute("UID");
-				sess = req.getSession(true);
-				sess.setAttribute("UID",
-						Integer.parseInt(uidStr.toString()));
-
-				// need to invalidate the paleo session at this point
-				paleoSession.invalidate();
-				return Integer.parseInt(uidStr.toString());
-			}
-
-		}
 		if (verifyHostInList(req.getRemoteHost(), "TRADAMUS")) {
 			
 			try {
