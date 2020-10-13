@@ -13,9 +13,7 @@
        {
        user.User thisOne=new user.User(request.getParameter("uname"), request.getParameter("password"));
             if(thisOne.getUID()>0)
-                {
-                
-                  
+                { 
                 session.setAttribute("UID", ""+thisOne.getUID());
                 String ref="";
                 String tmpref=request.getHeader("referer");
@@ -47,14 +45,28 @@
                         }
                     }
                 }
-                
-            else
-                {
-                String errorMessage = "Incorrect log in. Try again or <a href='login.jsp'>Request an Account</a>.";
-            %><%@include file="WEB-INF/includes/errorBang.jspf" %><%
-                return;
+            else{
+                //check for user by this email address 
+                thisOne=new user.User(request.getParameter("uname"));
+                if(thisOne.getUID()>0){
+                    //If there is a user with this email
+                    if(thisOne.isOldDrupalUser()){
+                        //They need a password reset!
+                        response.sendRedirect("admin.jsp?emailSubmitted=true&email="+thisOne.getUname());
+                        return;
+                    }
+                    else{
+                        String errorMessage = "Incorrect log in. Try again or <a href='login.jsp'>Request an Account</a>.";
+                        %><%@include file="WEB-INF/includes/errorBang.jspf" %><%
+                        return;
+                    }
                 }
-           
+                else{
+                    String errorMessage = "Incorrect log in. Try again or <a href='login.jsp'>Request an Account</a>.";
+                    %><%@include file="WEB-INF/includes/errorBang.jspf" %><%
+                    return;
+                }
+            }
        }
    %>
 <%
