@@ -315,7 +315,7 @@ public class Hotkey {
         }
     }
     /**Build the javascript used to drive all hotkeys that are part of this project*/
-    public String javascriptToAddProjectButtons(int projectID) throws SQLException {
+    public static String javascriptToAddProjectButtons(int projectID) throws SQLException {
         String toret = "";
         String vars = "<script>";
         String query = "select * from hotkeys where uid=0 and projectID=? order by position";
@@ -335,19 +335,6 @@ public class Hotkey {
                 //toret+="<script>if(pressedkey=="+(buttonOffset+rs.getInt("position"))+"){addchar('&#"+rs.getInt("key")+";');  return false;}</script>";
                 vars += "var char" + button + "=\"" + rs.getInt("key") + "\";\n";
                 toret += "&#" + rs.getInt("key");
-            }
-            if (ctr == 0) {
-
-                new Hotkey(222, projectID, 1, true);
-                new Hotkey(254, projectID, 2, true);
-                new Hotkey(208, projectID, 3, true);
-                new Hotkey(240, projectID, 4, true);
-                new Hotkey(503, projectID, 5, true);
-                new Hotkey(447, projectID, 6, true);
-                new Hotkey(198, projectID, 7, true);
-                new Hotkey(230, projectID, 8, true);
-                new Hotkey(540, projectID, 9, true);
-                return this.javascriptToAddButtons(uid);
             }
             vars += "</script>";
             return toret;
