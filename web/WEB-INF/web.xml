@@ -291,13 +291,7 @@
         <servlet-name>createManuscript</servlet-name>
         <url-pattern>/createManuscript</url-pattern>
     </servlet-mapping>
-    
-    
     <!-- tpen webservices for newberry starts -->
-    <servlet>
-        <servlet-name>UpgradeManagement</servlet-name>
-        <servlet-class>edu.slu.tpen.servlet.UpgradeManagement</servlet-class>
-    </servlet>
     <servlet>
         <servlet-name>ProjectServlet</servlet-name>
         <servlet-class>edu.slu.tpen.servlet.ProjectServlet</servlet-class>
@@ -355,10 +349,6 @@
         <servlet-name>CopyProjectAndAnnos</servlet-name>
         <servlet-class>edu.slu.tpen.servlet.CopyProjectAndAnnos</servlet-class>
     </servlet>
-    <servlet-mapping>
-        <servlet-name>UpgradeManagement</servlet-name>
-        <url-pattern>/upgradeManagement</url-pattern>
-    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ProjectServlet</servlet-name>
         <url-pattern>/project/*</url-pattern>
