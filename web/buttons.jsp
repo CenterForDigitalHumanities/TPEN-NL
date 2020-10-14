@@ -75,26 +75,18 @@
             user.User thisUser = null;
             if (session.getAttribute("UID") != null) {
                 thisUser = new user.User(Integer.parseInt(session.getAttribute("UID").toString()));
-                }
+            }
+            else{
+                String errorMessage = "You must be logged in.";
+                %><%@include file="WEB-INF/includes/errorBang.jspf" %><%
+                return;
+            }
             Project thisProject = null;
             String projectAppend = "";
             int projectID = 0;
             if (request.getParameter("projectID") == null){
-                textdisplay.Project[] p = thisUser.getUserProjects();
-                if (p.length > 0) {
-                    projectID = p[0].getProjectID();
-                }
-                if (projectID > 0) {
-                    %>
-                    <script type="text/javascript">
-                        document.location.href = "buttons.jsp?projectID=<%out.print(projectID);%>";
-                    </script>
-        <%
-                    //response.sendRedirect("buttons.jsp?projectID=" + projectID);
-                } else {
                 String errorMessage = "No project has been indicated.";
-            %><%@include file="WEB-INF/includes/errorBang.jspf" %><%
-                }
+                %><%@include file="WEB-INF/includes/errorBang.jspf" %><%
                 return;
             }
             String p = "";
@@ -104,6 +96,13 @@
             projectID = Integer.parseInt(request.getParameter("projectID"));
             thisProject = new Project(projectID);
             projectAppend = (p.length()>0)? "&projectID=" + projectID + "&p=" + p : "&projectID=" + projectID;
+            Group thisGroup = new Group(thisProject.getGroupID());
+            Boolean isAdmin = (thisUser.isAdmin() || thisGroup.isAdmin(UID));
+            if(!isAdmin){
+                String errorMessage = "You must be an administrator to use this.";
+                %><%@include file="WEB-INF/includes/errorBang.jspf" %><%
+                return;
+            }
             out.println("<script>");
             out.println("var projectID="+projectID+";");
             out.println("var projectAppend='"+projectAppend+"';");
@@ -570,7 +569,7 @@ function equalWidth(){
                     pPiece = "p="+p;
                 }
             }
-            out.print("<a class=\"returnButton\" href=\"transcription.html?" + pPiece + appendProject + "\">Return to Transcribing</a>");
+            out.print("<a class=\"returnButton\" href=\"newberryTrans.html?" + pPiece + appendProject + "\">Return to Transcribing</a>");
         %><a class="returnButton" href="project.jsp?<%out.print(projectAppend);%>">Project Management</a><%
         }
         else {%>

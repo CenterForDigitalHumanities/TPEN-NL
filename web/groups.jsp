@@ -11,8 +11,10 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
 <%
-   if (session.getAttribute("UID") == null) {
-%><%@ include file="loginCheck.jsp" %><%        } else {
+if (session.getAttribute("UID") == null) {
+     %><%@ include file="loginCheck.jsp" %><%        
+ } 
+else {
 %>
 <html>
    <head>
@@ -80,13 +82,13 @@
                   }
                   user.User thisUser = new user.User(uid);
                   int UID = uid;
-
+                  boolean isAdmin = thisUser.isAdmin();
                   if (request.getParameter("projectID") != null) {
                      //since we know the group they need, list the group's comments
                      int projectID = Integer.parseInt(request.getParameter("projectID"));
                      textdisplay.Project thisProject = new textdisplay.Project(projectID);
-
                      user.Group thisGroup = new user.Group(thisProject.getGroupID());
+                     isAdmin = thisGroup.isAdmin(UID) || thisUser.isAdmin();
                      //Is someone being nosey?
 
                      try {
@@ -104,7 +106,7 @@
                            if (request.getParameter("usr") != null && request.getParameter("act") != null && request.getParameter("act").compareTo("rem") == 0) {
 
                               //Do they have permission to remove this person? That would be either isAdmin==true or current user=requested user
-                              if (thisGroup.isAdmin(UID) || Integer.toString(UID).compareTo(request.getParameter("usr")) == 0) {
+                              if (isAdmin || Integer.toString(UID).compareTo(request.getParameter("usr")) == 0) {
                                  thisGroup.remove(Integer.parseInt(request.getParameter("usr")));
                               }
                            }
@@ -113,7 +115,7 @@
                            if (request.getParameter("usr") != null && request.getParameter("act") != null && request.getParameter("act").compareTo("promote") == 0) {
 
                               //Do they have permission to promote this person? That would be either isAdmin==true or current user=group leader
-                              if (thisGroup.isAdmin(UID)) {
+                              if (isAdmin) {
                                  thisGroup.setUserRole(UID, Integer.parseInt(request.getParameter("usr")), Group.roles.Leader);
                               }
                            }
@@ -121,7 +123,7 @@
                            if (request.getParameter("usr") != null && request.getParameter("act") != null && request.getParameter("act").compareTo("demote") == 0) {
 
                               //Do they have permission to demote this person?  Did they try to demote themselves? That would be either isAdmin==true or current user=group leader
-                              if (thisGroup.isAdmin(UID)) {
+                              if (isAdmin) {
                                   if(Integer.parseInt(request.getParameter("usr")) != UID){
                                       thisGroup.setUserRole(UID, Integer.parseInt(request.getParameter("usr")), Group.roles.Contributor);
                                   }
@@ -146,7 +148,7 @@
                            //now list the users, and give the option of adding another
                            out.print("<h3>Existing group members</h3>");
                            User[] groupMembers = thisGroup.getMembers();
-                           boolean isLeader = thisGroup.isAdmin(thisUser.getUID());
+                           boolean isLeader = thisGroup.isAdmin(thisUser.getUID()) || thisUser.isAdmin();
                            out.print("<ol>");
                            
                            
@@ -177,8 +179,8 @@
 
                            }
                            out.print("</ol>");
-                           if (isLeader) {
-                              if (!(thisProject.containsUserUploadedManuscript() && (groupMembers.length > 4))) {
+                if (isAdmin) {
+                   if (!(thisProject.containsUserUploadedManuscript() && (groupMembers.length > 4))) {
                %>
                <h4>Add a new group member (must have a T&#8209;PEN account)</h4>
                <form action="groups.jsp" method="POST">
@@ -186,14 +188,16 @@
                   <input type="hidden" name="projectID" value="<%out.print("" + projectID);%>"/>
                   <input type="submit"/>
                </form>
-               <%  } else {
+               <%} else {
                         out.print("<p>This project contains private images and is limited to 5 collaborators.</p>");
                      }
                   } else {
-                     out.print("<p>Contact your Group Leader to add or remove individuals from this project.</p>");
+                     out.print("<p>Contact your Group Leader or an administrator to add or remove individuals from this project.</p>");
                   }
-               } else {
-                  try {
+               } 
+            else {
+                if(isAdmin){
+                    try {
                      if (request.getParameter("groupName") != null) {
                         String groupName = request.getParameter("groupName");
                         try (Connection conn = ServletUtils.getDBConnection()) {
@@ -215,7 +219,7 @@
                   } catch (Exception e) {
                      System.out.print("it is in 1\n");
                   }
-
+                  
                   thisUser = new User(uid);
                   //Create a dropdown with all of the groups this person is currently a member of
                   user.Group[] thisUsersGroups = thisUser.getUserGroups();
@@ -234,22 +238,20 @@
                          */
 
                      }
-                     out.print("</select><input type=\"submit\" value=\"Open Group\"/></form>");
-                  }
-                  //Allow for the creation of a new group
-                  out.print("Create a new group");
+                    out.print("</select><input type=\"submit\" value=\"Open Group\"/></form>");
+                 }
+                 //Allow for the creation of a new group
+               out.print("Create a new group");
                %>
                <form action="groups.jsp" method="POST">
                   <input type="text" name="groupName" value="Group Name"/>
                   <input type="submit" value="Create Group"/>
                </form>
                <%
-
-
-                     out.print("</select>");
-                  }
-
-               %>
+                out.print("</select>");
+                }
+            }
+        }%>
             </div>
             <a class="returnButton" href="project.jsp?selectTab=2<%if (request.getParameter("projectID") != null) {
               out.print("&projectID=" + request.getParameter("projectID"));
@@ -258,4 +260,3 @@
          <%@include file="WEB-INF/includes/projectTitle.jspf" %>
       </div></body>
 </html>
-<%}%>

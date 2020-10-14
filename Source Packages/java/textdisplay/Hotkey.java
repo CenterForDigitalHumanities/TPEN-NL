@@ -19,6 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import static textdisplay.DatabaseWrapper.closeDBConnection;
+import static textdisplay.DatabaseWrapper.closePreparedStatement;
+import static textdisplay.DatabaseWrapper.getConnection;
 
 /**customizable hotkeys for transcribing non enlgish texts*/
 public class Hotkey {
@@ -429,6 +432,38 @@ public class Hotkey {
         } finally {
             DatabaseWrapper.closeDBConnection(j);
             DatabaseWrapper.closePreparedStatement(stmt);
+        }
+    }
+    
+    public static String javascriptToBuildEditableButtons(int projectID) throws SQLException{
+        String toret = "";
+        String query = "select * from hotkeys where uid=0 and projectID=? and not position=0 order by position";
+        Connection j = null;
+        PreparedStatement stmt = null;
+        //System.out.println("build editable buttons");
+        try {
+            j = getConnection();
+            stmt = j.prepareStatement(query);
+            stmt.setInt(1, projectID);
+            //System.out.println("DO sql...");
+            ResultSet rs = stmt.executeQuery();
+            //System.out.println("OK");
+            int buttonOffset = 48;
+            String ctr = "";
+            while (rs.next()) {
+                int position = rs.getInt("position");
+                int key = rs.getInt("key");
+                String btn = ""+key;
+                ctr = ""+position;
+                //System.out.println("got one");
+                toret += "<li class=\"ui-state-default\"><input readonly class=\"label hotkey\" name=\"a"+ctr+"a\" id=\"a"+ctr+"a\" value=\""+(char)key+"\" tabindex=-5>";
+                toret += "<input class=\"shrink\" onkeyup=\"updatea(this);\" name=\"a"+ctr+"\" id=\"a"+ctr+"\" type=\"text\" value=\""+btn+"\"></input>";
+                toret += "<a class=\"ui-icon ui-icon-closethick right\" onclick=\"deleteHotkey(" + ctr + ");\">delete</a></li>";
+            }
+            return toret;
+        } finally {
+            closeDBConnection(j);
+            closePreparedStatement(stmt);
         }
     }
 

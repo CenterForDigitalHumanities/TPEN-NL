@@ -406,7 +406,7 @@
                     Scheduled Maintenance: <span id="schedmaintenance"></span>
                     <span id="countdown"></span> <br>
                     <span id="upgradeMessage"></span>
-                    <script type="text/javascript">maintenanceDate();</script>
+                    <!--<script type="text/javascript">maintenanceDate();</script>-->
                 </div>
                     <%
                     // #266 This only returns the person in session at the moment...
@@ -518,7 +518,7 @@
                         String lastFolio[] = thisUser.getAnyLastModifiedFolio().split(",");
                         String lastProject = (Integer.parseInt(lastFolio[1]) > 0) ? "&projectID=" + lastFolio[1] : "";
                         textdisplay.Folio thisFolio = new textdisplay.Folio(Integer.parseInt(lastFolio[0]));
-                        out.println("<a id=\"yourPage\" href=\"transcription.html?p=" + lastFolio[0] + lastProject + "\"><span id=recentProject class=\"ui-corner-all\" style=\"background:-10px -70px url('" + thisFolio.getImageURLResize(600) + "');\">");
+                        out.println("<a id=\"yourPage\" href=\"newberryTrans.html?p=" + lastFolio[0] + lastProject + "\"><span id=recentProject class=\"ui-corner-all\" style=\"background:-10px -70px url('" + thisFolio.getImageURLResize(600) + "');\">");
                         String projectTitle = "This work is not part of a project";
                         //find the last project title
                         if (lastProject.length() > 1) {
@@ -551,8 +551,8 @@
                             projectTitle = userProjects[i].getProjectName();
                             recentFolio = userProjects[i].getLastModifiedFolio();
                             out.print("<tr title=\"" + projectTitle 
-                                    + "\"><td><a href=\"transcription.html?projectID=" + projectID + "&p="+ recentFolio +"\">"+ projectTitle + "</a></td>"
-                                    + "<td><a href=\"transcription.html?projectID=" + projectID + "&p="+ recentFolio +"\" title='Resume Transcribing' class='left'><span class='ui-icon ui-icon-pencil left'></span>Resume</a></td>"
+                                    + "\"><td><a href=\"newberryTrans.html?projectID=" + projectID + "&p="+ recentFolio +"\">"+ projectTitle + "</a></td>"
+                                    + "<td><a href=\"newberryTrans.html?projectID=" + projectID + "&p="+ recentFolio +"\" title='Resume Transcribing' class='left'><span class='ui-icon ui-icon-pencil left'></span>Resume</a></td>"
                                     + "<td><a href=\"project.jsp?projectID=" + projectID + "\" title='Manage this Project' class='left'><span class='ui-icon ui-icon-gear left'></span>Manage</a></td>"
                                     + "<td><a href='#' onclick='$(\"#rearrangeProjects\").click();return false;' title='Reorder this List'><span class='ui-icon ui-icon-shuffle left'></span></a></td>");
                         }
@@ -611,11 +611,11 @@
                             permitTranscription = permit.getAllow_public_read_transcription() && (permit.getAllow_public_modify_notes() || permit.getAllow_public_modify_line_parsing() || permit.getAllow_public_modify_annotation() || permit.getAllow_public_modify());
                             recentFolio = publicProjects[i].getLastModifiedFolio();
                             publicProjectTitle = (permitTranscription) ? 
-                                "<a href='transcription.html?projectID=" 
+                                "<a href='newberryTrans.html?projectID=" 
                                 + publicProjectID + "&p="+ recentFolio 
                                 + "' title='Most Recent Changes'>" 
                                 +publicProjects[i].getProjectName()+"</a>"
-                                : "<a href='transcription.html?projectID=" 
+                                : "<a href='newberryTrans.html?projectID=" 
                                 + publicProjectID + "' title='First Page'>" 
                                 + publicProjects[i].getProjectName()+"</a>";
                             out.print("<tr title=\"" + publicProjectTitle + "\">"
@@ -627,7 +627,7 @@
                             out.print("<a href=\"index.jsp?projectID=" + publicProjectID + "&p="+ recentFolio +"&makeCopy=true\" title='Create a Copy'><span class='ui-icon ui-icon-copy left'></span></a>");
                             }
                             if(permitTranscription){
-                            out.print("<a href=\"transcription.html?projectID=" + publicProjectID + "&p="+ recentFolio +"\" title='Most Recent Changes'><span class='ui-icon ui-icon-pencil left'></span></a>");
+                            out.print("<a href=\"newberryTrans.html?projectID=" + publicProjectID + "&p="+ recentFolio +"\" title='Most Recent Changes'><span class='ui-icon ui-icon-pencil left'></span></a>");
                             }
                             if(permitProject){
                             out.print("<a href=\"project.jsp?projectID=" + publicProjectID + "\" title='Manage this Project'><span class='ui-icon ui-icon-gear left'></span></a>");
@@ -637,9 +637,9 @@
                                     + "<td>"+ publicProjectTitle + "</td>"
                                     + "<td>"+publicGroupLeaderName+"</td>");
                             if(permitTranscription){
-                            out.print("<td><a href=\"transcription.html?projectID=" + publicProjectID + "&p="+ recentFolio +"\" title='Most Recent Changes'><span class='ui-icon ui-icon-pencil left'></span></a></td>");
+                            out.print("<td><a href=\"newberryTrans.html?projectID=" + publicProjectID + "&p="+ recentFolio +"\" title='Most Recent Changes'><span class='ui-icon ui-icon-pencil left'></span></a></td>");
                             } else {
-                            out.print("<td><a href=\"transcription.html?projectID=" + publicProjectID + "\" title='Read Transcription'><span class='ui-icon ui-icon-note left'></span></a></td>");
+                            out.print("<td><a href=\"newberryTrans.html?projectID=" + publicProjectID + "\" title='Read Transcription'><span class='ui-icon ui-icon-note left'></span></a></td>");
                             }
                             if(permitProject){
                             out.print("<td><a href=\"project.jsp?projectID=" + publicProjectID + "\" title='Manage this Project'><span class='ui-icon ui-icon-gear left'></span></a></td>");

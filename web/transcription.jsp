@@ -1531,7 +1531,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a64129', end
         </script>
 <%@include file="WEB-INF/includes/noscript.jspf" %>
 
-<a id="updateRedirect" class="bounce" href="transcription.html?<%out.print(projectAppend);%>">
+<a id="updateRedirect" class="bounce" href="newberryTrans.html?<%out.print(projectAppend);%>">
     2.8 update
     <img alt="2.8" src="images/28tpen.svg" height="24" >
 </a>

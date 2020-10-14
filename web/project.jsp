@@ -422,9 +422,11 @@
                     <a id="videoBtn_project" class="videoBtn" title="See help video!" onclick="openHelpVideo('http://www.youtube.com/embed/2ot-nGSZP2g');"><span class="vInvert"></span></a>
                     <ul>
                         <li><a title="Switch between projects or manage pages" href="#tabs-1">Projects</a></li>
-                        <li><a title="Alter linebreaks and parsings" href="#tabs-2">Manuscripts</a></li>
+                        <!--<li><a title="Alter linebreaks and parsings" href="#tabs-2">Manuscripts</a></li>-->
+                        <%if(isAdmin){%>
                         <li><a title="Organize your team" href="#tabs-3">Collaboration</a></li>
                         <li><a title="Project Options" href="#tabs-4">Options</a></li>
+                        <%}%>
                         <li><a title="Export Options" href="#tabs-5">Export</a></li>
                     </ul>
                     <div id="tabs-1">
@@ -529,8 +531,8 @@
                                 <%
                                 int recentFolio = thisProject.getLastModifiedFolio();
                                 String projectLink = (recentFolio>0) ? 
-                                    "<a class='tpenButton' href='transcription.html?projectID=" + projectID + "&p=" + recentFolio + "'><span class='ui-icon ui-icon-pencil right'></span>Resume Transcribing</a>": 
-                                    "<a class='tpenButton' href='transcription.html?projectID=" + projectID + "'><span class='ui-icon ui-icon-pencil right'></span>First Page</a>"; 
+                                    "<a class='tpenButton' href='newberryTrans.html?projectID=" + projectID + "&p=" + recentFolio + "'><span class='ui-icon ui-icon-pencil right'></span>Resume Transcribing</a>": 
+                                    "<a class='tpenButton' href='newberryTrans.html?projectID=" + projectID + "'><span class='ui-icon ui-icon-pencil right'></span>First Page</a>"; 
                                 if(permitRead || permitModify || permitNotes || isMember){%>
                                     <%out.print(projectLink);%>
                                     <select class="clear folioDropdown" style="margin: 10% 10%;text-align: center;max-width: 80%;" onchange="navigateTo(this);">
@@ -545,7 +547,7 @@
                             </div>
                         </ul>
                     </div>
-                    <div id="tabs-2">
+<!--                    <div id="tabs-2">
                         <ul id="ms" class="ui-helper-reset">
                             <li class="left ui-widget-content ui-corner-tr ui-corner-bl tall loadingBook">
                                 <%if(permitRead || permitModify || permitNotes || isMember){%>
@@ -557,37 +559,39 @@
   </li>
                                 <%if(permitModify || isMember){%>
                             <li class="left ui-widget-content ui-corner-tr ui-corner-bl tall">
-                                <a class="tpenButton" href="transcription.html?tool=linebreak&projectID=<%out.print("" + projectID);%>"><span class="ui-icon ui-icon-clipboard right"></span>Linebreak and proofread existing text</a>
+                                <a class="tpenButton" href="newberryTrans.html?tool=linebreak&projectID=<%out.print("" + projectID);%>"><span class="ui-icon ui-icon-clipboard right"></span>Linebreak and proofread existing text</a>
                                 <p>Adjust the linebreaking or make changes to uploaded text. Also revise previously saved transcriptions.</p>
                                 <a class="tpenButton" href="uploadText.jsp?projectID=<%out.print("" + projectID);%>"><span class="ui-icon ui-icon-folder-open right"></span>Upload a file to linebreak</a>
                                 <p>Upload a file to get started. The text will be available to any group member in this project.</p>
                             </li>
                                                                <%}
                                     if(permitParsing || isMember){%>
- <li class="left ui-widget-content ui-corner-tr ui-corner-bl tall"><a class="tpenButton" href="transcription.html?parsing=true&projectID=<%out.print("" + projectID);%>"><span class="ui-icon ui-icon-note right"></span>Check line parsings</a>
+ <li class="left ui-widget-content ui-corner-tr ui-corner-bl tall"><a class="tpenButton" href="newberryTrans.html?parsing=true&projectID=<%out.print("" + projectID);%>"><span class="ui-icon ui-icon-note right"></span>Check line parsings</a>
                                 <p>Verify the automatic line detection for the project or define the columns and lines manually. Access independent control over each page in the project.</p>
                             </li>
 <%}%>
                         </ul>
-                    </div>
+                    </div>-->
+                    <%if(isAdmin){%>
                     <div id="tabs-3">
                         <ul id="team" class="ui-helper-reset">
                             <li class="left ui-widget-content ui-corner-tr ui-corner-bl tall">
                                 <div id="inviteFeedback"></div>
+                                
                                 <%
                                     User[] groupMembers = thisGroup.getMembers();
                                     User[] groupLeader = thisGroup.getLeader();
-                                if ((UID == groupLeader[0].getUID()) && !thisProject.containsUserUploadedManuscript()){
+                                if (isAdmin && !thisProject.containsUserUploadedManuscript()){
                                 %>
                                 <a class="tpenButton" href="#publicOptions" onclick="$('#publicOptions').fadeIn('normal');return false;"><span class="ui-icon ui-icon-unlocked right"></span>Share Publicly</a>
                                 <%}
-                                    if(isMember){%>
+                                if(isAdmin){%>
                                 <a class="tpenButton" href="groups.jsp?projectID=<%out.print("" + projectID);%>"><span class="ui-icon ui-icon-person right"></span>Modify Project Team</a>
                                 <p>Add, delete, or just check your group membership on this project.</p>
                                 <%}
                                     out.print("<h4>" + thisGroup.getTitle() + " Group Members:</h4>");
                                     //now list the users
-                                    if(isMember){
+                                    if(isAdmin){
                                         for (int i = 0; i < groupMembers.length; i++) {
                                             if (groupLeader[0].getUID() == groupMembers[i].getUID()) {
                                                 out.print("<div class='loud'>" + groupMembers[i].getFname().substring(0,1) +"&nbsp;"+groupMembers[i].getLname() + "&nbsp;(" + groupMembers[i].getUname() + ")&nbsp;Group&nbsp;Leader</div>");
@@ -649,13 +653,14 @@
                                 </div></li>
                         </ul>
                     </div>
+                    <%}%>
                     <div id="tabs-4">
                         <ul id="options" class="ui-helper-reset">
                             <li class="left ui-widget-content ui-corner-tr ui-corner-bl tall">
                                 <h3>Project Options</h3>
                                 <%if(isMember || permitModify){%>
                                 Import XML schema, validate projects, and customize buttons.
-                                <div id="xmlImportDiv">
+<!--                                <div id="xmlImportDiv">
                                     <div id="xmlImportBtn" class="tpenButton"><span class="ui-icon ui-icon-script right"></span>
                                         Link a schema to this project
                                     </div>
@@ -666,8 +671,10 @@
                                         <input class="tpenButton right" name="xmlImport" value="Link XML" type="submit" />
                                     </form>
                                 </div>
+-->
                                 <%}
-    if (thisProject.getSchemaURL().length() > 5) {%>
+                                if (thisProject.getSchemaURL().length() > 5) {%>
+<!--
                                 <div id="xmlValidateDiv">
                                     <div id="xmlValidateBtn" class="tpenButton"><span class="ui-icon ui-icon-script right"></span>
                                         Validate XML for this project
@@ -679,14 +686,16 @@
                                         <input class="tpenButton right" name="xmlValidate" value="Validate" type="submit" />
                                     </form>
                                 </div>
-                                        <%if (isMember || permitButtons){%>
-                                <a id="importBtnFromSchemaBtn" class="tpenButton" href="buttonSchemaImport.jsp?projectID=<%out.print("" + projectID);%>"><span class="ui-icon ui-icon-transfer-e-w right"></span>Import Buttons from Linked Schema</a>
+-->
+                                <%if (isAdmin){%>
+                                <!--<a id="importBtnFromSchemaBtn" class="tpenButton" href="buttonSchemaImport.jsp?projectID=<%out.print("" + projectID);%>"><span class="ui-icon ui-icon-transfer-e-w right"></span>Import Buttons from Linked Schema</a>-->
                                 <%}
                                 }
-                                if (isMember || permitButtons){%>
+                                if (isAdmin){%>
                                 <a class="tpenButton" href="buttons.jsp?projectID=<%out.print("" + projectID);%>"><span class="ui-icon ui-icon-gear right"></span>Button Management</a>
                                 <p>The <span title="Any unicode character can be attached to one of these buttons for use in your project." class="loud">Special Character</span> and <span title="Multiple custom tags with parameters can be added to this project." class="loud">Custom xml Tags</span> you define will remain specific to each project. These buttons are accessible on the transcription pages. Characters assigned to the numbered buttons can be inserted simply by holding CTRL and pressing the corresponding number on the keyboard.</p>
-                           <%} else {%>
+                           <%} 
+                            else {%>
                                <p>Button management is restricted to group members on this public project. The current button pallete is displayed to the right.</p>
                            <%}
                            if ((isMember || permitCopy) && !thisProject.containsUserUploadedManuscript()){
@@ -704,7 +713,7 @@
                                     <div class="copyLoader"><img src="images/loading2.gif" /></div>
                                 </div>
                             </li>
-                            <li class="left ui-widget-content ui-corner-tr ui-corner-bl tall">
+<!--                            <li class="left ui-widget-content ui-corner-tr ui-corner-bl tall">
                                 <h3>Current Button Summary</h3>
                                 <h6>Special Character Buttons</h6><%
                                     /**Retrieve stored button information*/
@@ -727,6 +736,7 @@
                                <p class="clear-left">If you wish, you can copy XML tags between projects: <a href="buttonProjectImport.jsp?a=1<%out.print(projectAppend);%>" class="ui-button tpenButton">Copy XML Tags</a></p>
                             <%}%>
                             </li>
+-->
                         </ul>
                     </div>
                     <%if (isMember || permitExport){%>
@@ -827,8 +837,8 @@
             </div>
         </div>
 <%if(isMember||permitModify){%>
-            <div id="addToProject"> <!-- container for adding to projects -->
-            <div class="callup" id="form"> <!-- add to project -->
+<!--            <div id="addToProject">  container for adding to projects 
+            <div class="callup" id="form">  add to project 
                 <span id="closePopup" class="right caps">close<a class="right ui-icon ui-icon-closethick" title="Close this window">cancel</a></span>
                 <%    //Attach arrays of AllCities and AllRepositories represented on T-PEN
                     String[] cities = Manuscript.getAllCities();
@@ -859,15 +869,15 @@
 
                 </div>
             </div>
-        </div>
+        </div>-->
                 <%}
-                                                if (UID == groupLeader[0].getUID()){
+        if (isAdmin){
                 %>
                 <div id="publicOptions" class="ui-widget-content ui-corner-all">
 <a id="closePublicOption" href="#" onclick="$('#publicOptions').fadeOut('normal');return false;" class="right tpenButton ui-button">Close<span class="ui-icon ui-icon-close right"></span></a>
                     <%
 textdisplay.ProjectPermissions permit = new ProjectPermissions(projectID);
-if(request.getParameter("publicOptions")!=null && UID == thisGroup.getLeader()[0].getUID()){
+if(request.getParameter("publicOptions")!=null && isAdmin){
     // First process the requests for public access
     permitOACr = request.getParameter("OACr")!=null;
     permitOACw = request.getParameter("OACw")!=null;
@@ -1031,7 +1041,8 @@ if(request.getParameter("publicOptions")!=null && UID == thisGroup.getLeader()[0
     <input type="submit" name="publicOptions" value="Submit Changes"  class="tpenButton ui-button" />    
 </form>
                     </div>
-                </div><%}%>
+                </div>
+    <%}%>
                 <div id="addingTools" class="ui-corner-all ui-widget ui-widget-content">
                     <a id="closeAddingTools" href="#" onclick="$('#addingTools').fadeOut('normal');return false;" class="right tpenButton ui-button">Close<span class="ui-icon ui-icon-close right"></span></a>
                     <h3>Add an iFrame Tool</h3>
@@ -1283,7 +1294,7 @@ $("#samplePreview").hover(function(){
                                     }
                                     function navigateTo(dropdown){
                                         $("body").addClass(" ui-state-disabled");
-                                        document.location='transcription.html?p='+dropdown.value;
+                                        document.location='newberryTrans.html?p='+dropdown.value;
                                     
                                     }
                                     function equalHeights (eClass, minHeight){
