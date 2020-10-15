@@ -3084,7 +3084,7 @@ function splitPage(event, tool) {
             //We need to get the UTL canvasID for this particular canvas to support direct linking to the essay for this object
             //FIXME: this is not how to do this.
             let languageSwitch = lazyURL.match(/italian/i) ? "Italian" : "French";
-            $("#partialTransSplit").children("iframe").attr("data_src", "https://centerfordigitalhumanities.github.io/Newberry-" + languageSwitch + "-paleography/transcription/" + utlID);
+            $("#partialTransSplit").children("iframe").attr("data_src", "https://centerfordigitalhumanities.github.io/Newberry-" + languageSwitch + "-paleography/transcriptions/" + utlID);
         }
         else{
             //This is not a UTL canvas or a canvas with a different label format.  Default to list of partial trans
