@@ -3078,13 +3078,13 @@ function splitPage(event, tool) {
         $("#compareSplit").css("width", splitWidthAdjustment);
     }
     else if(tool === "partialTrans"){
-        var currentCanvasLabel = transcriptionFolios[currentFolio-1]["label"];
-        var utlID = "";    
-        if(currentCanvasLabel.split("_").length - 1 === 2){ //Must be in format like FP_000_000
-            //We need to get the UTL canvas id for this particular canvas to support direct linking to the transcription for this object
-            utlID = currentCanvasLabel.substring(0,currentCanvasLabel.lastIndexOf("_")).toLowerCase();
-            iframeDirectLink = buildIframeDirectLink("content/transcript_"+utlID+"?response_type=embed");
-            $("#partialTransSplit").children("iframe").attr("data_src", iframeDirectLink);
+        var currentCanvasLabel = transcriptionFolios[currentFolio - 1]["label"];
+        var utlID = parseInt(currentCanvasLabel.split("_")[1]);
+        if (!isNaN(utlID)) { //Must be in format like FP_000_000
+            //We need to get the UTL canvasID for this particular canvas to support direct linking to the essay for this object
+            //FIXME: this is not how to do this.
+            let languageSwitch = lazyURL.match(/italian/i) ? "Italian" : "French";
+            $("#partialTransSplit").children("iframe").attr("data_src", "https://centerfordigitalhumanities.github.io/Newberry-" + languageSwitch + "-paleography/transcription/" + utlID);
         }
         else{
             //This is not a UTL canvas or a canvas with a different label format.  Default to list of partial trans
@@ -3095,13 +3095,13 @@ function splitPage(event, tool) {
         splitScreen.css("width", splitWidthAdjustment);
     }
     else if(tool === "essay"){
-        var currentCanvasLabel = transcriptionFolios[currentFolio-1]["label"];
-        var utlID = "";
-        if(currentCanvasLabel.split("_").length - 1 === 2){ //Must be in format like FP_000_000
+        var currentCanvasLabel = transcriptionFolios[currentFolio - 1]["label"];
+        var utlID = parseInt(currentCanvasLabel.split("_")[1]);
+        if (!isNaN(utlID)) { //Must be in format like FP_000_000
             //We need to get the UTL canvasID for this particular canvas to support direct linking to the essay for this object
-            utlID = currentCanvasLabel.substring(0, currentCanvasLabel.lastIndexOf("_")).toLowerCase();
-            iframeDirectLink = buildIframeDirectLink("content/about_"+utlID+"?response_type=embed");
-            $("#essaySplit").children("iframe").attr("data_src", iframeDirectLink);
+            //FIXME: this is not how to do this.
+            let languageSwitch = lazyURL.match(/italian/i) ? "Italian" : "French";
+            $("#essaySplit").children("iframe").attr("data_src", "https://centerfordigitalhumanities.github.io/Newberry-" + languageSwitch + "-paleography/essay/" + utlID);
         }
         else{
             //This is not a UTL canvas or a canvas with a different @id format.  Default to list of essays
