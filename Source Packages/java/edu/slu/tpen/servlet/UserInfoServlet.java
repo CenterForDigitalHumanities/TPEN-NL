@@ -14,6 +14,7 @@
  */
 package edu.slu.tpen.servlet;
 
+import edu.slu.util.ServletUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
 import static java.lang.Integer.parseInt;
@@ -44,7 +45,8 @@ public class UserInfoServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
         String providedUID = "";
-        int uid = -1;
+        int uid = 0;
+        uid = ServletUtils.getUID(request, response);
         if(null!=request.getParameter("uid") && !"".equals(request.getParameter("uid"))){
             providedUID = request.getParameter("uid");
             uid = parseInt(providedUID);
@@ -55,7 +57,7 @@ public class UserInfoServlet extends HttpServlet {
         else{
             response.setStatus(SC_FORBIDDEN);
         }
-        if(uid >= 0){
+        if(uid > 0){
             try {
                 User user = new User(uid);
                 JSONObject jo = new JSONObject();

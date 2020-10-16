@@ -2278,6 +2278,10 @@ iframe {width: 100%;height:95%; }
 }
 .videoSection{
 }
-#toggleChars, #toggleXML, #canvasControls, .magnifyBtn{
-    display : none;
+#parsingBtn{
+    display: none;
+    margin: 2rem 0;
 }
+/*#toggleChars, #toggleXML, #canvasControls, .magnifyBtn{
+    display : none;
+}*/
