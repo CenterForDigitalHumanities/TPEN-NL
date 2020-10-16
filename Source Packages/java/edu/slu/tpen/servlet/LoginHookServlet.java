@@ -46,7 +46,7 @@ public class LoginHookServlet extends HttpServlet {
         String text = request.getQueryString();
         EncryptUtil mcrypt = new EncryptUtil();
         try {
-            String decrypted = new String( mcrypt.decrypt( text ) );
+            String decrypted = URLDecoder.decode(new String( mcrypt.decrypt( text ) ), "UTF-8");
             String[] params = decrypted.split("&");
             Map<String, Object> vals = new HashMap();
             for(int i = 0; i < params.length; i++){
@@ -54,8 +54,8 @@ public class LoginHookServlet extends HttpServlet {
                 if(param.contains("=")){
                     String[] nameVal = param.split("=");
                     if(nameVal.length == 2){
-                        String prop = URLDecoder.decode(nameVal[0], "UTF-8");
-                        String val = URLDecoder.decode(nameVal[1], "UTF-8");
+                        String prop = nameVal[0];
+                        String val = nameVal[1];
                         vals.put(prop, val);
                     }
                 }

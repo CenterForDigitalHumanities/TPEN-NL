@@ -19,6 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import static textdisplay.DatabaseWrapper.closeDBConnection;
+import static textdisplay.DatabaseWrapper.closePreparedStatement;
+import static textdisplay.DatabaseWrapper.getConnection;
 
 /**customizable hotkeys for transcribing non enlgish texts*/
 public class Hotkey {
@@ -315,7 +318,7 @@ public class Hotkey {
         }
     }
     /**Build the javascript used to drive all hotkeys that are part of this project*/
-    public String javascriptToAddProjectButtons(int projectID) throws SQLException {
+    public static String javascriptToAddProjectButtons(int projectID) throws SQLException {
         String toret = "";
         String vars = "<script>";
         String query = "select * from hotkeys where uid=0 and projectID=? order by position";
@@ -335,19 +338,6 @@ public class Hotkey {
                 //toret+="<script>if(pressedkey=="+(buttonOffset+rs.getInt("position"))+"){addchar('&#"+rs.getInt("key")+";');  return false;}</script>";
                 vars += "var char" + button + "=\"" + rs.getInt("key") + "\";\n";
                 toret += "&#" + rs.getInt("key");
-            }
-            if (ctr == 0) {
-
-                new Hotkey(222, projectID, 1, true);
-                new Hotkey(254, projectID, 2, true);
-                new Hotkey(208, projectID, 3, true);
-                new Hotkey(240, projectID, 4, true);
-                new Hotkey(503, projectID, 5, true);
-                new Hotkey(447, projectID, 6, true);
-                new Hotkey(198, projectID, 7, true);
-                new Hotkey(230, projectID, 8, true);
-                new Hotkey(540, projectID, 9, true);
-                return this.javascriptToAddButtons(uid);
             }
             vars += "</script>";
             return toret;
@@ -442,6 +432,38 @@ public class Hotkey {
         } finally {
             DatabaseWrapper.closeDBConnection(j);
             DatabaseWrapper.closePreparedStatement(stmt);
+        }
+    }
+    
+    public static String javascriptToBuildEditableButtons(int projectID) throws SQLException{
+        String toret = "";
+        String query = "select * from hotkeys where uid=0 and projectID=? and not position=0 order by position";
+        Connection j = null;
+        PreparedStatement stmt = null;
+        //System.out.println("build editable buttons");
+        try {
+            j = getConnection();
+            stmt = j.prepareStatement(query);
+            stmt.setInt(1, projectID);
+            //System.out.println("DO sql...");
+            ResultSet rs = stmt.executeQuery();
+            //System.out.println("OK");
+            int buttonOffset = 48;
+            String ctr = "";
+            while (rs.next()) {
+                int position = rs.getInt("position");
+                int key = rs.getInt("key");
+                String btn = ""+key;
+                ctr = ""+position;
+                //System.out.println("got one");
+                toret += "<li class=\"ui-state-default\"><input readonly class=\"label hotkey\" name=\"a"+ctr+"a\" id=\"a"+ctr+"a\" value=\""+(char)key+"\" tabindex=-5>";
+                toret += "<input class=\"shrink\" onkeyup=\"updatea(this);\" name=\"a"+ctr+"\" id=\"a"+ctr+"\" type=\"text\" value=\""+btn+"\"></input>";
+                toret += "<a class=\"ui-icon ui-icon-closethick right\" onclick=\"deleteHotkey(" + ctr + ");\">delete</a></li>";
+            }
+            return toret;
+        } finally {
+            closeDBConnection(j);
+            closePreparedStatement(stmt);
         }
     }
 
