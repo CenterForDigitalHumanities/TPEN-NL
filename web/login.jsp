@@ -17,7 +17,6 @@
                 session.setAttribute("UID", ""+thisOne.getUID());
                 String ref="";
                 String tmpref=request.getHeader("referer");
-
                 if(request.getHeader("referer")==null || request.getHeader("referer").compareTo("")==0 || request.getHeader("referer").contains("login")){
                     %>
                     <script>
