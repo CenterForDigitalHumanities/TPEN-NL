@@ -97,8 +97,9 @@ body{
     overflow: hidden;
 }
 
+
 .controlOrganizer{
-    padding:25px 15px 0px 15px;
+    padding: 25px 15px 0px 15px;
     position: relative;
     text-align: center;
     height: 795px; /* however tall it needs to be to fit all text and buttons on small screen scroll */
@@ -187,7 +188,7 @@ textarea:focus{
 .demoteUser{
     font-weight: bold;
     font-size: 117%;
-    color: #264aa0; //#A63321
+    color: #b43d2e; /*#a64129*/
     margin-right: 5px;
 }
 .removeUser{
@@ -213,8 +214,9 @@ textarea:focus{
 }
 
 /*.lookLikeButtons:hover{
-    background-color: #264aa0; //#A63321
-}*/
+    background-color: #b43d2e; 
+}
+*/
 
 /*.character:hover{
     background-color: #3a3a3a;
@@ -846,6 +848,7 @@ label {width:auto;padding: 0;float: none;}/*fixme should not have to overwrite*/
                 -webkit-box-shadow: 0 0 5px #A64129; 
                 box-shadow:0 0 5px #A64129;}
 #abbreviations select {width:100%;}      
+
 .xmlClosingTags {position: absolute; bottom:0;right:10px;z-index: 20;}
 .tags {font-size: 80%; padding: 1px;margin: 0px -1px 1px 0px;display: inline-block;z-index: 20;cursor: pointer;position: relative;}
 .destroyTag {position:absolute;top:-15px;right:0;}
@@ -1261,7 +1264,7 @@ button.imgTool{
     text-align: center;
 }
 .fullScreenTrans:hover{
-    background-color: #264aa0; //#A63321 
+    background-color: #b43d2e; /*#a64129*/
     color: #272727;
 }
 .fullScreenTrans::before {
@@ -1324,7 +1327,7 @@ button.imgTool{
 }*/
 /*.topTrim a:hover, .topTrim [onclick]:hover {
     background-color: rgba(255,255,255,.5);
-    color: #264aa0;
+    color: #b43d2e;
 }*/
 #prevCanvas, #nextCanvas{
     cursor: pointer;
@@ -1334,9 +1337,9 @@ button.imgTool{
 }
 .trimDividor .trimSection:hover{
     background-color: rgba(255,255,255,.5);
-    color: #264aa0;
+    color: #b43d2e;
 }
-.fa-2x {
+.fa-2x{
     margin-top: -0.5em;
     top: 0.25em;
     position: relative;
@@ -1490,11 +1493,11 @@ button.imgTool{
 }
 #lineControls i:hover{
     cursor: pointer;
-    color: #264aa0; //#A63321
+    color: #b43d2e; //#b43d2e
 }
 #pageControls i:hover{
     cursor: pointer;
-    color: #264aa0; //#A63321
+    color: #b43d2e; //#b43d2e
 }
 #prevLine,#nextLine,#toggleNotes,#nextPage,#prevPage{
     position: relative;
@@ -1522,11 +1525,11 @@ button.imgTool{
 }
 #lineControls i:hover{
     cursor: pointer;
-    color: #264aa0; //#A63321
+    color: #b43d2e; //#A63321
 }
 #pageControls i:hover{
     cursor: pointer;
-    color: #264aa0; //#A63321
+    color: #b43d2e; //#A63321
 }
 #ruler1,#ruler2 {display: none;background: black;position: absolute;z-index: 6; pointer-events:none;}
 
@@ -1563,7 +1566,7 @@ button{
 }
 
 button:hover{
-    background-color: #264aa0; //#A63321
+    background-color: #b43d2e; /*#a64129*/
 }
 p{
     /*font-family: 'Open Sans','Helvetica Neue',sans-serif;*/
@@ -1948,7 +1951,6 @@ a.navigation {
     flex: 2 1;
     height: 2em;
     max-width: 9em;
-    display: block;
 }
 
 #xmlTagFloat, #specialCharsFloat{
@@ -2093,6 +2095,17 @@ a.editButtons {
     width: 100%;
     text-align: center;
 }
+.character::after {
+    content: "CTRL+" counter(hotkey);
+    position: absolute;
+    color: #e2e2e2;
+    font-size: .75em;
+    bottom: 0;
+    left: 0;
+    font-family: monospace;
+    width: 100%;
+    text-align: center;
+}
 .ui-resizable:not(.ui-resizable-disabled),.noTransition,.lineColIndicatorArea {
     -webkit-transition: all 0s !important;
     -moz-transition: all 0s !important;
@@ -2225,7 +2238,7 @@ a.editButtons {
     top: 3px;
  }
  
-  #helpVideoArea{
+ #helpVideoArea{
     top: 3%;
     height: 97%;
     position: absolute;
@@ -2255,14 +2268,20 @@ a.editButtons {
     z-index: 6;
     display: none;
 }
+iframe {width: 100%;height:95%; }
 #helpVideoArea iframe{
 
 }
-iframe {width: 100%;height:95%;}
-
 #helpVideoArea h2{
     margin: 0; 
     text-align: center;
 }
 .videoSection{
 }
+#parsingBtn{
+    display: none;
+    margin: 2rem 0;
+}
+/*#toggleChars, #toggleXML, #canvasControls, .magnifyBtn{
+    display : none;
+}*/

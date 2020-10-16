@@ -1951,6 +1951,7 @@ a.navigation {
     flex: 2 1;
     height: 2em;
     max-width: 9em;
+    display: block;
 }
 
 #xmlTagFloat, #specialCharsFloat{
@@ -2278,10 +2279,4 @@ iframe {width: 100%;height:95%; }
 }
 .videoSection{
 }
-#parsingBtn{
-    display: none;
-    margin: 2rem 0;
-}
-/*#toggleChars, #toggleXML, #canvasControls, .magnifyBtn{
-    display : none;
-}*/
+
