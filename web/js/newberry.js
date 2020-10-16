@@ -3026,7 +3026,6 @@ function splitPage(event, tool) {
     splitScreen.find(".fullScreenTrans").click(function(){
         fullPage(false, false);
     });
-    $("#zoomLock").attr("disabled", "disabled").addClass("peekZoomLockout");
     if(tool==="controls"){
         if(liveTool === "controls"){
            // $("#canvasControls").removeClass("selected");
@@ -3034,6 +3033,7 @@ function splitPage(event, tool) {
             return fullPage(false, false);
         }
         $("#canvasControls").addClass("selected");
+        $("#zoomLock").attr("disabled", "disabled").addClass("peekZoomLockout");
         $("#transcriptionCanvas").css("width", Page.width()-200 + "px");
         $("#transcriptionTemplate").css("width", Page.width()-200 + "px");
         newCanvasWidth = Page.width()-200;
@@ -3078,14 +3078,13 @@ function splitPage(event, tool) {
         $("#compareSplit").css("width", splitWidthAdjustment);
     }
     else if(tool === "partialTrans"){
-        var currentCanvasLabel = transcriptionFolios[currentFolio - 1]["label"];
-        var utlID = parseInt(currentCanvasLabel.split("_")[1]);
-        if (!isNaN(utlID)) { //Must be in format like FP_000_000
-            // We need to get the UTL canvasID for this particular canvas to support direct linking to the essay for this object
-            // FIXME: this is not how to do this.
-            // possible fix: canvas IDs are like FP_001_001 and IP_001_001
-            let languageSwitch = lazyURL.match(/italian/i) ? "Italian" : "French";
-            $("#partialTransSplit").children("iframe").attr("data_src", "https://centerfordigitalhumanities.github.io/Newberry-" + languageSwitch + "-paleography/transcriptions/" + utlID);
+        var currentCanvasLabel = transcriptionFolios[currentFolio-1]["label"];
+        var utlID = "";    
+        if(currentCanvasLabel.split("_").length - 1 === 2){ //Must be in format like FP_000_000
+            //We need to get the UTL canvas id for this particular canvas to support direct linking to the transcription for this object
+            utlID = currentCanvasLabel.substring(0,currentCanvasLabel.lastIndexOf("_")).toLowerCase();
+            iframeDirectLink = buildIframeDirectLink("content/transcript_"+utlID+"?response_type=embed");
+            $("#partialTransSplit").children("iframe").attr("data_src", iframeDirectLink);
         }
         else{
             //This is not a UTL canvas or a canvas with a different label format.  Default to list of partial trans
@@ -3096,13 +3095,13 @@ function splitPage(event, tool) {
         splitScreen.css("width", splitWidthAdjustment);
     }
     else if(tool === "essay"){
-        var currentCanvasLabel = transcriptionFolios[currentFolio - 1]["label"];
-        var utlID = parseInt(currentCanvasLabel.split("_")[1]);
-        if (!isNaN(utlID)) { //Must be in format like FP_000_000
+        var currentCanvasLabel = transcriptionFolios[currentFolio-1]["label"];
+        var utlID = "";
+        if(currentCanvasLabel.split("_").length - 1 === 2){ //Must be in format like FP_000_000
             //We need to get the UTL canvasID for this particular canvas to support direct linking to the essay for this object
-            //FIXME: this is not how to do this.
-            let languageSwitch = lazyURL.match(/italian/i) ? "Italian" : "French";
-            $("#essaySplit").children("iframe").attr("data_src", "https://centerfordigitalhumanities.github.io/Newberry-" + languageSwitch + "-paleography/essay/" + utlID);
+            utlID = currentCanvasLabel.substring(0, currentCanvasLabel.lastIndexOf("_")).toLowerCase();
+            iframeDirectLink = buildIframeDirectLink("content/about_"+utlID+"?response_type=embed");
+            $("#essaySplit").children("iframe").attr("data_src", iframeDirectLink);
         }
         else{
             //This is not a UTL canvas or a canvas with a different @id format.  Default to list of essays
@@ -4433,7 +4432,7 @@ function toggleLineCol(){
                     var newAnnoList = 
                     {
                         "@type" : "sc:AnnotationList",
-                        "@context" : "http://devstore.rerum.io/v1/context.json",
+                        "@context" : "http://store.rerum.io/v1/context.json",
                         "on" : onCanvas,
 //                           "originalAnnoID" : "",
 //                            "version" : 1,
@@ -5880,7 +5879,7 @@ function activateScrollView(){
                     homeLink = "https://paleography-dev.library.utoronto.ca/";
             }
         }
-        // setIframeLinks(); // These are a different site now.
+        setIframeLinks();
         $("#homeBtn").attr("href", homeLink);
         $("#projectsBtn").attr("href", homeLink+"my-transcriptions");
         $("#helpContact").attr("href", homeLink+"contact");
