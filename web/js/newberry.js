@@ -3026,6 +3026,7 @@ function splitPage(event, tool) {
     splitScreen.find(".fullScreenTrans").click(function(){
         fullPage(false, false);
     });
+    $("#zoomLock").attr("disabled", "disabled").addClass("peekZoomLockout");
     if(tool==="controls"){
         if(liveTool === "controls"){
            // $("#canvasControls").removeClass("selected");
@@ -3033,7 +3034,6 @@ function splitPage(event, tool) {
             return fullPage(false, false);
         }
         $("#canvasControls").addClass("selected");
-        $("#zoomLock").attr("disabled", "disabled").addClass("peekZoomLockout");
         $("#transcriptionCanvas").css("width", Page.width()-200 + "px");
         $("#transcriptionTemplate").css("width", Page.width()-200 + "px");
         newCanvasWidth = Page.width()-200;
