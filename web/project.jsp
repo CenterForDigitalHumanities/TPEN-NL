@@ -20,6 +20,7 @@
     int UID = 0;
     user.User thisUser = null;
     if (session.getAttribute("UID") != null) {
+        //UID = ServletUtils.getUID(request, response);
         UID = Integer.parseInt(session.getAttribute("UID").toString());
         thisUser = new user.User(UID);
     }
@@ -577,7 +578,6 @@
                         <ul id="team" class="ui-helper-reset">
                             <li class="left ui-widget-content ui-corner-tr ui-corner-bl tall">
                                 <div id="inviteFeedback"></div>
-                                
                                 <%
                                     User[] groupMembers = thisGroup.getMembers();
                                     User[] groupLeader = thisGroup.getLeader();
@@ -593,7 +593,7 @@
                                     //now list the users
                                     if(isAdmin){
                                         for (int i = 0; i < groupMembers.length; i++) {
-                                            if (groupLeader[0].getUID() == groupMembers[i].getUID()) {
+                                            if (groupLeader.length > 0 && groupLeader[0].getUID() == groupMembers[i].getUID()) {
                                                 out.print("<div class='loud'>" + groupMembers[i].getFname().substring(0,1) +"&nbsp;"+groupMembers[i].getLname() + "&nbsp;(" + groupMembers[i].getUname() + ")&nbsp;Group&nbsp;Leader</div>");
                                             } else {
                                                 out.print("<div>" + groupMembers[i].getFname().substring(0,1) +"&nbsp;"+groupMembers[i].getLname() + "&nbsp;(" + groupMembers[i].getUname() + ")</div>");
@@ -601,7 +601,7 @@
                                         }
                                    }else{ // e-mail username hidden from non-members
                                         for (int i = 0; i < groupMembers.length; i++) {
-                                            if (groupLeader[0].getUID() == groupMembers[i].getUID()) {
+                                            if (groupLeader.length > 0 && groupLeader[0].getUID() == groupMembers[i].getUID()) {
                                                 out.print("<div class='loud'>" + groupMembers[i].getFname().substring(0,1) +"&nbsp;"+groupMembers[i].getLname()+",&nbsp;Group&nbsp;Leader</div>");
                                             } else {
                                                 out.print("<div>" + groupMembers[i].getFname().substring(0,1) +"&nbsp;"+groupMembers[i].getLname() + "</div>");
