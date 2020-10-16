@@ -19,6 +19,8 @@ package textdisplay;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
+import static java.lang.System.currentTimeMillis;
+import static java.lang.Thread.currentThread;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Connection;
@@ -44,6 +46,9 @@ import net.sf.saxon.s9api.XsltExecutable;
 import net.sf.saxon.s9api.XsltTransformer;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.owasp.esapi.ESAPI;
+import static textdisplay.DatabaseWrapper.closeDBConnection;
+import static textdisplay.DatabaseWrapper.closePreparedStatement;
+import static textdisplay.DatabaseWrapper.getConnection;
 import tokens.TokenManager;
 
 
@@ -902,6 +907,103 @@ public class TagButton {
          DatabaseWrapper.closePreparedStatement(stmt);
       }
    }
+   
+   /**
+    * get all of the buttons for this Project and build them.  Specifically for use in buttons.jsp
+    */
+   public static String buildAllProjectXML(int projectID) throws SQLException {
+      Date date = new Date(currentTimeMillis());
+      StackTraceElement[] t = currentThread().getStackTrace();
+      DateFormat formatter = new SimpleDateFormat("yyyy-mm-dd H:M:S");
+      formatter.format(date);
+      String stackTrace = "";
+      String toret = "";
+        for (StackTraceElement t1 : t) {
+            stackTrace += t1.toString() + "\n";
+        }
+      //LOG.log(Level.SEVERE, "{0} Running tagButton.getAllProjectButtons\n{1}", new Object[]{formatter.format(date), stackTrace});
+      Connection j = null;
+      PreparedStatement stmt = null;
+      try {
+         String query = "select distinct(position) from projectbuttons where project=? order by position";
+         j = getConnection();
+         stmt = j.prepareStatement(query);
+         stmt.setInt(1, projectID);
+         ResultSet rs = stmt.executeQuery();
+         int ctr = 0;
+         JSONArray ja = new JSONArray();
+         String[] blank_case = new String[5];
+         blank_case[0] = null;
+         blank_case[1] = null;
+         blank_case[2] = null;
+         blank_case[3] = null;
+         blank_case[4] = null;
+         String buttonHTML = "";
+         while (rs.next()) {
+                buttonHTML = "";
+                int position = rs.getInt("position");
+                TagButton b = new TagButton(projectID, position, true);
+                //System.out.println("Build all project XML.  What is b.getTag()..."+b.getTag());
+                buttonHTML += "<li class=\"ui-state-default xmlPanel\">";
+                buttonHTML += "<span class='ui-icon ui-icon-arrow-4 toggleXML left'></span>";
+                buttonHTML += "<a class=\"ui-icon ui-icon-closethick right\" onclick=\"deleteTag(" + position + ");\">delete</a>";
+                buttonHTML += "<input class=\"description\" onchange=\"unsavedAlert('#tabs-2');\" type=\"text\" placeholder=\"Button Name\" name=description"+(position)+" value=\""+b.getDescription()+"\">";
+            //    out.println("<input class=\"colors\" onchange=\"unsavedAlert('#tabs-2');\" type=\"text\" placeholder=\"black\" name=xmlColor"+(position)+" value=\""+"b.getXMLColor"+"\">");
+                buttonHTML += "<div class='xmlParams'>";
+                //THIS may be where the slash is being put in
+                buttonHTML += "<span class=\"firstRow collapseXML\"><span class=\"bold tag\"><input name=\"b"+position+"\" id=\"b"+position+"\" type=\"text\" class='collapseXML' value=\""+b.getTag()+"\"></input></span>";
+                if (b.hasParameters()) {
+                    String[] params = b.getparameters();
+                    String parameters = new String();
+                    //out.print("<script type='text/javascript'>var parameters='';");
+                    switch (params.length) {
+                        case 5:     parameters = "<input onchange=\"unsavedAlert('#tabs-2');\" placeholder='parameter' type='text' name='b" + ctr + "p5' value='" + params[4] + "'/>\n</span>" + parameters;
+                        case 4:     parameters = "<span class='clear-left lastRow collapseXML'>\n<input onchange=\"unsavedAlert('#tabs-2');\" placeholder='parameter' type='text' name='b" + ctr + "p4' value='" + params[3] + "'/>"+parameters;
+                        case 3:     parameters = "<input onchange=\"unsavedAlert('#tabs-2');\" placeholder='parameter' class='collapseXML' type='text' name='b" + ctr + "p3' value='" + params[2] + "'/><span class='right ui-icon moreParameters ui-icon-plus' title='Add more parameters to this button'>\n</span>\n</span>"+parameters;
+                        case 2:     parameters = "<span class='clear-left secondRow collapseXML'>\n<input onchange=\"unsavedAlert('#tabs-2');\" placeholder='parameter' type='text' name='b" + ctr + "p2' value='" + params[1] + "'/>"+parameters;
+                        case 1:     parameters = "<input onchange=\"unsavedAlert('#tabs-2');\" placeholder='parameter' type='text' name='b" + ctr + "p1' value='" + params[0] + "'/><span class='right ui-icon moreParameters ui-icon-plus' title='Add more parameters to this button'>\n</span>\n</span>"+parameters;
+                        default:    break;
+                    }
+                    switch (params.length) {
+                        case 1:     parameters += "<span class='clear-left secondRow collapseXML'>\n<input onchange=\"unsavedAlert('#tabs-2');\" placeholder='parameter' type='text' name='b"+ ctr + "p2' value=''/>";
+                        case 2:     parameters += "<input onchange=\"unsavedAlert('#tabs-2');\" placeholder='parameter' type='text' name='b"+ ctr + "p3' value=''/><span class='right ui-icon moreParameters ui-icon-plus' title='Add more parameters to this button'>\n</span>\n</span>";
+                        case 3:     parameters += "<span class='clear-left lastRow collapseXML'>\n<input onchange=\"unsavedAlert('#tabs-2');\" placeholder='parameter' type='text' name='b"+ ctr + "p4' value=''/>";
+                        case 4:     parameters += "<input onchange=\"unsavedAlert('#tabs-2');\" placeholder='parameter' type='text' name='b"+ ctr + "p5' value=''/>\n</span>";
+                        default:     break;
+                    }
+                buttonHTML += parameters;
+                } 
+                else{
+                    buttonHTML += "<input onchange=\"unsavedAlert('#tabs-2');\" placeholder=\"parameter\" type=\"text\" name=\"b"+position+"p1\" />";
+                    buttonHTML += "<span class=\"right ui-icon moreParameters ui-icon-plus\" title=\"Add more parameters to this button\"></span></span>"; //close .firstRow%>
+                    buttonHTML += "<span class='clear-left secondRow collapseXML'>";
+                    buttonHTML += "<input onchange=\"unsavedAlert('#tabs-2');\" placeholder=\"parameter\" type=\"text\" name=\"b"+position+"p2\" />";
+                    buttonHTML += "<input onchange=\"unsavedAlert('#tabs-2');\" placeholder=\"parameter\" type=\"text\" name=\"b"+position+"p3\" />";
+                    buttonHTML += "<span class='right ui-icon moreParameters ui-icon-plus' title='Add more parameters to this button'></span>";
+                    buttonHTML += "</span>";
+                    buttonHTML += "<span class='clear-left lastRow collapseXML'>";
+                    buttonHTML += "<input onchange=\"unsavedAlert('#tabs-2');\" placeholder=\"parameter\" type=\"text\" name=\"b"+position+">p4\" />";
+                    buttonHTML += "<input onchange=\"unsavedAlert('#tabs-2');\" placeholder=\"parameter\" type=\"text\" name=\"b"+position+"p5\" />";
+                    buttonHTML += "</span>";
+                }
+                buttonHTML += "</div></li>";
+                toret += buttonHTML;
+                ctr++;           
+         }
+         if (ctr == 0) {
+//            TagButton b = new TagButton(projectID, 1, "temp", true, "button description");
+//            b = new TagButton(projectID, 2, "temp", true, "button description");
+//            b = new TagButton(projectID, 3, "temp", true, "button description");
+//            b = new TagButton(projectID, 4, "temp", true, "button description");
+         }
+         
+         return toret;
+      } finally {
+            closeDBConnection(j);
+            closePreparedStatement(stmt);
+      }
+   }
+
    
    private static final Logger LOG = Logger.getLogger(TagButton.class.getName());
 }

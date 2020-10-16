@@ -14,6 +14,7 @@
  */
 package edu.slu.tpen.servlet;
 
+import edu.slu.util.ServletUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -38,10 +39,10 @@ public class UserInfoServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
-        if(null != session && null != session.getAttribute("UID")){
-            int uid = Integer.parseInt(session.getAttribute("UID").toString());
+        int UID = ServletUtils.getUID(request, response);
+        if(null != session && UID > 0){
             try {
-                User user = new User(uid);
+                User user = new User(UID);
                 JSONObject jo = new JSONObject();
                 jo.element("uid", user.getUID());
                 jo.element("uname", user.getUname());

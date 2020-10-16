@@ -391,6 +391,33 @@ public class Group {
          return false;
       }
    }
+   
+   /**
+    * True if the requested username is a group member, false otherwise
+    *
+    * @param UID unique id of the user
+    * @return true if they are a member of the group, false if they are not
+    */
+   public Boolean isMember(String username) {
+      try {
+          //System.out.println("sample ============== " + UID);
+          //System.out.println("memeber len ===== " + this.getMembers().length);
+         //System.out.println("Who are group members...");
+         User[] groupmembers = this.getMembers();
+         //System.out.println(groupmembers);
+         Boolean t = false;
+         for (int i = 0; i < groupmembers.length; i++) {
+            User thisUser = groupmembers[i];
+            //System.out.println("mem user ID ====== " + thisUser.getUID());
+            if (thisUser.getUname().equals(username)) {
+               t = true;
+            }
+         }
+         return t;
+      } catch (SQLException e) {
+         return false;
+      }
+   }
 
    /**
     * Return the enum item that matches the roles stored in the DB

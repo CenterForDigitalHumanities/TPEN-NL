@@ -614,6 +614,7 @@
                                     }
                                 %>
                             </li>
+                            <!--
                             <li>
                                 <div id="inviteUserBtn" class="tpenButton"><span class="ui-icon ui-icon-person right"></span>Invite to T&#8209;PEN</div>
                                 <form id="inviteUser" class="ui-corner-all" name="invite" action="project.jsp" onsubmit="return simpleFormValidation();" method="get">
@@ -626,6 +627,8 @@
                                 </form>
                                     <p>Request T&#8209;PEN send an email to a new user on your behalf so you may include them on your project.</p>
                             </li>
+                            -->
+                            <!--
                             <li class="left ui-widget-content ui-corner-tr ui-corner-bl tall">
                                 <h3>Recent Activity on this Project</h3>
                                 <a id="popupNote" class="tpenButton" href="#"><span class="ui-icon ui-icon-comment right"></span>Add a note to the log</a>
@@ -654,7 +657,9 @@
                                     <a href="#" id="addMS" filter="log_manuscript" class="tpenButton" title="Filter automatic notes about additions to project"><span class="right ui-icon ui-icon-plus"></span>New Manuscript</a>
                                     <a href="#" id="parsing" filter="log_parsing" class="tpenButton" title="Filter automatic notes about changes in parsing"><span class="right ui-icon ui-icon-wrench"></span>Parsing Update</a>
                                     <a href="projectlog.jsp?projectID=<%out.print(projectID);%>" target="_blank" class="tpenButton clear" id="openNote"><span class="right ui-icon ui-icon-newwin"></span>View Log in a new window</a>
-                                </div></li>
+                                </div>
+                            </li>
+                            -->
                         </ul>
                     </div>
                     <%}%>
