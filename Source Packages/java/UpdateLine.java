@@ -3,6 +3,7 @@
  * and open the template in the editor.
  */
 
+import edu.slu.util.ServletUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -55,7 +56,7 @@ public class UpdateLine extends HttpServlet {
                 response.sendError(response.SC_FORBIDDEN);
                return;
             }
-            int uid = Integer.parseInt(session.getAttribute("UID").toString());
+            int uid = ServletUtils.getUID(request, response);
             if (request.getParameter("line") == null) {
 
                 if (request.getParameter("projectID") != null) {
