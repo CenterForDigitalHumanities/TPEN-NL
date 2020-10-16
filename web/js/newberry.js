@@ -5880,7 +5880,7 @@ function activateScrollView(){
                     homeLink = "https://paleography-dev.library.utoronto.ca/";
             }
         }
-        setIframeLinks();
+        // setIframeLinks(); // These are a different site now.
         $("#homeBtn").attr("href", homeLink);
         $("#projectsBtn").attr("href", homeLink+"my-transcriptions");
         $("#helpContact").attr("href", homeLink+"contact");
