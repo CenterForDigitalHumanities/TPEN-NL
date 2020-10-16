@@ -200,7 +200,6 @@ public class Group {
       PreparedStatement qry = null;
       qry = null;
       try {
-         //System.out.println("Get leader!" + groupID);
          j = DatabaseWrapper.getConnection();
          qry = j.prepareStatement("select UID from groupmembers where GID=? and role='Leader'");
          qry.setInt(1, groupID);
@@ -209,16 +208,13 @@ public class Group {
          while (rs.next()) {
             recordCount++;
          }
-         //System.out.println("record count "+recordCount);
          User[] users = new User[recordCount];
          rs.beforeFirst();
          int i = 0;
          while (rs.next()) {
-            //System.out.println(rs.getInt("UID"));
             users[i] = new User(rs.getInt("UID"));
             i++;
          }
-         //System.out.println("return leaders as users");
          return users;
       } finally {
          DatabaseWrapper.closeDBConnection(j);
@@ -379,41 +375,14 @@ public class Group {
       try {
           //System.out.println("sample ============== " + UID);
           //System.out.println("memeber len ===== " + this.getMembers().length);
-         //System.out.println("Who are group members...");
+         System.out.println("Who are group members...");
          User[] groupmembers = this.getMembers();
-         //System.out.println(groupmembers);
+         System.out.println(groupmembers);
          Boolean t = false;
          for (int i = 0; i < groupmembers.length; i++) {
             User thisUser = groupmembers[i];
-            //System.out.println("mem user ID ====== " + thisUser.getUID());
+            System.out.println("mem user ID ====== " + thisUser.getUID());
             if (thisUser.getUID() == UID) {
-               t = true;
-            }
-         }
-         return t;
-      } catch (SQLException e) {
-         return false;
-      }
-   }
-   
-   /**
-    * True if the requested UID is a group member, false otherwise
-    *
-    * @param UID unique id of the user
-    * @return true if they are a member of the group, false if they are not
-    */
-   public Boolean isMember(String username) {
-      try {
-          //System.out.println("sample ============== " + UID);
-          //System.out.println("memeber len ===== " + this.getMembers().length);
-         //System.out.println("Who are group members...");
-         User[] groupmembers = this.getMembers();
-         //System.out.println(groupmembers);
-         Boolean t = false;
-         for (int i = 0; i < groupmembers.length; i++) {
-            User thisUser = groupmembers[i];
-            //System.out.println("mem user ID ====== " + thisUser.getUID());
-            if (thisUser.getUname().equals(username)) {
                t = true;
             }
          }

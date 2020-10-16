@@ -1318,27 +1318,4 @@ PreparedStatement qry=null;
         return tr;
     }
     
-    public boolean isOldDrupalUser() throws SQLException        {
-        String query = "select pass from users where UID=?";
-        Connection j = null;
-        PreparedStatement ps=null;
-        try{
-            j = DatabaseWrapper.getConnection();
-            ps = j.prepareStatement(query);
-            ps.setInt(1, UID);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()){
-                if(rs.getString("pass").equals("DRUPAL_LOGIN")){
-                    return true;
-                }
-            } 
-            return false;
-        } 
-        finally
-        {
-            DatabaseWrapper.closeDBConnection(j);
-            DatabaseWrapper.closePreparedStatement(ps);
-        }
     }
-    
-}

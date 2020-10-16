@@ -410,13 +410,10 @@ public class Project {
       try {
          j = DatabaseWrapper.getConnection();
          qry = j.prepareStatement("select * from project where id=?");
-         System.out.println("public Project(pid) pid= "+projectID);
          qry.setInt(1, projectID);
          ResultSet rs = qry.executeQuery();
          if (rs.next()) {
             projectName = rs.getString("name");
-            System.out.println("Found it +"+projectName);
-            System.out.println("this.projectID = projectID ---- "+projectID);
             groupID = rs.getInt("grp");
             this.projectID = projectID;
             this.linebreakCharacterLimit = rs.getInt("linebreakCharacterLimit");
@@ -1485,8 +1482,6 @@ public class Project {
    public int firstPage() throws SQLException {
       // @TODO:  If there're no folios, this throws an ArrayIndexOutOfBoundsException.
       try {
-          System.out.println("What project id do I think I am : "+projectID);
-          System.out.println("How many folios do I think I have : "+getFolios().length);
          return getFolios()[0].getFolioNumber();
       } catch (NullPointerException | ArrayIndexOutOfBoundsException ex) {
          LOG.log(Level.SEVERE, "Error loading first page for project " + projectID, ex);

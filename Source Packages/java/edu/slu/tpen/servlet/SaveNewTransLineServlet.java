@@ -6,7 +6,6 @@
 package edu.slu.tpen.servlet;
 
 import com.mongodb.util.JSONParseException;
-import edu.slu.util.ServletUtils;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -35,7 +34,7 @@ public class SaveNewTransLineServlet extends HttpServlet {
         resp.setHeader("Content-Type", "application/json; charset=utf-8");
         resp.setCharacterEncoding("UTF-8");
         if(null != req.getSession().getAttribute("UID")){
-            int UID = ServletUtils.getUID(req, resp);
+            int UID = (Integer) req.getSession().getAttribute("UID");
             //The TPEN_NL js still wraps requests to these proxies wrapping in content:{}.  We can unwrap it from the .js if we would like since RERUM no longer imposes this.  
             String content = req.getParameter("content");         
             StringBuilder sb = new StringBuilder();
