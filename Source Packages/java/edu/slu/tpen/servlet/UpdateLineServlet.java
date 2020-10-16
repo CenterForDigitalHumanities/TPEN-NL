@@ -19,7 +19,6 @@ package edu.slu.tpen.servlet;
  * and open the template in the editor.
  */
 
-import edu.slu.util.ServletUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -53,9 +52,10 @@ public class UpdateLineServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        int UID = -1;
         try {
-            UID = ServletUtils.getUID(request, response);
+            
+            
+
             if (request.getParameter("text") == null) {
 
                 response.sendError(response.SC_BAD_REQUEST);
@@ -67,17 +67,21 @@ public class UpdateLineServlet extends HttpServlet {
             if (request.getParameter("comment") != null) {
                 comment = request.getParameter("comment");
             }
-            if ( UID <= 0 || request.getParameter("projectID") == null) {
+            HttpSession session = request.getSession();
+
+            if (session.getAttribute("UID") == null ||request.getParameter("projectID") == null) {
                 response.sendError(response.SC_FORBIDDEN);
                 response.setHeader("Access-Control-Allow-Origin", "*");
                return;
             }
+            int uid = Integer.parseInt(session.getAttribute("UID").toString());
             if (request.getParameter("line") == null) {
+
                 if (request.getParameter("projectID") != null) {
                     int projectID = Integer.parseInt(request.getParameter("projectID"));
                     try {
                         Project thisProject = new Project(projectID);
-                        if (new Group(thisProject.getGroupID()).isMember(UID)) {
+                        if (new Group(thisProject.getGroupID()).isMember(uid)) {
                             thisProject.setLinebreakText(text);
                         }
                     } catch (Exception e) {
@@ -90,12 +94,12 @@ public class UpdateLineServlet extends HttpServlet {
                 int line = Integer.parseInt(request.getParameter("line"));
                 try {
                     Project thisProject = new Project(projectID);
-                    if (new Group(thisProject.getGroupID()).isMember(UID)) {
+                    if (new Group(thisProject.getGroupID()).isMember(uid)) {
                         Transcription t = new Transcription(line);
                         t.archive(); //create an archived version before making changes
                         t.setText(text);
                         t.setComment(comment);
-                        t.setCreator(UID);
+                        t.setCreator(uid);
                         
                         out.print(ESAPI.encoder().decodeForHTML(new Transcription(line).getText()));
                         return;

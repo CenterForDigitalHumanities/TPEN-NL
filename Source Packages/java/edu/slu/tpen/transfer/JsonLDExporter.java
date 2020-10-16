@@ -139,8 +139,8 @@ public class JsonLDExporter {
         System.out.println("Folio URL Resize: "+f.getImageURLResize());
        */
         
-        //String canvasID = man.getProperties().getProperty("PALEO_CANVAS_ID_PREFIX") + f.getImageURL().replaceAll("^.*(paleography[^/]+).*$", "$1"); //for paleo dev and prod
-        String canvasID = projName + "/canvas/" + URLEncoder.encode(f.getPageName(), "UTF-8"); //For SLU testing    
+        String canvasID = man.getProperties().getProperty("PALEO_CANVAS_ID_PREFIX") + f.getImageURL().replaceAll("^.*(paleography[^/]+).*$", "$1"); //for paleo dev and prod
+        //String canvasID = projName + "/canvas/" + URLEncoder.encode(f.getPageName(), "UTF-8"); //For SLU testing    
         
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
         Date date = new Date();

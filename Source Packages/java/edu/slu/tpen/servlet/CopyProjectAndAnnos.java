@@ -90,8 +90,8 @@ public class CopyProjectAndAnnos extends HttpServlet {
                             String imageURL = folio.getImageURL();
                             // use regex to extract paleography pid
                             //THIS MUST MATCH THE NAMING CONVENTION IN JSONLDEXporter
-                            //String canvasID = man.getProperties().getProperty("PALEO_CANVAS_ID_PREFIX") + imageURL.replaceAll("^.*(paleography[^/]+).*$", "$1"); //for paleo
-                            String canvasID = man.getProperties().getProperty("SERVERURL") + templateProject.getProjectName() + "/canvas/" + URLEncoder.encode(folio.getPageName(), "UTF-8"); // for slu testing
+                            String canvasID = man.getProperties().getProperty("PALEO_CANVAS_ID_PREFIX") + imageURL.replaceAll("^.*(paleography[^/]+).*$", "$1"); //for paleo
+                            //String canvasID = man.getProperties().getProperty("SERVERURL") + templateProject.getProjectName() + "/canvas/" + URLEncoder.encode(folio.getPageName(), "UTF-8"); // for slu testing
                             JSONArray ja_allAnnoLists = Canvas.getAnnotationListsForProject(projectID, canvasID, uID, man);
                             JSONObject jo_annotationList = new JSONObject();
                             //^^ this does all the filtering and will either have 0 or 1 lists for this particular version of TPEN

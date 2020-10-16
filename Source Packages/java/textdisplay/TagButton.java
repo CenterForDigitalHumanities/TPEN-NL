@@ -908,7 +908,7 @@ public class TagButton {
       }
    }
    
-     /**
+   /**
     * get all of the buttons for this Project and build them.  Specifically for use in buttons.jsp
     */
    public static String buildAllProjectXML(int projectID) throws SQLException {
@@ -1003,6 +1003,7 @@ public class TagButton {
             closePreparedStatement(stmt);
       }
    }
+
    
    private static final Logger LOG = Logger.getLogger(TagButton.class.getName());
 }

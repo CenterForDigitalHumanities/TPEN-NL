@@ -17,18 +17,13 @@ package edu.slu.tpen.servlet;
 import edu.slu.util.ServletUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
-import static java.lang.Integer.parseInt;
 import java.sql.SQLException;
-//import java.util.logging.Level;
-import static java.util.logging.Level.SEVERE;
-//import java.util.logging.Logger;
-import static java.util.logging.Logger.getLogger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
-import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 import javax.servlet.http.HttpSession;
 import net.sf.json.JSONObject;
 import user.User;
@@ -39,59 +34,27 @@ import user.User;
  * @author hanyan
  */
 public class UserInfoServlet extends HttpServlet {
-    
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
-        String providedUID = "";
-        int uid = 0;
-        uid = ServletUtils.getUID(request, response);
-        if(null!=request.getParameter("uid") && !"".equals(request.getParameter("uid"))){
-            providedUID = request.getParameter("uid");
-            uid = parseInt(providedUID);
-        }
-        else if(null != session && null != session.getAttribute("UID")){
-            uid = parseInt(session.getAttribute("UID").toString());
-        }
-        else{
-            response.setStatus(SC_FORBIDDEN);
-        }
-        if(uid > 0){
+        int UID = ServletUtils.getUID(request, response);
+        if(null != session && UID > 0){
             try {
-                User user = new User(uid);
+                User user = new User(UID);
                 JSONObject jo = new JSONObject();
                 jo.element("uid", user.getUID());
                 jo.element("uname", user.getUname());
                 out.print(jo);
-            } 
-            catch (SQLException ex) {
-                getLogger(UserInfoServlet.class.getName()).log(SEVERE, null, ex);
-                response.setStatus(SC_INTERNAL_SERVER_ERROR);
+            } catch (SQLException ex) {
+                Logger.getLogger(UserInfoServlet.class.getName()).log(Level.SEVERE, null, ex);
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             }
+        }else{
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         }
     }
-
-//    @Override
-//    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        PrintWriter out = response.getWriter();
-//        HttpSession session = request.getSession();
-//        if(null != session && null != session.getAttribute("UID")){
-//            int uid = Integer.parseInt(session.getAttribute("UID").toString());
-//            try {
-//                User user = new User(uid);
-//                JSONObject jo = new JSONObject();
-//                jo.element("uid", user.getUID());
-//                jo.element("uname", user.getUname());
-//                out.print(jo);
-//            } catch (SQLException ex) {
-//                Logger.getLogger(UserInfoServlet.class.getName()).log(Level.SEVERE, null, ex);
-//                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-//            }
-//        }else{
-//            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-//        }
-//    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

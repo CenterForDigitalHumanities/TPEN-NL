@@ -238,13 +238,17 @@
             } else { // projectID is null
                 if (request.getParameter("delete") != null) {
                     //do they have permission to do that?
+                    out.print("<h4>Delete: "+projectID+"</h4>");
                     int projectNumToDelete = Integer.parseInt(request.getParameter("projDelete"));
+                    out.print("<h4>OK, this? :  "+projectNumToDelete+"<h/4>");
                     textdisplay.Project todel = new textdisplay.Project(projectNumToDelete);
+                    out.print("<h4>Yeah, this :  "+todel.getProjectID()+"<h/4>");
                     user.Group projectGroup = new user.Group(todel.getGroupID());
                     if (isAdmin) {
                         if (todel.delete()) {
                             //redirect to first project
-                            out.print("<script>document.location=\"project.jsp\";</script>");
+                            out.print("<h4>BOOM, deleted <h/4>");
+                            //out.print("<script>document.location=\"project.jsp\";</script>");
                             return;
                         }
 
@@ -610,6 +614,7 @@
                                     }
                                 %>
                             </li>
+                            <!--
                             <li>
                                 <div id="inviteUserBtn" class="tpenButton"><span class="ui-icon ui-icon-person right"></span>Invite to T&#8209;PEN</div>
                                 <form id="inviteUser" class="ui-corner-all" name="invite" action="project.jsp" onsubmit="return simpleFormValidation();" method="get">
@@ -622,6 +627,8 @@
                                 </form>
                                     <p>Request T&#8209;PEN send an email to a new user on your behalf so you may include them on your project.</p>
                             </li>
+                            -->
+                            <!--
                             <li class="left ui-widget-content ui-corner-tr ui-corner-bl tall">
                                 <h3>Recent Activity on this Project</h3>
                                 <a id="popupNote" class="tpenButton" href="#"><span class="ui-icon ui-icon-comment right"></span>Add a note to the log</a>
@@ -644,13 +651,15 @@
                                         </form>
                                     </div>
                                             <div id="logFilter">
-                                    <!--    Filters: userAdded, transcription, addMS, parsing           -->
+                                    
                                     <a href="#" id="userAdded" filter="log_user" class="tpenButton" title="Filter notes added by users"><span class="right ui-icon ui-icon-person"></span>User Comment</a>
                                     <a href="#" id="transcription" filter="log_transcription" class="tpenButton" title="Filter automatic notes about new transcriptions"><span class="right ui-icon ui-icon-note"></span>Transcription</a>
                                     <a href="#" id="addMS" filter="log_manuscript" class="tpenButton" title="Filter automatic notes about additions to project"><span class="right ui-icon ui-icon-plus"></span>New Manuscript</a>
                                     <a href="#" id="parsing" filter="log_parsing" class="tpenButton" title="Filter automatic notes about changes in parsing"><span class="right ui-icon ui-icon-wrench"></span>Parsing Update</a>
                                     <a href="projectlog.jsp?projectID=<%out.print(projectID);%>" target="_blank" class="tpenButton clear" id="openNote"><span class="right ui-icon ui-icon-newwin"></span>View Log in a new window</a>
-                                </div></li>
+                                </div>
+                            </li>
+                            -->
                         </ul>
                     </div>
                     <%}%>

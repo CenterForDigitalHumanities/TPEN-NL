@@ -317,7 +317,7 @@ public class Hotkey {
             DatabaseWrapper.closePreparedStatement(stmt);
         }
     }
-    /**Build the javascript used to drive all hotkeys that are part of this project*/
+     /**Build the javascript used to drive all hotkeys that are part of this project*/
     public static String javascriptToAddProjectButtons(int projectID) throws SQLException {
         String toret = "";
         String vars = "<script>";
@@ -435,7 +435,7 @@ public class Hotkey {
         }
     }
     
-    public static String javascriptToBuildEditableButtons(int projectID) throws SQLException{
+        public static String javascriptToBuildEditableButtons(int projectID) throws SQLException{
         String toret = "";
         String query = "select * from hotkeys where uid=0 and projectID=? and not position=0 order by position";
         Connection j = null;
