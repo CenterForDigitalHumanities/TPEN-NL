@@ -238,13 +238,17 @@
             } else { // projectID is null
                 if (request.getParameter("delete") != null) {
                     //do they have permission to do that?
+                    out.print("<h4>Delete: "+projectID+"</h4>");
                     int projectNumToDelete = Integer.parseInt(request.getParameter("projDelete"));
+                    out.print("<h4>OK, this? :  "+projectNumToDelete+"<h/4>");
                     textdisplay.Project todel = new textdisplay.Project(projectNumToDelete);
+                    out.print("<h4>Yeah, this :  "+todel.getProjectID()+"<h/4>");
                     user.Group projectGroup = new user.Group(todel.getGroupID());
                     if (isAdmin) {
                         if (todel.delete()) {
                             //redirect to first project
-                            out.print("<script>document.location=\"project.jsp\";</script>");
+                            out.print("<h4>BOOM, deleted <h/4>");
+                            //out.print("<script>document.location=\"project.jsp\";</script>");
                             return;
                         }
 
