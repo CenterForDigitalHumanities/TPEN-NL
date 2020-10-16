@@ -651,7 +651,7 @@
                                         </form>
                                     </div>
                                             <div id="logFilter">
-                                    <!--    Filters: userAdded, transcription, addMS, parsing           -->
+                                    
                                     <a href="#" id="userAdded" filter="log_user" class="tpenButton" title="Filter notes added by users"><span class="right ui-icon ui-icon-person"></span>User Comment</a>
                                     <a href="#" id="transcription" filter="log_transcription" class="tpenButton" title="Filter automatic notes about new transcriptions"><span class="right ui-icon ui-icon-note"></span>Transcription</a>
                                     <a href="#" id="addMS" filter="log_manuscript" class="tpenButton" title="Filter automatic notes about additions to project"><span class="right ui-icon ui-icon-plus"></span>New Manuscript</a>
