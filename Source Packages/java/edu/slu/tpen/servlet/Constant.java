@@ -26,5 +26,4 @@ public class Constant {
     public static String RERUM_REFRESH_TOKEN_URL = "http://devstore.rerum.io/v1/api/refreshToken.action";
     public static String RERUM_CONTEXT = "http://devstore.rerum.io/v1/context.json";
     public static String PROPERTIES_FILE_NAME = "version.properties";
-    public static String PALEO_CANVAS_ID_PREFIX = "https://paleography.library.utoronto.ca/islandora/object";
 }
