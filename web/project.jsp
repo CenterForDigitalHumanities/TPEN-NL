@@ -432,7 +432,7 @@
                         <li><a title="Organize your team" href="#tabs-3">Collaboration</a></li>
                         <li><a title="Project Options" href="#tabs-4">Options</a></li>
                         <%}%>
-                        <li><a title="Export Options" href="#tabs-5">Export</a></li>
+                        <!--<li><a title="Export Options" href="#tabs-5">Export</a></li>-->
                     </ul>
                     <div id="tabs-1">
                         <ul id="project" class="ui-helper-reset">
@@ -486,8 +486,8 @@
                                     Metadata m = new Metadata(projectID);
                                 if (permitModify || isMember){
                                 %>
-                                <h3>Add to Project</h3>
-                                <a id="addManuscript" class="tpenButton" href="#"><span class="ui-icon ui-icon-plus right"></span>Find Manuscript to Add</a>
+                                <!--<h3>Add to Project</h3>
+                                <a id="addManuscript" class="tpenButton" href="#"><span class="ui-icon ui-icon-plus right"></span>Find Manuscript to Add</a>-->
                                 <%}%>
                             </li>
                             <li class="left ui-widget-content ui-corner-tr ui-corner-bl tall">
@@ -614,52 +614,7 @@
                                     }
                                 %>
                             </li>
-                            <!--
-                            <li>
-                                <div id="inviteUserBtn" class="tpenButton"><span class="ui-icon ui-icon-person right"></span>Invite to T&#8209;PEN</div>
-                                <form id="inviteUser" class="ui-corner-all" name="invite" action="project.jsp" onsubmit="return simpleFormValidation();" method="get">
-                                    <input type="hidden" name="projectID" value="<%out.print("" + projectID);%>">
-                                    <input type="hidden" name="selecTab" value="2">
-                                    <label for="uname">Email</label><input class="text" type="text" name="uname"/><br/>
-                                    <label for="fname">First Name</label><input class="text" type="text" name="fname" /><br/>
-                                    <label for="lname">Last Name</label><input class="text" type="text" name="lname"/><br/>
-                                    <button type="submit" value="Register" name="invite" class="ui-button tpenButton"><span class="ui-icon ui-icon-person right"></span>Invite</button>
-                                </form>
-                                    <p>Request T&#8209;PEN send an email to a new user on your behalf so you may include them on your project.</p>
-                            </li>
-                            -->
-                            <!--
-                            <li class="left ui-widget-content ui-corner-tr ui-corner-bl tall">
-                                <h3>Recent Activity on this Project</h3>
-                                <a id="popupNote" class="tpenButton" href="#"><span class="ui-icon ui-icon-comment right"></span>Add a note to the log</a>
-                                <div id="projectLog" class="ui-corner-all">
-                                    <%
-                                        if (request.getParameter("submitted") != null) {
-                                           try (Connection conn = ServletUtils.getDBConnection()) {
-                                              String content = request.getParameter("logContent");
-                                              thisProject.addLogEntry(conn, "<span class='log_user'></span>"+content, UID); // ,"userAdded"
-                                           }
-                                        }
-                                        out.print(thisProject.getProjectLog());
-                                    %>
-                                </div>
-                                    <div id="noteForm" class="ui-corner-all" style="display:none;">
-                                        <form action="project.jsp?selecTab=2&projectID=<%out.print(projectID);%>" method="POST">
-                                            <textarea name="logContent" id="logContent"></textarea><br>
-                                            <button class="tpenButton left" type="submit" name="submitted" value="add comment" >Submit</button>
-                                            <button class="tpenButton left" id="clearNote" name="cancel">Cancel</button>
-                                        </form>
-                                    </div>
-                                            <div id="logFilter">
-                                    
-                                    <a href="#" id="userAdded" filter="log_user" class="tpenButton" title="Filter notes added by users"><span class="right ui-icon ui-icon-person"></span>User Comment</a>
-                                    <a href="#" id="transcription" filter="log_transcription" class="tpenButton" title="Filter automatic notes about new transcriptions"><span class="right ui-icon ui-icon-note"></span>Transcription</a>
-                                    <a href="#" id="addMS" filter="log_manuscript" class="tpenButton" title="Filter automatic notes about additions to project"><span class="right ui-icon ui-icon-plus"></span>New Manuscript</a>
-                                    <a href="#" id="parsing" filter="log_parsing" class="tpenButton" title="Filter automatic notes about changes in parsing"><span class="right ui-icon ui-icon-wrench"></span>Parsing Update</a>
-                                    <a href="projectlog.jsp?projectID=<%out.print(projectID);%>" target="_blank" class="tpenButton clear" id="openNote"><span class="right ui-icon ui-icon-newwin"></span>View Log in a new window</a>
-                                </div>
-                            </li>
-                            -->
+                            <!-- BH note got rid of invite user and recent activity -->
                         </ul>
                     </div>
                     <%}%>
@@ -668,47 +623,22 @@
                             <li class="left ui-widget-content ui-corner-tr ui-corner-bl tall">
                                 <h3>Project Options</h3>
                                 <%if(isMember || permitModify){%>
-                                Import XML schema, validate projects, and customize buttons.
-<!--                                <div id="xmlImportDiv">
-                                    <div id="xmlImportBtn" class="tpenButton"><span class="ui-icon ui-icon-script right"></span>
-                                        Link a schema to this project
-                                    </div>
-                                    <form id="xmlImport" name="xmlImport" class="ui-corner-all" action="project.jsp" method="POST">
-                                        <input type="hidden" name="selecTab" value="3"/>
-                                        <input type="hidden" name="projectID" value="<%out.print("" + projectID);%>"/>
-                                        URL of schema:<input name="url" style="width:100%;margin:2px 0px 2px -1px" title="Link directly to a valid file" type="text" placeholder="enter complete file URL"/>
-                                        <input class="tpenButton right" name="xmlImport" value="Link XML" type="submit" />
-                                    </form>
-                                </div>
--->
-                                <%}
-                                if (thisProject.getSchemaURL().length() > 5) {%>
-<!--
-                                <div id="xmlValidateDiv">
-                                    <div id="xmlValidateBtn" class="tpenButton"><span class="ui-icon ui-icon-script right"></span>
-                                        Validate XML for this project
-                                    </div>
-                                    <form id="xmlValidate" class="ui-corner-all" action="validate" method="POST">
-                                        <input type="hidden" name="selecTab" value="3"/>
-                                        <input type="hidden" name="projectID" value="<%out.print("" + projectID);%>"/>
-                                        URL of schema for validation: <div style="width:100%;margin:2px 0px 2px -1px"><%out.print(thisProject.getSchemaURL());%></div>
-                                        <input class="tpenButton right" name="xmlValidate" value="Validate" type="submit" />
-                                    </form>
-                                </div>
--->
+                                Customize buttons
+                                <!-- BH note got rid of Import project and validate stuff.  Can revive if we want -->
                                 <%if (isAdmin){%>
-                                <!--<a id="importBtnFromSchemaBtn" class="tpenButton" href="buttonSchemaImport.jsp?projectID=<%out.print("" + projectID);%>"><span class="ui-icon ui-icon-transfer-e-w right"></span>Import Buttons from Linked Schema</a>-->
-                                <%}
-                                }
-                                if (isAdmin){%>
                                 <a class="tpenButton" href="buttons.jsp?projectID=<%out.print("" + projectID);%>"><span class="ui-icon ui-icon-gear right"></span>Button Management</a>
                                 <p>The <span title="Any unicode character can be attached to one of these buttons for use in your project." class="loud">Special Character</span> and <span title="Multiple custom tags with parameters can be added to this project." class="loud">Custom xml Tags</span> you define will remain specific to each project. These buttons are accessible on the transcription pages. Characters assigned to the numbered buttons can be inserted simply by holding CTRL and pressing the corresponding number on the keyboard.</p>
-                           <%} 
+                                <%} 
+                                else{%>
+                                    <p>Button management is restricted to group leaders and administrators.</p>
+                                <%}
+                            }
                             else {%>
-                               <p>Button management is restricted to group members on this public project. The current button pallete is displayed to the right.</p>
+                               <!--<p>Button management is restricted to group members on this public project. The current button pallete is displayed to the right.</p>-->
                            <%}
-                           if ((isMember || permitCopy) && !thisProject.containsUserUploadedManuscript()){
-         %>                     <div class="hideWhileCopying">
+                           if ((isMember || permitCopy)){ //&& !thisProject.containsUserUploadedManuscript()
+                           %>                     
+                                <div class="hideWhileCopying">
                                     <a id="copyProjectBtn" class="tpenButton" proj="<%out.print(projectID);%>"><span class="ui-icon ui-icon-copy right"></span>Create an Empty Copy</a>
                                     <p>Create a new project with the same set of images and buttons.  This copy will not include any transcription data, just project data.
                                         Once copied, the projects will not synchronize cannot be recombined in T&#8209;PEN.</p><br>
@@ -716,660 +646,316 @@
                                     <a id="copyProjectAndAnnosBtn" class="tpenButton" proj="<%out.print(projectID);%>"><span class="ui-icon ui-icon-copy right"></span>Create a Copy</a>
                                     <p>Create a new project with the same set of images, transcriptions, and buttons. Once copied, the projects will not synchronize cannot be recombined in T&#8209;PEN.</p>
                                 </div>
-                                <%}%>
+                            <%}%>
                                 <div id="copyingNotice">
                                     <div class="copyMsg"> Please be patient while we copy the information into a new project.</div>
                                     <div class="copyLoader"><img src="images/loading2.gif" /></div>
                                 </div>
                             </li>
-<!--                            <li class="left ui-widget-content ui-corner-tr ui-corner-bl tall">
-                                <h3>Current Button Summary</h3>
-                                <h6>Special Character Buttons</h6><%
-                                    /**Retrieve stored button information*/
-                                    out.print(Hotkey.javascriptToAddProjectButtons(projectID));
-                                %><br class="clear-left" />
-                                <h6>XML Tags</h6>
-                                <div id="allXML"><%
-                                    /**Retrieve stored button information*/
-                                    String buttons = TagButton.getAllProjectButtons(projectID);
-                                    JSONArray buttons_obj = JSONArray.fromObject(buttons);
-                                    for(int i=0; i<buttons_obj.size(); i++){
-                                        JSONObject thisButton = buttons_obj.getJSONObject(i);
-                                        String theHTML = "<span class='lookLikeButtons' title='"+thisButton.getString("fullTag")+"'> "+thisButton.getString("description")+" </span> ";
-                                        //String theHTML = "<span class='lookLikeButtons' title='"+thisButton.getString("fullTag")+"'> "+thisButton.getString("description")+" </span> ";
-                                        out.print(theHTML);
-                                    }
-                                    //out.print(TagButton.getAllProjectButtons(projectID));
-                                                                   %></div>
-                                <%if(isMember || permitButtons){%>
-                               <p class="clear-left">If you wish, you can copy XML tags between projects: <a href="buttonProjectImport.jsp?a=1<%out.print(projectAppend);%>" class="ui-button tpenButton">Copy XML Tags</a></p>
-                            <%}%>
-                            </li>
--->
+                            <!-- bh NOTE Got rid of buttons preview here, can revive if we want. --> 
                         </ul>
                     </div>
-                    <%if (isMember || permitExport){%>
-                        <div id="tabs-5">
-                        <form action="export" method="get" onsubmit="return Export.validForm();">
-                            <ul id="export" class="ui-helper-reset">
-                                <li class="left ui-widget-content ui-corner-tr ui-corner-bl tall">
-                                    <button class="ui-state-default ui-button listBegin left" type="submit" value="Download File"><span class="ui-icon ui-icon-disk right"></span>Download File</button>
-                                    <button class="ui-state-default ui-button left" type="submit" value="Open File"><span class="ui-icon ui-icon-document right"></span>Open File</button>
-                                    <button class="ui-state-default ui-button listEnd" type="button" onclick="window.location.href='exportUI.jsp?projectID=<%out.print(projectID);%>&p=<%out.print(pageno);%>';return false;" title="Adjust settings in the browser for a highly customizable and portable document"><span class="ui-icon ui-icon-suitcase right"></span>HTML Export</button>
-                                    <h3>File Format</h3>
-                                    <label for="pdf" title="Portable Document Format"><input id="pdf" type="radio" checked name="type" value="pdf"/>PDF</label><br />
-                                    <label for="rtf" title="Rich Text Format"><input id="rtf" type="radio" name="type" value="rtf">RTF</label><br />
-                                    <label for="xml" title="XML/Plaintext"><input id="xml" type="radio" name="type" value="xml">XML/Plaintext</label><br />
-                                    <h3 class="clear">Metadata and Page Labels</h3>
-                                    <p class="xmlDisclaimer">Metadata export and page labels are not supported in plaintext.</p>
-                                    <span class="xmlHide">
-                                        <label class="clear" id="paginationOption" for="paginationSelect" title="Include page labels in the exported document"><input id="paginationSelect" type="checkbox" name="pageLabels" checked />Check to Include Page Labels</label><br />
-<%if (thisProject.getHeader().length()>0){%>
-<label class="clear" id="metadataOption" for="metadataSelect" title="Include custom header in the exported document"><input id="metadataSelect" type="checkbox" name="metadata" checked />Check to Include Custom Header</label><br />
-<%}else{%>
-<label class="clear" id="metadataOption" for="metadataSelect" title="Include project metadata in the exported document"><input id="metadataSelect" type="checkbox" name="metadata" checked />Check to Include Project Metadata</label><br />
-<%}%>
-                                    </span>
-                                    <label class="clear xmlDisclaimer" id="imageWrapOption" for="imageWrapSelect" title="Place an XML tag to indicate the reference image at each pagebreak"><input id="imageWrapSelect" type="checkbox" name="imageWrap" checked />Check to Include Image Tags</label><br />
-                                    <h3 class="clear">Export Range</h3>
-                                    <div id="pageRange">
-                                        <label class="clear" for="beginFolio">Start with folio:<select id='beginFolio' class="beginFolio folioDropdown" name='beginFolio'></select></label><br/>
-                                        <label class="clear" for="endFolio">End with folio:<select id='endFolio' class='endFolio folioDropdown' name='endFolio'></select></label>
-                                    </div>
-                                    <script type="text/javascript">
-                                        var folioDropdown = $('<div />').append('<%
-                                        String fdrop = "";
-                                        try {
-                                            fdrop = ESAPI.encoder().decodeFromURL(thisProject.getFolioDropdown());
-                                                    } catch (Error e) {
-                                                        fdrop = "<option>" + e.getLocalizedMessage() + "</option>";
-                                                    } finally {
-                                        out.print(fdrop.replace("'", "&apos;"));
-                                        }%>');
-                                        $(".folioDropdown").append(folioDropdown.html());
-                                        $("#pageRange").find("select")
-                                        .children("option").val(function(){
-                                            return parseInt($(this).val(),10);
-                                        }).end()
-                                        .filter(":first").children("option:first").attr("selected",true).end().end()
-                                        .filter(":last").children("option:last").attr("selected",true);
-                                    </script>
-                                </li>
-                                <li id="exportTags" class="left ui-widget-content ui-corner-tr ui-corner-bl tall">
-                                    <h3>XML Tag Options</h3>
-                                    <p class="xmlDisclaimer">Formatting XML tags is not possible with plaintext export.</p>
-                                    <%
-                                        textdisplay.TagFilter f = new textdisplay.TagFilter(textdisplay.Manuscript.getFullDocument(thisProject, true));
-                                        String[] tags = f.getTags();
-                                        out.print(tags.length + "</span> XML tags were detected in this text:<br />");
-                                        out.print("<input type='hidden' name='projectID' value=" + projectID + " />");
-                                        out.print("<span class='ui-button tpenButton xmlDisclaimer' state='off' id='xmlSelectAll'>Select All</span>");                                       
-                                        for (int i = tags.length - 1; i > -1; i--) {
-                                            out.print("<span class='xmlDisclaimer'><label for='removeTag" + (i + 1) + "' title='Check this box to remove the tag and its contents'><input type='checkbox' name='removeTag" + (i + 1) + "' />Remove &lt;" + tags[i] + "&gt;</label></span>");
-                                            out.print("<span class='xmlHide'><label>" + tags[i] + "");
-                                            out.print("<select name='style" + (i + 1) + "' >"); //This variable is 
-                                            out.print("<option value='none' selected>No Change</option>");
-                                            out.print("<option value='italic' >Italic</option>");
-                                            out.print("<option value='bold' >Bold</option>");
-                                            out.print("<option value='underlined'>Underlined</option>");
-                                            out.print("<option value='paragraph'>New Paragraph</option>");
-                                            out.print("<option value='remove' >Remove</option>");
-                                            out.print("</select></label><label for='stripTag" + (i + 1) + "' title='Check this box to strip this tag from around its content' class='right'><input type='checkbox' checked id='stripTag" + (i + 1) + "' name='stripTag" + (i + 1) + "' />Hide " + ESAPI.encoder().encodeForHTML("<tag>") + "</label><br><input type='hidden' name='tag" + (i + 1) + "' value='" + tags[i] + "'></span>");
-                                        }
-                                    %>
-                                </li>
-                                <li class="left ui-widget-content ui-corner-tr ui-corner-bl tall">
-                                    <div class="ui-state-error ui-corner-all" id="exportAlert"><span class="left ui-icon ui-icon-alert"></span>Notes cannot be displayed in continuous text at this time.</div>
-                                    <h3>Notes</h3>
-                                    <p class="xmlDisclaimer">Notes are not supported with plaintext export.</p>
-                                    <span class="xmlHide">
-                                        <!--                        <label id="sideBySide" for="notesSideBySide" title="Show notes to the side of each line"><input id="notesSideBySide" type="radio" name="notes" value="sideBySide"  />Side-by-side</label><br />-->
-                                        <label id="noteLine" for="notesLine" title="Show notes underneath each line"><input id="notesLine" type="radio" name="notes" value="line" checked />Beneath each line</label><br />
-                                        <label id="endnote" for="notesEndnote" title="Show notes at the end of the document"><input id="notesEndnote" type="radio" name="notes" value="endnote" />Endnotes</label><br />
-                                        <!--<label id="footnote" for="notesFootnote" title="Show notes after each page of the manuscript"><input id="notesFootnote" type="radio" name="notes" value="footnote" />Footnotes</label><br />-->
-                                        <label id="noteRemove" for="notesRemove" title="Remove notes from exported document"><input id="notesRemove" type="radio" name="notes" value="remove" />Remove</label>
-                                    </span>
-                                    <h3 class="clear">Linebreaking Layout</h3>
-                                    <label id="linebreakLine" class="xmlHide" title="Start each line of transcription on a new line" for="newline"><input id="newline" type="radio" name="linebreak" value="newline" checked />Start a new line</label><br />
-                                    <!--                    <label id="linebreakPage" class="xmlHide" title="Linebreak only at a new page" for="pageonly"><input id="pageonly" type="radio" name="linebreak" value="pageonly" />Page break only</label><br />-->
-                                    <label id="linebreakContinuous" title="Remove all linebreaks" for="inline"><input id="inline" type="radio" name="linebreak" value="inline" />Continuous text</label><br />
-                <!--                    <label id="exportHyphenation" class="" title="Use hyphenation to join words broken across lines" for="exportWordbreak"><input id="exportWordbreak" name="exportWordbreak" type="text" placeholder="/-/" value="<%//out.print(p.getWordbreakString);%>" /> custom word break string</label><br />
-                                    <label id="exportLinebreak" class="" title="Use this string with linebreaking" for="exportLinebreakString"><input id="exportLinebreakString" name="exportLinebreakString" type="text" placeholder="&lsaquo;lb /&rsaquo;" value="<%//out.print(p.getLinebreakString);%>" /> custom line break string</label><br />
-                                    <label id="exportUseLinebreakString" class="" for="useLinebreakingString" title="Use this string in exported document"><input id="useLinebreakingString" type="checkbox"  value="true"/>Use linebreak string in exported document</label>-->
-                                </li>
-                            </ul>   
-                        </form>
-                    </div>
-                                    <%}%>
+                    <!-- BH note got rid of tabs-5 here, can revive if we want. -->
                 </div>
                 <a class="returnButton" href="index.jsp?projectID=<%out.print("" + projectID);%>">Return to TPEN Homepage</a>
             </div>
         </div>
-<%if(isMember||permitModify){%>
-<!--            <div id="addToProject">  container for adding to projects 
-            <div class="callup" id="form">  add to project 
-                <span id="closePopup" class="right caps">close<a class="right ui-icon ui-icon-closethick" title="Close this window">cancel</a></span>
-                <%    //Attach arrays of AllCities and AllRepositories represented on T-PEN
-                    String[] cities = Manuscript.getAllCities();
-                    String[] repositories = Manuscript.getAllRepositories();
-                %>
-                <label class="left" for="cities">City: </label>
-                <select class="left" name="cities" onchange="Manuscript.filteredCity();scrubListings();" id="cities">
-                    <option selected value="">Select a City</option>
-                    <%  //Generate dropdown menus for available cities.
-                        for (int i = 0; i < cities.length; i++) {
-                            out.print("<option value=\"" + (cities[i]) + "\">" + cities[i] + "</option>");
-                        }
-                    %>
-                </select>
-                <label class="left clear" for="repositories">Repository: </label>
-                <select class="left" name="repository" onchange="Manuscript.filteredRepository();scrubListings();" id="repositories">
-                    <option selected value="">Select a Repository</option>
-                    <%  //Generate dropdown menus for available repositories.
-                        for (int i = 0; i < repositories.length; i++) {
-                            out.print("<option class=\"" + (i + 1) + "\" value=\"" + (repositories[i]) + "\">" + repositories[i] + "</option>");
-                        }
-                    %>
-                </select>
-                <div id="listings" class="center clear"  style="height:355px;overflow: auto;">
-                    <div class="ui-state-active ui-corner-all" align="center">
-                        Select a city or repository above to view available manuscripts.
-                    </div>
-
-                </div>
-            </div>
-        </div>-->
-                <%}
-        if (isAdmin){
-                %>
-                <div id="publicOptions" class="ui-widget-content ui-corner-all">
-<a id="closePublicOption" href="#" onclick="$('#publicOptions').fadeOut('normal');return false;" class="right tpenButton ui-button">Close<span class="ui-icon ui-icon-close right"></span></a>
-                    <%
-textdisplay.ProjectPermissions permit = new ProjectPermissions(projectID);
-if(request.getParameter("publicOptions")!=null && isAdmin){
-    // First process the requests for public access
-    permitOACr = request.getParameter("OACr")!=null;
-    permitOACw = request.getParameter("OACw")!=null;
-    permitRead = request.getParameter("readTrans")!=null;
-    permitExport = request.getParameter("publicExport")!=null;
-    permitCopy = request.getParameter("projectCopy")!=null;
-    permitNotes = request.getParameter("modNotes")!=null;
-    permitModify = request.getParameter("modTrans")!=null;
-    permitParsing = request.getParameter("modParsing")!=null;
-    permitAnnotation = request.getParameter("modAnno")!=null;
-    permitButtons = request.getParameter("modButton")!=null;
-    permitMetadata = request.getParameter("modMetadata")!=null;
-    permit.setAllow_OAC_read(permitOACr);
-    permit.setAllow_OAC_write(permitOACw);
-    permit.setAllow_public_read_transcription(permitRead);
-    permit.setAllow_export(permitExport);
-    permit.setAllow_public_copy(permitCopy);
-    permit.setAllow_public_modify_notes(permitNotes);
-    permit.setAllow_public_modify(permitModify);
-    permit.setAllow_public_modify_line_parsing(permitParsing);
-    permit.setAllow_public_modify_annotation(permitAnnotation);
-    permit.setAllow_public_modify_buttons(permitButtons);
-    permit.setAllow_public_modify_metadata(permitMetadata);
-%>
-<span id="publicOptionResult" class="right">Changes saved<span class="ui-icon ui-icon-check right"></span></span>
-                    <%
-} else {
-%>
-                    <p class="ui-state-error ui-corner-all">
-                        <span class="ui-icon ui-icon-alert"></span>
-                        By default, only group members have access to the transcription and related project data. Changing any of these options will place this project on the Public Projects list.<br/>
-                        <span class="tpenButton ui-button center" onclick="$(this).parent().slideUp();">Acknowledged, thank you</span>
-                    </p>
-                    <%}%>
-                    <h2>Public Access Options</h2>
-                    <div id="publicOptionsSelection">
-<!-- Restricted to 40% width to allow for clear explanations of each item -->
-<form action="project.jsp" method="POST">
-    <input type="hidden" name="projectID" value="<%out.print(projectID);%>">
-    <input type="hidden" value="2" name="selecTab" />
-    <h6>External Access</h6>
-    <label for="OACr" class="publicLabel">
-        <input id="OACr" name="OACr" type="checkbox" value="true" <%if(permitOACr)out.print("checked");%>/>OAC Read
-        <div class="publicDesc">
-            <h3>Open Annotation Collaboration</h3>
-                <code>Read Permission</code>
-                <p>This setting allows external (not originating from t&#8209;pen.org) tools and services to <strong>read</strong> data from the T&#8209;PEN database. Projects with this permission can load annotations and transcriptions into other tools and interfaces for in-depth processing not available on T&#8209;PEN.</p>
-            <span class="ui-state-error-text"><span class="left ui-icon ui-icon-unlocked"></span>This setting exposes your data <em>without authentication</em>.</span>
-            <span class=""><span class="left ui-icon ui-icon-info"></span>Original project data cannot be changed with a <code>read</code> permission.</span>
-            <span class=""><span class="left ui-icon ui-icon-notice"></span>Allowing this is not recommended unless you have a specific need in mind.</span>
-        </div>
-    </label>
-    <label for="OACw" class="publicLabel">
-        <input id="OACw" name="OACw" type="checkbox"  value="true" <%if(permitOACw)out.print("checked");%>/>OAC Write
-        <div class="publicDesc">
-            <h3>Open Annotation Collaboration</h3>
-                <code>Write Permission</code>
-                <p>This setting allows external (not originating from t&#8209;pen.org) tools and services to write data from the T&#8209;PEN database. Projects with this permission can load annotations and transcriptions into other tools <em>and changes saved</em> for in-depth processing not available on T&#8209;PEN.</p>
-            <span class="ui-state-error-text"><span class="left ui-icon ui-icon-unlocked"></span>This setting exposes your data <em>without authentication</em>.</span>
-            <span class="ui-state-error-text"><span class="left ui-icon ui-icon-alert"></span>Original project data can be changed with a <code>write</code> permission.</span>
-            <span class=""><span class="left ui-icon ui-icon-notice"></span>Allowing this is not recommended unless you have a specific need in mind.</span>
-        </div>
-    </label>
-    <h6>View and Export</h6>
-    <label for="readTrans" class="publicLabel">
-        <input id="readTrans" name="readTrans" type="checkbox"  value="true" <%if(permitRead)out.print("checked");%>/>View Project
-        <div class="publicDesc">
-            <h3>View Project</h3>
-                <code>Read Permission</code>
-                <p>This setting allows users logged into T&#8209;PEN to <strong>view</strong> this project in the transcription interface. Users cannot make any changes or view any data not revealed in the interface.</p>
-            <span class="ui-state-error-text"><span class="left ui-icon ui-icon-unlocked"></span>This setting does not track viewers and provides no protections against manual copying.</span>
-            <span class=""><span class="left ui-icon ui-icon-info"></span>Original project data cannot be changed with a <code>read</code> permission.</span>
-            <span class=""><span class="left ui-icon ui-icon-check"></span>This is the most restrictive way to make a project public.</span>
-        </div>
-    </label>
-    <label for="publicExport" class="publicLabel">
-        <input id="publicExport" name="publicExport" type="checkbox"  value="true" <%if(permitExport)out.print("checked");%>/>Export Project
-        <div class="publicDesc">
-            <h3>Export Project</h3>
-                <code>Read Permission</code>
-                <p>This setting allows users logged into T&#8209;PEN to <strong>export</strong> this project through the T&#8209;PEN interface. Users cannot make any changes to original data.</p>
-            <span class="ui-state-error-text"><span class="left ui-icon ui-icon-unlocked"></span>This setting does not track exports and provides no protections against copying.</span>
-            <span class=""><span class="left ui-icon ui-icon-info"></span>Original project data cannot be changed with a <code>read</code> permission.</span>
-            <span class=""><span class="left ui-icon ui-icon-notice"></span>Even without this permission, a clever and malicious user may capture data from any public project.</span>
-        </div>
-    </label>
-    <label for="projectCopy" class="publicLabel">
-        <input id="projectCopy" name="projectCopy" type="checkbox"  value="true" <%if(permitCopy)out.print("checked");%> <%if(thisProject.containsUserUploadedManuscript())out.print("disabled title='This project contains private images.'");%>/>Copy Project
-        <div class="publicDesc">
-            <h3>Copy Project</h3>
-                <code>Read Permission</code>
-                <p>This setting allows users logged into T&#8209;PEN to <strong>copy</strong> this project and work independently. Users cannot make any changes to original data.</p>
-            <span class="ui-state-error-text"><span class="left ui-icon ui-icon-unlocked"></span>This setting does not track copies and does not prevent a user from making the copy more public than the original.</span>
-            <span class=""><span class="left ui-icon ui-icon-info"></span>Original project data cannot be changed with a <code>read</code> permission.</span>
-            <span class=""><span class="left ui-icon ui-icon-notice"></span>There is no way to merge or collate different branches of an original project.</span>
-            <span class=""><span class="left ui-icon ui-icon-notice"></span>Projects containing private images cannot be copied.</span>
-        </div>
-    </label>
-    <h6>Public Modifications</h6>
-    <label for="modNotes" class="publicLabel">
-        <input id="modNotes" name="modNotes" type="checkbox"  value="true" <%if(permitNotes)out.print("checked");%>/>Modify Notes
-        <div class="publicDesc">
-            <h3>Modify Notes</h3>
-                <code>Write Permission</code>
-                <p>This setting allows users logged into T&#8209;PEN to <strong>modify</strong> any data in the notes fields. Changes are not restricted, but are tracked in the History with a username and timestamp.</p>
-            <span class="ui-state-error-text"><span class="left ui-icon ui-icon-alert"></span>Original project data can be changed with a <code>write</code> permission.</span>
-            <span class=""><span class="left ui-icon ui-icon-info"></span>The transcription and notes fields are controlled by separate permissions.</span>
-        </div>
-    </label>
-    <label for="modTrans" class="publicLabel">
-        <input id="modTrans" name="modTrans" type="checkbox"  value="true" <%if(permitModify)out.print("checked");%>/>Modify Transcription
-        <div class="publicDesc">
-            <h3>Modify Transcription</h3>
-                <code>Write Permission</code>
-                <p>This setting allows users logged into T&#8209;PEN to <strong>modify</strong> any data in the transcription fields. Changes are not restricted, but are tracked in the History with a username and timestamp.</p>
-            <span class="ui-state-error-text"><span class="left ui-icon ui-icon-alert"></span>Original project data can be changed with a <code>write</code> permission.</span>
-            <span class=""><span class="left ui-icon ui-icon-info"></span>The transcription and notes fields are controlled by separate permissions.</span>
-        </div>
-    </label>
-    <label for="modAnno" class="publicLabel">
-        <input id="modAnno" name="modAnno" type="checkbox"  value="true" <%if(permitAnnotation)out.print("checked");%>/>Modify Annotations
-        <div class="publicDesc">
-            <h3>Modify Annotations</h3>
-                <code>Write Permission</code>
-                <p>This setting allows users logged into T&#8209;PEN to <strong>modify</strong> any annotation. This includes insertion, deletion, and modification.</p>
-            <span class="ui-state-error-text"><span class="left ui-icon ui-icon-alert"></span>Original project data can be changed with a <code>write</code> permission.</span>
-            <span class=""><span class="left ui-icon ui-icon-info"></span>Only annotation modifications are allowed with this permission.</span>
-        </div>
-    </label>
-    <label for="modParsing" class="publicLabel">
-        <input id="modParsing" name="modParsing" type="checkbox"  value="true" <%if(permitParsing)out.print("checked");%>/>Modify Line Parsing
-        <div class="publicDesc">
-            <h3>Modify Line Parsing</h3>
-                <code>Write Permission</code>
-                <p>This setting allows users logged into T&#8209;PEN to <strong>modify</strong> line parsing. This includes insertion, deletion, and modification.</p>
-            <span class="ui-state-error-text"><span class="left ui-icon ui-icon-alert"></span>Original project data can be changed with a <code>write</code> permission.</span>
-            <span class="ui-state-error-text"><span class="left ui-icon ui-icon-alert"></span>If a user deletes a column which contains transcription data, the attached data will also be removed.</span>
-        </div>
-    </label>
-    <label for="modButton" class="publicLabel">
-        <input id="modButton" name="modButton" type="checkbox"  value="true" <%if(permitButtons)out.print("checked");%>/>Modify Buttons and Tags
-        <div class="publicDesc">
-            <h3>Modify Buttons</h3>
-                <code>Write Permission</code>
-                <p>This setting allows users logged into T&#8209;PEN to <strong>modify</strong> any special character or XML tag buttons in the project (including addition and deletion).</p>
-            <span class="ui-state-error-text"><span class="left ui-icon ui-icon-alert"></span>Original project data can be changed with a <code>write</code> permission.</span>
-            <span class=""><span class="left ui-icon ui-icon-notice"></span>Changes to buttons are not tracked in the project log.</span>
-        </div>
-    </label>
-    <label for="modMetadata" class="publicLabel">
-        <input id="modMetadata" name="modMetadata" type="checkbox"  value="true" <%if(permitMetadata)out.print("checked");%>/>Modify Metadata
-        <div class="publicDesc">
-            <h3>Modify Metadata</h3>
-                <code>Write Permission</code>
-                <p>This setting allows users logged into T&#8209;PEN to <strong>modify</strong> project metadata or upload a custom header.</p>
-            <span class="ui-state-error-text"><span class="left ui-icon ui-icon-alert"></span>Original project data can be changed with a <code>write</code> permission.</span>
-            <span class=""><span class="left ui-icon ui-icon-notice"></span>Changes to metadata are not tracked in the project log.</span>
-        </div>
-    </label>
-        <input type="reset" value="Clear All" onclick="$('.publicLabel').children('input').prop('checked',false);return false;" class="tpenButton ui-button" />    
-    <input type="submit" name="publicOptions" value="Submit Changes"  class="tpenButton ui-button" />    
-</form>
-                    </div>
-                </div>
-    <%}%>
-                <div id="addingTools" class="ui-corner-all ui-widget ui-widget-content">
-                    <a id="closeAddingTools" href="#" onclick="$('#addingTools').fadeOut('normal');return false;" class="right tpenButton ui-button">Close<span class="ui-icon ui-icon-close right"></span></a>
-                    <h3>Add an iFrame Tool</h3>
-                    <iframe src="iframe.html" id="addToolFrame"></iframe>
-                    <input id="addToolName" type="text" maxlength="25" placeholder="Tool Name" />
-                    <input id="addToolURL" type="text" placeholder="Full URL of tool" />
-                    <a class="tpenButton" id="addToolPreview" 
-                       onclick="$('#addToolFrame').attr('src',$('#addToolURL').val());">
-                        Test Link
-                    </a>
-                    <a class="tpenButton" id="addToolCommit"
-                       onclick="addTool();">
-                        Add
-                    </a>
-                    <div id="addToolInfo" class="clear-left">
-                        <p>
-                            Add a useful name and complete URL of the page you would like loaded as a tool.
-                        </p>
-                        <p>
-                            Some pages will not allow themselves to be loaded into an iFrame, so you should test your tool before adding it.
-                        </p>
-                        <p>
-                            These tools are connected to specific projects and will be available for all group members.
-                        </p>
-                    </div>
-                </div>
+            <!-- BH note got rid of add manuscript to project widget here. -->
+        <!-- BH note got rid of public options here -->
+    <!-- BH note got rid of add iframe tool widget here -->
         <%@include file="WEB-INF/includes/projectTitle.jspf" %>
-                <script type="text/javascript">
-                                $(function() {
-                                        $("#copyProjectBtn").click(function(){
-                                            var cfrm = confirm('All buttons and project information will be copied into a new project.\n\nContinue?');
-                                            if(cfrm){
-                                                var projID = $(this).attr("proj");
-                                                copyProject(projID, false);
-                                            }
-                                            return cfrm;
-                                        });
-                                        $("#copyProjectAndAnnosBtn").click(function(){
-                                            var cfrm = confirm('All transcriptions, parsings, and buttons will be copied into a new project.\n\nContinue?');
-                                            if(cfrm){
-                                                var projID = $(this).attr("proj");
-                                                copyProject(projID, true);
-                                            }
-                                            return cfrm;
-                                        });
-                                        $("#xmlSelectAll").click(function(){
-                                            if ($(this).attr('state') == "on"){
-                                                $(this).text("Select All").attr('state','off');
-                                                $("[name^='removeTag']").attr("checked",false);
-                                            } else {
-                                                $(this).text("Deselect All").attr('state','on');
-                                                $("[name^='removeTag']").attr("checked",true);
-                                            }
-                                        });
-                                        $("#export").find("button").hover(function(){$(this).toggleClass("ui-state-hover")});
-                                        $( "#popupNote").click(function() {
-                                            $( "#noteForm" ).fadeIn(1000);
-                                            return false;
-                                        });
-                                        $( "#clearNote").click(function() {
-                                            $( "#noteForm" ).fadeOut(500);
-                                            return false;
-                                        });
-                                        $('#tabs').tabs({ 
-                                            fx: { opacity: 'toggle', duration:250 },
-                                            show: function(ui) {equalHeights("tall",100);equalWidth();}
-                                        });
-                                        if (selecTab) $('#tabs').tabs('option','selected',selecTab);
-                                        $('span.delete').hover(
-                                        function(){$(this).parent('li').find("a.tpenButton").addClass     ("ui-state-error strikeout");},
-                                        function(){$(this).parent('li').find("a.tpenButton").removeClass  ("ui-state-error strikeout");}
-                                    );
-                                        $(".formatDiv").addClass('ui-corner-all');
-                                        $(".format").click(function(){
-                                            $(this).next("div.formatDiv").slideToggle(500);
-                                        });
-                                        $("#addManuscript").click(function(){
-                                            $("#wrapper").append("<div class='ui-widget-overlay' id='overlay' style='display:none;'></div>");
-                                            $("div#addToProject,#overlay").show('fade',500);
-                                        });
-                                        $("#closePopup").click(function(){
-                                            $("div#addToProject,#overlay").hide('fade',500,function(){
-                                                $("#overlay").remove();
-                                            });
-                                        });
-                                        $("#xmlImportBtn,#inviteUserBtn,#templateBtn").click(function(){
-                                            $(this).toggleClass("ui-state-active")
-                                            .next("form").slideToggle(function(){
-                                                equalHeights("tall",200);
-                                            }); 
-                                        });
-                                        $("#xmlValidateBtn").click(function(){
-                                            $("#xmlValidate").slideToggle(function(){
-                                                equalHeights("tall",200);
-                                            }); 
-                                        });
-                                        $("#linebreakingBtn").click(function(){
-                                            $("#linebreaking").slideToggle(function(){
-                                                equalHeights("tall",200);
-                                            }); 
-                                        });
-                                        $("#wordbreakBtn").click(function(){
-                                            $("#wordbreak").slideToggle(function(){
-                                                equalHeights("tall",200);
-                                            }); 
-                                        });
+        <script type="text/javascript">
+        $(function() {
+                $("#copyProjectBtn").click(function(){
+                    var cfrm = confirm('All buttons and project information will be copied into a new project.\n\nContinue?');
+                    if(cfrm){
+                        var projID = $(this).attr("proj");
+                        copyProject(projID, false);
+                    }
+                    return cfrm;
+                });
+                $("#copyProjectAndAnnosBtn").click(function(){
+                    var cfrm = confirm('All transcriptions, parsings, and buttons will be copied into a new project.\n\nContinue?');
+                    if(cfrm){
+                        var projID = $(this).attr("proj");
+                        copyProject(projID, true);
+                    }
+                    return cfrm;
+                });
+                $("#xmlSelectAll").click(function(){
+                    if ($(this).attr('state') == "on"){
+                        $(this).text("Select All").attr('state','off');
+                        $("[name^='removeTag']").attr("checked",false);
+                    } else {
+                        $(this).text("Deselect All").attr('state','on');
+                        $("[name^='removeTag']").attr("checked",true);
+                    }
+                });
+                $("#export").find("button").hover(function(){$(this).toggleClass("ui-state-hover")});
+                $( "#popupNote").click(function() {
+                    $( "#noteForm" ).fadeIn(1000);
+                    return false;
+                });
+                $( "#clearNote").click(function() {
+                    $( "#noteForm" ).fadeOut(500);
+                    return false;
+                });
+                $('#tabs').tabs({ 
+                    fx: { opacity: 'toggle', duration:250 },
+                    show: function(ui) {equalHeights("tall",100);equalWidth();}
+                });
+                if (selecTab) $('#tabs').tabs('option','selected',selecTab);
+                $('span.delete').hover(
+                function(){$(this).parent('li').find("a.tpenButton").addClass     ("ui-state-error strikeout");},
+                function(){$(this).parent('li').find("a.tpenButton").removeClass  ("ui-state-error strikeout");}
+            );
+                $(".formatDiv").addClass('ui-corner-all');
+                $(".format").click(function(){
+                    $(this).next("div.formatDiv").slideToggle(500);
+                });
+                $("#addManuscript").click(function(){
+                    $("#wrapper").append("<div class='ui-widget-overlay' id='overlay' style='display:none;'></div>");
+                    $("div#addToProject,#overlay").show('fade',500);
+                });
+                $("#closePopup").click(function(){
+                    $("div#addToProject,#overlay").hide('fade',500,function(){
+                        $("#overlay").remove();
+                    });
+                });
+                $("#xmlImportBtn,#inviteUserBtn,#templateBtn").click(function(){
+                    $(this).toggleClass("ui-state-active")
+                    .next("form").slideToggle(function(){
+                        equalHeights("tall",200);
+                    }); 
+                });
+                $("#xmlValidateBtn").click(function(){
+                    $("#xmlValidate").slideToggle(function(){
+                        equalHeights("tall",200);
+                    }); 
+                });
+                $("#linebreakingBtn").click(function(){
+                    $("#linebreaking").slideToggle(function(){
+                        equalHeights("tall",200);
+                    }); 
+                });
+                $("#wordbreakBtn").click(function(){
+                    $("#wordbreak").slideToggle(function(){
+                        equalHeights("tall",200);
+                    }); 
+                });
 //                                        $("#logFilter a").not($("#openNote")).hide(); //delete this line to enable the filters on the projectLog
-                                        $("#logFilter a").not($("#openNote")).click(function(){
-                                            $(this).toggleClass('ui-state-disabled');
-                                            $("#projectLog div."+$(this).attr("filter")).parent().parent().slideToggle();
-                                        });
-                                        /* Handlers for Export Options */
-                                        $("#inline, #pageonly").click(function(){
-                                            if(this.checked) {
-                                                $("#exportAlert").slideDown();
-                                                $("#exportHyphenation").attr("disabled",false);
-                                            }
-                                            if($("#notesLine").attr("checked") || $("#notesSideBySide").attr("checked")){
-                                                $("#notesRemove").attr("checked", true);
-                                                //alert("Notes options were incompatable with this selection and have been changed.");
-                                            }
-                                            if(this.id=="inline") $("#notesFootnote").attr("disabled",true);
-                                            $("#notesSideBySide, #notesLine").attr("disabled",true);
-                                        });
-                                        $("#newline").click(function(){
-                                            if(this.checked) $("#exportHyphenation").attr("disabled",true);
-                                            $("#notesSideBySide, #notesLine, #notesFootnote").attr("disabled",false);
-                                        });
-                                        $("#notesSideBySide,#notesLine").click(function(){
-                                            if(this.checked) {
-                                                $("#exportAlert").slideDown();
-                                                $("#exportWordbreak, #pageonly, #inline").attr("disabled",true);
-                                                if($("#pageonly").attr('#checked')||$("#inline").attr('checked')) {
-                                                    //alert('Linebreaking options were incompatable with your selection and have been changed.');
-                                                }
-                                                $("#newline").attr({'checked': true,'disabled':false});
-                                            }
-                                        });
-                                        $("#notesEndnote,#notesFootnote,#notesRemove").click(function(){
-                                            if(this.checked) {
-                                                $("#exportWordbreak, #newline, #exportLinebreakString, #useLinebreakString, #pageonly, #inline").attr("disabled",false);
-                                                $("#exportAlert").slideUp();
-                                            }
-                                        });
-                                        //                $("#metadataOption").click(function(){
-                                        //                    if ($("#metadataSelect").is(":checked")) $("#metadataPreview").slideDown();
-                                        //                    else $("#metadataPreview").slideUp();
-                                        //                })
-                                        $("#pdf,#rtf").click(function(){
-                                            if(this.checked) {
-                                                $(".xmlHide").show();
-                                                $(".xmlDisclaimer").hide();
-                                                $("#color").attr("disabled",false);
-                                            }
-                                        });
-                                        $("#xml").click(function(){
-                                            if(this.checked) {
-                                                var areChanges = false;
-                                                $(".xmlHide").hide();
-                                                $(".xmlDisclaimer").show();
-                                                $("#color").attr("disabled",true);
-                                                if ($("#color").attr("checked")){
-                                                    areChanges = true;
-                                                    $("#bw").attr("checked",true);
-                                                }
-                                                if ($("#notesSideBySide,#notesEndnote,#notesFootnote,#notesLine").attr("checked")) {
-                                                    areChanges = true;
-                                                    $("#notesRemove").attr("checked",true);
-                                                }
-                                                if ($("#pageonly,#newline").attr("checked")) {
-                                                    areChanges = true;
-                                                }
-                                                $("#inline").attr("checked",true);
-                                                //if (areChanges) alert("Some selections are not supported in plaintext export and have been changed.");
-                                            }
-                                        });
-                                        $(".beginFolio,.endFolio").change(function(){
-                                            var thisIs = ($(this).hasClass('beginFolio')) ? "beginFolio" : "endFolio";
-                                            $('.'+thisIs).val(this.value);
-                                            var first = $(this).parent().find(".beginFolio");
-                                            var last = $(this).parent().find(".endFolio");
-                                            var firstFolio = first.children("option:selected").index();
-                                            var lastFolio = last.children("option:selected").index();
-                                            if (firstFolio > lastFolio) {
-                                                first.add(last).addClass("ui-state-error").attr("title","Folio range does not include any pages.");
-                                                $('#submitLimit').prop('disabled',true).addClass('ui-state-disabled');
-                                            } else {
-                                                first.add(last).removeClass("ui-state-error").attr("title","");
-                                                $('#submitLimit').prop('disabled',false)
-                                                    .removeClass('ui-state-disabled')
-                                                    .html("Submit Set Range");
-                                            }
-                                        });
-                                        $("#toolSelection").submit(function(){
-                                            $(this).find(".projectTools").each(function(){
-                                                var thisInput = $(this).find("input");
-                                                thisInput.val($(this).find("span").text()+"TPENTOOLURL"+thisInput.val());
-                                            });
-                                        });
-                                        $(".publicLabel").children('input').on('change',function(){$("#publicOptionResult").fadeOut('slow');});
-$("#samplePreview").hover(function(){
-                                            $(this).find("img").css({
-                                                "width" :   "auto",
-                                                "height":   "auto"
-                                            });
-                                            var posX = $(this).offset().left;
-                                            var posY = $(this).offset().top;
-                                            var sampleX = $(this).width();
-                                            var sampleY = $(this).height();
-                                            var imgX = $(this).find("img").width();
-                                            var imgY = $(this).find("img").height();
-                                            var imgLeft = 0;
-                                            var imgTop= 0;
-                                            $(document).bind('mousemove', function(e){
-                                                imgLeft = -(e.pageX-posX) * (imgX-sampleX-68) / sampleX;    // 68 pixel nudge for padding and box-model inconsistencies
-                                                imgTop  = -(e.pageY-posY) * (imgY-sampleY-30) / sampleY;    // 30 pixel nudge for padding and box-model inconsistencies
-                                                $("#samplePreview").find("img").css({
-                                                    "left"  :   imgLeft,
-                                                    "top"   :   imgTop
-                                                });
-                                            });
-                                        },function(){
-                                            $(this).find("img").css({
-                                                "width" :   "100%",
-                                                "height":   "100%",
-                                                "top"   :   "30px",
-                                                "left"  :   0
-                                            });
-                                            $(document).unbind('mousemove');
-                                        }).find("img").css({
-                                            "width" :   "100%",
-                                            "height":   "100%"
-                                        });
-                                        });
-                                    
-                                  
-                                    function toggleRTLOption(e){
-                                        var target = $(e.target);
-                                        if(target.is(":checked")){
-                                            $("input[value='xml']").removeAttr("checked").attr("disabled", "disabled");
-                                        }
-                                        else{
-                                            $("input[value='xml']").removeAttr("disabled");
-                                            if($("input[value='xml']").attr("track") == "checked"){
-                                                $("input[value='xml']").attr("checked", "checked");
-                                            }
-                                            
-                                        }
-                                    }
-                                    function navigateTo(dropdown){
-                                        $("body").addClass(" ui-state-disabled");
-                                        document.location='newberryTrans.html?p='+dropdown.value;
-                                    
-                                    }
-                                    function equalHeights (eClass, minHeight){
-                                        var minHeight = minHeight;
-                                        var tabIndex = $("#tabs").tabs().tabs('option','selected')+1;
-                                        $("#tabs-"+tabIndex).find("."+eClass).each(function(){
-                                            minHeight = ($(this).height()>minHeight) ? $(this).height() : minHeight; 
-                                        })
-                                        $("#tabs-"+tabIndex).find("."+eClass).css({"min-height":minHeight+"px"});
-                                    }
-                                    var selectWordbreak = "-";
-                                    function customWordbreak(){
-                                        selectWordbreak = $('#userWord').val();
-                                        $("#currentSetting").html(selectWordbreak);
-                                    }
-                                    function scrubListings (){
-                                        $("#listings").ajaxStop(function(){
-                                            $("#listings a[href *= 'transcription']").hide();
-                                        });
-                                    }
-                                    function addTool() {
-                                        var name=$("#addToolName").val();
-                                        var URL=$("#addToolURL").val();
-                                        if(name.length<1){
-                                            $("#addToolName").addClass('ui-state-error').one('change',function(){$(this).removeClass('ui-state-error')});
-                                            return false;
-                                        }
-                                        if(URL.length<5){
-                                            $("#addToolURL").addClass('ui-state-error').one('change',function(){$(this).removeClass('ui-state-error')});
-                                            return false;
-                                        }
-                                        var newTool = ['<label class="projectTools"><input name="projectTool[]" type="checkbox" checked="true" value="',
-                                                URL,'" title="',name,'"><span contenteditable="true">',name,'</span></label>'].join('');
-                                            $(".projectTools").eq(0).before(newTool);
-                                        $("#addingTools").fadeOut();
-                                    }
-                                    function copyProject(projID, transData){
-                                        $(".hideWhileCopying").hide();
-                                        $("#copyingNotice").show();
-                                        var url = "copyProject";
-                                        var withAnnos = "WithAnnotations";
-                                        var params = {"projectID":projID};
-                                        if(transData){
-                                           url += withAnnos;
-                                        }
-                                        //Need to have a UI so the users knows a copy is taking place / completed / failed.
-                                        $.post(url, params, function(data){
-                                            $(".hideWhileCopying").show();
-                                            $("#copyingNotice").hide();
-                                            location.reload(); //This is to force pagination to get this project into the project list
-                                        });
-                                    }
-                                    function openHelpVideo(source){
-                                        $("#helpVideoArea").show();
-                                        $(".shadow_overlay").show();
-                                        $(".trexHead").show();
-                                        $("#helpVideo").attr("src", source);
-                                    }
+                $("#logFilter a").not($("#openNote")).click(function(){
+                    $(this).toggleClass('ui-state-disabled');
+                    $("#projectLog div."+$(this).attr("filter")).parent().parent().slideToggle();
+                });
+                /* Handlers for Export Options */
+                $("#inline, #pageonly").click(function(){
+                    if(this.checked) {
+                        $("#exportAlert").slideDown();
+                        $("#exportHyphenation").attr("disabled",false);
+                    }
+                    if($("#notesLine").attr("checked") || $("#notesSideBySide").attr("checked")){
+                        $("#notesRemove").attr("checked", true);
+                        //alert("Notes options were incompatable with this selection and have been changed.");
+                    }
+                    if(this.id=="inline") $("#notesFootnote").attr("disabled",true);
+                    $("#notesSideBySide, #notesLine").attr("disabled",true);
+                });
+                $("#newline").click(function(){
+                    if(this.checked) $("#exportHyphenation").attr("disabled",true);
+                    $("#notesSideBySide, #notesLine, #notesFootnote").attr("disabled",false);
+                });
+                $("#notesSideBySide,#notesLine").click(function(){
+                    if(this.checked) {
+                        $("#exportAlert").slideDown();
+                        $("#exportWordbreak, #pageonly, #inline").attr("disabled",true);
+                        if($("#pageonly").attr('#checked')||$("#inline").attr('checked')) {
+                            //alert('Linebreaking options were incompatable with your selection and have been changed.');
+                        }
+                        $("#newline").attr({'checked': true,'disabled':false});
+                    }
+                });
+                $("#notesEndnote,#notesFootnote,#notesRemove").click(function(){
+                    if(this.checked) {
+                        $("#exportWordbreak, #newline, #exportLinebreakString, #useLinebreakString, #pageonly, #inline").attr("disabled",false);
+                        $("#exportAlert").slideUp();
+                    }
+                });
+                //                $("#metadataOption").click(function(){
+                //                    if ($("#metadataSelect").is(":checked")) $("#metadataPreview").slideDown();
+                //                    else $("#metadataPreview").slideUp();
+                //                })
+                $("#pdf,#rtf").click(function(){
+                    if(this.checked) {
+                        $(".xmlHide").show();
+                        $(".xmlDisclaimer").hide();
+                        $("#color").attr("disabled",false);
+                    }
+                });
+                $("#xml").click(function(){
+                    if(this.checked) {
+                        var areChanges = false;
+                        $(".xmlHide").hide();
+                        $(".xmlDisclaimer").show();
+                        $("#color").attr("disabled",true);
+                        if ($("#color").attr("checked")){
+                            areChanges = true;
+                            $("#bw").attr("checked",true);
+                        }
+                        if ($("#notesSideBySide,#notesEndnote,#notesFootnote,#notesLine").attr("checked")) {
+                            areChanges = true;
+                            $("#notesRemove").attr("checked",true);
+                        }
+                        if ($("#pageonly,#newline").attr("checked")) {
+                            areChanges = true;
+                        }
+                        $("#inline").attr("checked",true);
+                        //if (areChanges) alert("Some selections are not supported in plaintext export and have been changed.");
+                    }
+                });
+                $(".beginFolio,.endFolio").change(function(){
+                    var thisIs = ($(this).hasClass('beginFolio')) ? "beginFolio" : "endFolio";
+                    $('.'+thisIs).val(this.value);
+                    var first = $(this).parent().find(".beginFolio");
+                    var last = $(this).parent().find(".endFolio");
+                    var firstFolio = first.children("option:selected").index();
+                    var lastFolio = last.children("option:selected").index();
+                    if (firstFolio > lastFolio) {
+                        first.add(last).addClass("ui-state-error").attr("title","Folio range does not include any pages.");
+                        $('#submitLimit').prop('disabled',true).addClass('ui-state-disabled');
+                    } else {
+                        first.add(last).removeClass("ui-state-error").attr("title","");
+                        $('#submitLimit').prop('disabled',false)
+                            .removeClass('ui-state-disabled')
+                            .html("Submit Set Range");
+                    }
+                });
+                $("#toolSelection").submit(function(){
+                    $(this).find(".projectTools").each(function(){
+                        var thisInput = $(this).find("input");
+                        thisInput.val($(this).find("span").text()+"TPENTOOLURL"+thisInput.val());
+                    });
+                });
+                $(".publicLabel").children('input').on('change',function(){$("#publicOptionResult").fadeOut('slow');});
+                $("#samplePreview").hover(function(){
+                        $(this).find("img").css({
+                            "width" :   "auto",
+                            "height":   "auto"
+                        });
+                        var posX = $(this).offset().left;
+                        var posY = $(this).offset().top;
+                        var sampleX = $(this).width();
+                        var sampleY = $(this).height();
+                        var imgX = $(this).find("img").width();
+                        var imgY = $(this).find("img").height();
+                        var imgLeft = 0;
+                        var imgTop= 0;
+                        $(document).bind('mousemove', function(e){
+                            imgLeft = -(e.pageX-posX) * (imgX-sampleX-68) / sampleX;    // 68 pixel nudge for padding and box-model inconsistencies
+                            imgTop  = -(e.pageY-posY) * (imgY-sampleY-30) / sampleY;    // 30 pixel nudge for padding and box-model inconsistencies
+                            $("#samplePreview").find("img").css({
+                                "left"  :   imgLeft,
+                                "top"   :   imgTop
+                            });
+                        });
+                    },function(){
+                        $(this).find("img").css({
+                            "width" :   "100%",
+                            "height":   "100%",
+                            "top"   :   "30px",
+                            "left"  :   0
+                        });
+                        $(document).unbind('mousemove');
+                    }).find("img").css({
+                        "width" :   "100%",
+                        "height":   "100%"
+                    });
+                });
 
-                                    function closeHelpVideo(){
-                                        //Need to stop the video?
-                                        $("#helpVideoArea").hide();
-                                        $(".shadow_overlay").hide();
-                                        $(".trexHead").hide();
-                                    }
-                </script>
+
+                function toggleRTLOption(e){
+                    var target = $(e.target);
+                    if(target.is(":checked")){
+                        $("input[value='xml']").removeAttr("checked").attr("disabled", "disabled");
+                    }
+                    else{
+                        $("input[value='xml']").removeAttr("disabled");
+                        if($("input[value='xml']").attr("track") == "checked"){
+                            $("input[value='xml']").attr("checked", "checked");
+                        }
+
+                    }
+                }
+                function navigateTo(dropdown){
+                    $("body").addClass(" ui-state-disabled");
+                    document.location='newberryTrans.html?p='+dropdown.value;
+
+                }
+                function equalHeights (eClass, minHeight){
+                    var minHeight = minHeight;
+                    var tabIndex = $("#tabs").tabs().tabs('option','selected')+1;
+                    $("#tabs-"+tabIndex).find("."+eClass).each(function(){
+                        minHeight = ($(this).height()>minHeight) ? $(this).height() : minHeight; 
+                    })
+                    $("#tabs-"+tabIndex).find("."+eClass).css({"min-height":minHeight+"px"});
+                }
+                var selectWordbreak = "-";
+                function customWordbreak(){
+                    selectWordbreak = $('#userWord').val();
+                    $("#currentSetting").html(selectWordbreak);
+                }
+                function scrubListings (){
+                    $("#listings").ajaxStop(function(){
+                        $("#listings a[href *= 'transcription']").hide();
+                    });
+                }
+                function addTool() {
+                    var name=$("#addToolName").val();
+                    var URL=$("#addToolURL").val();
+                    if(name.length<1){
+                        $("#addToolName").addClass('ui-state-error').one('change',function(){$(this).removeClass('ui-state-error')});
+                        return false;
+                    }
+                    if(URL.length<5){
+                        $("#addToolURL").addClass('ui-state-error').one('change',function(){$(this).removeClass('ui-state-error')});
+                        return false;
+                    }
+                    var newTool = ['<label class="projectTools"><input name="projectTool[]" type="checkbox" checked="true" value="',
+                            URL,'" title="',name,'"><span contenteditable="true">',name,'</span></label>'].join('');
+                        $(".projectTools").eq(0).before(newTool);
+                    $("#addingTools").fadeOut();
+                }
+                function copyProject(projID, transData){
+//                    $(".hideWhileCopying").hide();
+//                    $("#copyingNotice").show();
+//                    var url = "copyProject";
+//                    var withAnnos = "WithAnnotations";
+//                    var params = {"projectID":projID};
+//                    if(transData){
+//                       url += withAnnos;
+//                    }
+//                    //Need to have a UI so the users knows a copy is taking place / completed / failed.
+//                    $.post(url, params, function(data){
+//                        $(".hideWhileCopying").show();
+//                        $("#copyingNotice").hide();
+//                        location.reload(); //This is to force pagination to get this project into the project list
+//                    });
+                      alert("This functionality is not quite yet ready.  Contact digitalhumanities@slu.edu for more information.  Ask for Patrick.");
+                }
+                function openHelpVideo(source){
+                    $("#helpVideoArea").show();
+                    $(".shadow_overlay").show();
+                    $(".trexHead").show();
+                    $("#helpVideo").attr("src", source);
+                }
+
+                function closeHelpVideo(){
+                    //Need to stop the video?
+                    $("#helpVideoArea").hide();
+                    $(".shadow_overlay").hide();
+                    $(".trexHead").hide();
+                }
+        </script>
         <div class="shadow_overlay"></div>
         <div id="helpVideoArea"  class="ui-widget ui-corner-all ui-widget-content">
             <div id="closeHelpVideo" onclick="closeHelpVideo();"> X </div>

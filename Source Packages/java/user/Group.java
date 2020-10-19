@@ -345,20 +345,20 @@ public class Group {
     * @throws SQLException
     */
    public void setUserRole(int requestingUID, int targetUID, roles thisRole) throws SQLException {
-      if (isAdmin(requestingUID)) {
+      if (isAdministrator(requestingUID)) {
          Connection j = null;
          PreparedStatement qry = null;
          qry = null;
          try {
             String query = "Update groupmembers set role=? where GID=? and UID=?";
             j = DatabaseWrapper.getConnection();
-
             qry = j.prepareStatement(query);
             qry.setString(1, thisRole.toString());
             qry.setInt(2, groupID);
             qry.setInt(3, targetUID);
             qry.execute();
-         } finally {
+         } 
+         finally {
             DatabaseWrapper.closeDBConnection(j);
             DatabaseWrapper.closePreparedStatement(qry);
          }
@@ -375,13 +375,10 @@ public class Group {
       try {
           //System.out.println("sample ============== " + UID);
           //System.out.println("memeber len ===== " + this.getMembers().length);
-         System.out.println("Who are group members...");
          User[] groupmembers = this.getMembers();
-         System.out.println(groupmembers);
          Boolean t = false;
          for (int i = 0; i < groupmembers.length; i++) {
             User thisUser = groupmembers[i];
-            System.out.println("mem user ID ====== " + thisUser.getUID());
             if (thisUser.getUID() == UID) {
                t = true;
             }
@@ -464,7 +461,26 @@ public class Group {
     * @throws SQLException
     */
    public Boolean isAdmin(int UID) throws SQLException {
+       /*
+       BH Note 
+       This really acts like an isLeader() check, don't be fooled.  See next function.
+       Sometimes this is used to show the string "Leader" next to a name.  
+       An admin may not be a Leader, even though they function as one.
+       */
       if (getUserRole(UID) == roles.Leader) {
+         return true;
+      }
+      return false;
+   }
+   
+   /**
+    * True if the UID is a Leader or in the admins table.  
+    * This is to separate leader and admin detection in the class.
+    * This function should only be used within this class.  It supplements isAdmin().
+    */
+   private Boolean isAdministrator(int UID) throws SQLException {
+      User u = new User(UID);
+      if (u.isAdmin() || getUserRole(UID) == roles.Leader) {
          return true;
       }
       return false;
