@@ -352,17 +352,12 @@ public class Group {
          try {
             String query = "Update groupmembers set role=? where GID=? and UID=?";
             j = DatabaseWrapper.getConnection();
-
             qry = j.prepareStatement(query);
             qry.setString(1, thisRole.toString());
             qry.setInt(2, groupID);
             qry.setInt(3, targetUID);
             qry.execute();
          } 
-         catch(SQLException e){
-             System.out.println("role not set.  Problem:");
-             System.out.println(e.getMessage());
-         }
          finally {
             DatabaseWrapper.closeDBConnection(j);
             DatabaseWrapper.closePreparedStatement(qry);
