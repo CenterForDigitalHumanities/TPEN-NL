@@ -113,7 +113,6 @@ else {
 
                            //Was this a user promotion request?
                            if (request.getParameter("usr") != null && request.getParameter("act") != null && request.getParameter("act").compareTo("promote") == 0) {
-
                               //Do they have permission to promote this person? That would be either isAdmin==true or current user=group leader
                               if (isAdmin) {
                                  thisGroup.setUserRole(UID, Integer.parseInt(request.getParameter("usr")), Group.roles.Leader);
@@ -121,7 +120,6 @@ else {
                            }
                            //BH edit allow user demotion for parsing editing control
                            if (request.getParameter("usr") != null && request.getParameter("act") != null && request.getParameter("act").compareTo("demote") == 0) {
-
                               //Do they have permission to demote this person?  Did they try to demote themselves? That would be either isAdmin==true or current user=group leader
                               if (isAdmin) {
                                   if(Integer.parseInt(request.getParameter("usr")) != UID){

@@ -698,11 +698,11 @@
                                             out.print("<a href=\"manuscriptAdmin.jsp?ms=" + mss[i].getID() + "\">" + ESAPI.encoder().decodeFromURL(mss[i].getShelfMark()) + "</a> <a href=\"admin.jsp?unrestrict=true&ms=" + mss[i].getID() + "&submitted=true\">remove access restrictions</a><br>");
                                         }
                                     }
-                                %></li>
+                                %>
+                            </li>
                         </ul>
                     </div>
                     <!--                end of tab-2, manuscripts-->
-                    <%if (thisUser.isAdmin()) { //hiding non-Admin tab%>
                     <div id="tabs-3">
                         <ul id="manageUsers" class="ui-helper-reset"> 
                             <li class="left">
@@ -713,8 +713,8 @@
                             </li>
                             <li id="manageUserFeedback" class="gui-tab-section" style="display:none;"></li>
                             <%
-                                //if this is an administrator, allow them to approve new users
-                                if (thisUser.isAdmin()) {
+                            //if this is an administrator, allow them to approve new users
+                            if (thisUser.isAdmin()) {
                             %>
                             <li class="gui-tab-section clear-left">
                                 <div id="newUserApproval">
@@ -805,8 +805,7 @@
                             </li>
                         </ul>
                     </div>
-                    <%} // end of isAdmin()
-                                    }%>
+                    <%}%> 
                     <!--                end of tabs-3, manage users-->
                     <div id="aboutTab">
                         <ul id="about">
