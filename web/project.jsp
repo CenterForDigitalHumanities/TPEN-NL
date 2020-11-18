@@ -386,23 +386,26 @@
                     $(window).load(function(){
                         equalHeights("tall",100);
                         $("a:contains('Transcribe')").parent().each(function(){
-                            $(this).removeClass('loadingBook').css("background","url('<%
-                int pageno = 501;
-                try {
-                    if (request.getParameter("p") != null) {
-                        pageno = Integer.parseInt(request.getParameter("p"));
-                    } else {
-                        pageno = thisProject.firstPage();
-                    }
-                } catch (NumberFormatException e) {
-                }
-                textdisplay.Folio thisFolio = new textdisplay.Folio(pageno, true);
-                                out.print(thisFolio.getImageURLResize(600));%>&quality=30') -30px -60px no-repeat");
-                                        });
-                                        //cache the page image for the project after loading the page
-                                        //                msImage = new Image();
-                                        //                msImage.src = <%out.print(thisFolio.getImageURLResize(2000));%>;
-                                        //                $("#samplePreview").append("<span style='z-index:5;position:absolute;bottom:0'></span>");
+                        $(this).removeClass('loadingBook').css("background","url('<%
+                            int pageno = 501;
+                            boolean y = true;
+                            try {
+                                if (request.getParameter("p") != null) {
+                                    pageno = Integer.parseInt(request.getParameter("p"));
+                                } else {
+                                    pageno = thisProject.firstPage();
+                                }
+                            } catch (ArrayIndexOutOfBoundsException e) {
+                                y = false;
+                            }
+                            if(y){
+                                textdisplay.Folio thisFolio = new textdisplay.Folio(pageno, true);
+                                out.print(thisFolio.getImageURLResize(600));
+                            }
+                            %>&quality=30') -30px -60px no-repeat"); 
+                        
+                    });
+                    
                                            
         });
         </script>
