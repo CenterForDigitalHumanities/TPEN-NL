@@ -403,8 +403,7 @@
                                     textdisplay.Folio thisFolio = new textdisplay.Folio(pageno, true);
                                     out.print(thisFolio.getImageURLResize(600));
                                 } catch (ArrayIndexOutOfBoundsException e) {
-                                    //There was no first page, but we should still be able to delete it.
-                                    //Catch this and don't let it ruin your day.
+                                    //Good luck
                                 }
                             }
                             %>&quality=30') -30px -60px no-repeat"); 
