@@ -1428,25 +1428,24 @@ public class Project {
     * next request Ill get is to undelete something...returns false if it failed to delete for some reason.
     */
    public Boolean delete() throws SQLException {
-      if (this.projectID > 0) {
-         String query = "delete from project where id=?";
-         Connection j = null;
-         PreparedStatement qry = null;
-         try {
-            j = DatabaseWrapper.getConnection();
-            qry = j.prepareStatement(query);
-            qry.setInt(1, projectID);
-
-            qry.execute();
-            return true;
-         } finally {
-            if (j != null) {
-               DatabaseWrapper.closeDBConnection(j);
-            }
-            DatabaseWrapper.closePreparedStatement(qry);
-         }
-      }
-      return false;
+        if (this.projectID > 0) {
+           String query = "delete from project where id=?";
+           Connection j = null;
+           PreparedStatement qry = null;
+           try {
+                j = DatabaseWrapper.getConnection();
+                qry = j.prepareStatement(query);
+                qry.setInt(1, projectID);
+                qry.execute();
+                return true;
+           } finally {
+                if (j != null) {
+                   DatabaseWrapper.closeDBConnection(j);
+                }
+                DatabaseWrapper.closePreparedStatement(qry);
+           }
+        }
+        return false;
    }
 
    /**
