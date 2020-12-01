@@ -92,8 +92,6 @@ public class CopyProjectForPracticerServlet extends HttpServlet {
                             String testingProp = "true";
                             JSONObject annoList = CreateAnnoListUtil.createEmptyAnnoList(thisProject.getProjectID(), canvasID, testingProp, new JSONArray(), uID, request.getLocalName());
                             URL postUrl = new URL(Constant.ANNOTATION_SERVER_ADDR + "/create.action");
-                            System.out.println("Create Anno List");
-                            System.out.println(annoList);
                             HttpURLConnection uc = (HttpURLConnection) postUrl.openConnection();
                             uc.setDoInput(true);
                             uc.setDoOutput(true);
