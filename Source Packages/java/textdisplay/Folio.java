@@ -151,6 +151,7 @@ public class Folio {
                if (rs.next()) {
                   archive = rs.getString("archive");
                }
+               /*
                if (linePositions.length == 0 && folioNumber > 0) {
                   //run the Line detector, this was a Folio we knew about but never ran detection on.
                   detect();
@@ -159,6 +160,7 @@ public class Folio {
                   rs = stmt3.executeQuery();
                   linePositions = loadLines(rs).toArray(new Line[0]);
                }
+               */
             }
          }
       }
