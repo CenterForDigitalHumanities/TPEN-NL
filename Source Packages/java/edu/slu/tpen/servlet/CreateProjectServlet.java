@@ -172,7 +172,7 @@ public class CreateProjectServlet extends HttpServlet {
                                     JSONObject image = images.getJSONObject(n);
                                     JSONObject resource = image.getJSONObject("resource");
                                     String imageName = resource.getString("@id");
-                                    int folioKey = textdisplay.Folio.createFolioRecordFromNewBerry(city, canvas.getString("label"), imageName, archive, -1, 0); //why imageName.replace('_', '&')
+                                    int folioKey = textdisplay.Folio.createFolioRecordFromNewBerry(city, canvas.getString("label"), imageName, archive, 98765, 0); //why imageName.replace('_', '&')
                                     ls_folios_keys.add(folioKey);
                                 }
                             }
