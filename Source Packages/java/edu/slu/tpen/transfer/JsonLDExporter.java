@@ -70,7 +70,7 @@ public class JsonLDExporter {
       //System.out.println("Back end has been told to export manifest "+proj.getProjectID()+" at "+dateFormat.format(date2));
       try {
          //System.out.println("Using SERVERURL to build name.  What is value: "+man.getProperties().getProperty("SERVERURL"));
-         String projName = man.getProperties().getProperty("SERVERURL") + proj.getProjectName();
+         String projName = man.getProperties().getProperty("SERVERURL") + proj.getProjectID();
          //System.out.println("What is the project name in exporter: "+projName);
          String[] supportedContexts = new String[3];
          supportedContexts[0] = "http://store.rerum.io/v1/context.json";
@@ -89,7 +89,7 @@ public class JsonLDExporter {
 
          List<Map<String, Object>> pageList = new ArrayList<>();
          for (Folio f : folios) {
-            pageList.add(buildPage(proj.getProjectID(), projName, f, u, man));
+            pageList.add(buildPage(proj.getProjectID(), f, u, man));
          }
          pages.put("canvases", pageList);
          manifestData.put("sequences", new Object[] { pages });
@@ -128,7 +128,7 @@ public class JsonLDExporter {
     * @return a map containing the relevant info, suitable for Jackson
     * serialisation
     */
-   private Map<String, Object> buildPage(int projID, String projName, Folio f, User u, TokenManager man) throws SQLException, IOException {
+   private Map<String, Object> buildPage(int projID, Folio f, User u, TokenManager man) throws SQLException, IOException {
        /*
         System.out.println("Exporter building canvas.  Here are its params");
         System.out.println("projectID: "+ projID);

@@ -264,7 +264,7 @@ public class Folio {
             stmt.setString(2, pageName);
             stmt.setString(3, imageName);
             stmt.setString(4, archive);
-            stmt.setInt(5, msID);
+            stmt.setInt(5, msID); //Note: This will always be -1.  We do not use the Manuscript data type.
             stmt.setString(6, imageName);
             stmt.setInt(7, sequence);
             stmt.execute();
