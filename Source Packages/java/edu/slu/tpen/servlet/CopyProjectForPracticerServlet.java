@@ -88,10 +88,12 @@ public class CopyProjectForPracticerServlet extends HttpServlet {
                             //Parse folio.getImageURL() to retrieve paleography pid, and then generate new canvas id
                             String imageURL = folio.getImageURL();
                             // use regex to extract paleography pid
-                            String canvasID = man.getProperties().getProperty("PALEO_CANVAS_ID_PREFIX") + imageURL.replaceAll("^.*(paleography[^/]+).*$", "/$1");
+                            String canvasID = man.getProperties().getProperty("PALEO_CANVAS_ID_PREFIX") + imageURL.replaceAll("^.*(paleography[^/]+).*$", "$1");
                             String testingProp = "true";
                             JSONObject annoList = CreateAnnoListUtil.createEmptyAnnoList(thisProject.getProjectID(), canvasID, testingProp, new JSONArray(), uID, request.getLocalName());
                             URL postUrl = new URL(Constant.ANNOTATION_SERVER_ADDR + "/create.action");
+                            System.out.println("Create Anno List");
+                            System.out.println(annoList);
                             HttpURLConnection uc = (HttpURLConnection) postUrl.openConnection();
                             uc.setDoInput(true);
                             uc.setDoOutput(true);
@@ -105,15 +107,17 @@ public class CopyProjectForPracticerServlet extends HttpServlet {
                             dataOut.writeBytes(annoList.toString());
                             dataOut.flush();
                             dataOut.close();
-//                            BufferedReader reader = new BufferedReader(new InputStreamReader(uc.getInputStream(),"utf-8"));
-//                            String line="";
-//                            StringBuilder sb = new StringBuilder();
-//                            while ((line = reader.readLine()) != null){  
-//                                //We are not doing anything with the response to this save.
-//                                System.out.println(line);
-//                                sb.append(line);
-//                            }
-//                            reader.close();
+                            BufferedReader reader = new BufferedReader(new InputStreamReader(uc.getInputStream(),"utf-8"));
+                            String line="";
+                            StringBuilder sb = new StringBuilder();
+                            while ((line = reader.readLine()) != null){  
+                                //We are not doing anything with the response to this save.
+                                System.out.println(line);
+                                sb.append(line);
+                            }
+                            System.out.println("RESPONSE");
+                            System.out.println(sb.toString());
+                            reader.close();
                             uc.disconnect();
                         }
                     }
