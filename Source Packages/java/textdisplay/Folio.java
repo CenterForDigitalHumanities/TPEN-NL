@@ -636,9 +636,9 @@ public class Folio {
     TokenManager man = null;
     String url = null;
       String query = "select uri from folios where pageNumber=?";
-      if (getArchive().equals("CEEC") || getArchive().equals("ecodices")) {
-         query = "select imageName from folios where pageNumber=?";
-      }
+//      if (getArchive().equals("CEEC") || getArchive().equals("ecodices")) {
+//         query = "select imageName from folios where pageNumber=?";
+//      }
       try (Connection j = DatabaseWrapper.getConnection()) {
          try (PreparedStatement ps = j.prepareStatement(query)) {
             ps.setInt(1, folioNumber);
