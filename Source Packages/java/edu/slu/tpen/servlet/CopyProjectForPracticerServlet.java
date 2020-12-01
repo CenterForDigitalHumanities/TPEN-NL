@@ -123,7 +123,7 @@ public class CopyProjectForPracticerServlet extends HttpServlet {
                     }
                     
                     String propVal = man.getProperties().getProperty("CREATE_PROJECT_RETURN_DOMAIN"); 
-                    result = "/project/" + thisProject.getProjectID();
+                    result = propVal + "/project/" + thisProject.getProjectID();
                 }
             } catch(Exception e){
                 e.printStackTrace();
