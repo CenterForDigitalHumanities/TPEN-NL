@@ -107,17 +107,17 @@ public class CopyProjectForPracticerServlet extends HttpServlet {
                             dataOut.writeBytes(annoList.toString());
                             dataOut.flush();
                             dataOut.close();
-                            BufferedReader reader = new BufferedReader(new InputStreamReader(uc.getInputStream(),"utf-8"));
-                            String line="";
-                            StringBuilder sb = new StringBuilder();
-                            while ((line = reader.readLine()) != null){  
-                                //We are not doing anything with the response to this save.
-                                System.out.println(line);
-                                sb.append(line);
-                            }
-                            System.out.println("RESPONSE");
-                            System.out.println(sb.toString());
-                            reader.close();
+//                            BufferedReader reader = new BufferedReader(new InputStreamReader(uc.getInputStream(),"utf-8"));
+//                            String line="";
+//                            StringBuilder sb = new StringBuilder();
+//                            while ((line = reader.readLine()) != null){  
+//                                //We are not doing anything with the response to this save.
+//                                System.out.println(line);
+//                                sb.append(line);
+//                            }
+//                            System.out.println("RESPONSE");
+//                            System.out.println(sb.toString());
+//                            reader.close();
                             uc.disconnect();
                         }
                     }
