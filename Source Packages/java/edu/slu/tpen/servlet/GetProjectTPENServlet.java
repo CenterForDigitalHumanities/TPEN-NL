@@ -37,7 +37,6 @@ import javax.servlet.http.HttpSession;
 import net.sf.json.JSONObject;
 import textdisplay.Folio;
 import textdisplay.Hotkey;
-import textdisplay.Manuscript;
 import textdisplay.Metadata;
 import textdisplay.Project;
 import textdisplay.ProjectPermissions;
@@ -107,13 +106,6 @@ public class GetProjectTPENServlet extends HttpServlet {
                             Folio[] folios = proj.getFolios();
                             jsonMap.put("ls_fs", gson.toJson(folios));
 //                            System.out.println("folios json ========== " + gson.toJson(folios));
-                            //get manuscripts
-                            List<Manuscript> ls_ms = new ArrayList();
-                            for(Folio f : folios){
-                                ls_ms.add(new Manuscript(f.folioNumber));
-                            }
-                            jsonMap.put("ls_ms", gson.toJson(ls_ms));
-//                            System.out.println("manuscript json ======= " + gson.toJson(ls_ms));
                             //get project header
                             String header = proj.getHeader();
                             jsonMap.put("ph", header);

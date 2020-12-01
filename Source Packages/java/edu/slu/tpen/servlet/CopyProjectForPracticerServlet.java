@@ -88,10 +88,7 @@ public class CopyProjectForPracticerServlet extends HttpServlet {
                             //Parse folio.getImageURL() to retrieve paleography pid, and then generate new canvas id
                             String imageURL = folio.getImageURL();
                             // use regex to extract paleography pid
-                            String canvasID = man.getProperties().getProperty("PALEO_CANVAS_ID_PREFIX") + imageURL.replaceAll("^.*(paleography[^/]+).*$", "/$1");
-                            //create canvas list for original canvas
-                            //String canvasID = man.getProperties().getProperty("SERVERURL") + templateProject.getProjectName() + "/canvas/" + URLEncoder.encode(folio.getPageName(), "UTF-8"); // for slu testing
-
+                            String canvasID = man.getProperties().getProperty("PALEO_CANVAS_ID_PREFIX") + imageURL.replaceAll("^.*(paleography[^/]+).*$", "$1");
                             String testingProp = "true";
                             JSONObject annoList = CreateAnnoListUtil.createEmptyAnnoList(thisProject.getProjectID(), canvasID, testingProp, new JSONArray(), uID, request.getLocalName());
                             URL postUrl = new URL(Constant.ANNOTATION_SERVER_ADDR + "/create.action");
@@ -116,13 +113,15 @@ public class CopyProjectForPracticerServlet extends HttpServlet {
 //                                System.out.println(line);
 //                                sb.append(line);
 //                            }
+//                            System.out.println("RESPONSE");
+//                            System.out.println(sb.toString());
 //                            reader.close();
                             uc.disconnect();
                         }
                     }
                     
                     String propVal = man.getProperties().getProperty("CREATE_PROJECT_RETURN_DOMAIN"); 
-                    result = "/project/" + thisProject.getProjectID();
+                    result = propVal + "/project/" + thisProject.getProjectID();
                 }
             } catch(Exception e){
                 e.printStackTrace();
