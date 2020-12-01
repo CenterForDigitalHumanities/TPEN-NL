@@ -635,35 +635,32 @@ public class Folio {
     * Get the url where an unscaled version of the image can be found
     */
    public String getImageURL() throws SQLException{
-    TokenManager man = null;
-    String url = null;
-      String query = "select uri from folios where pageNumber=?";
-//      if (getArchive().equals("CEEC") || getArchive().equals("ecodices")) {
-//         query = "select imageName from folios where pageNumber=?";
-//      }
-      try (Connection j = DatabaseWrapper.getConnection()) {
-         try (PreparedStatement ps = j.prepareStatement(query)) {
-            ps.setInt(1, folioNumber);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-               url = rs.getString(1);
-               if (url.startsWith("/")) {
-                  url = "file://" + url;
-               } else {
-                   try{
-                        man = new TokenManager();
-                        url = url.replace("http://t-pen.org/TPEN/", man.getProperties().getProperty("SERVERURL"));
+        TokenManager man = null;
+        String url = null;
+        String query = "select uri from folios where pageNumber=?";
+        try (Connection j = DatabaseWrapper.getConnection()) {
+            try (PreparedStatement ps = j.prepareStatement(query)) {
+                ps.setInt(1, folioNumber);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    url = rs.getString(1);
+                    if (url.startsWith("/")) {
+                       url = "file://" + url;
+                    } else {
+                        try{
+                            man = new TokenManager();
+                            // If it's a reference to the T-PEN pageImage servlet, point it at the
+                            // current T-PEN instance.     
+                            url = url.replace("http://t-pen.org/TPEN/", man.getProperties().getProperty("SERVERURL"));
+                        }
+                        catch(IOException e){
+                            url = null;
+                        }
                     }
-                    catch(IOException e){
-                        url = null;
-                    }
-                        // If it's a reference to the T-PEN pageImage servlet, point it at the
-                        // current T-PEN instance.                        
                 }
             }
-         }
-      }
-      return url;
+        }
+        return url;
    }
 
    /**
