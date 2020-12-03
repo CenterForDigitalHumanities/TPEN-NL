@@ -159,6 +159,10 @@
         <servlet-name>GetAllUserProjects</servlet-name>
         <servlet-class>edu.slu.tpen.servlet.GetAllUserProjects</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteProject</servlet-name>
+        <servlet-class>edu.slu.tpen.servlet.DeleteProject</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>imageResize</servlet-name>
         <url-pattern>/imageResize</url-pattern>
@@ -408,6 +412,10 @@
     <servlet-mapping>
         <servlet-name>GetAllUserProjects</servlet-name>
         <url-pattern>/projects</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteProject</servlet-name>
+        <url-pattern>/deleteProject</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>3000</session-timeout>

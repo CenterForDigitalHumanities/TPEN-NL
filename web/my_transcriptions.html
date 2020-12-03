@@ -83,11 +83,11 @@ and open the template in the editor.
             let projectName = "";
             return projectList =  await fetch(url)
                 .then(resp => {
-                    if(resp.status === 403){
+                    if(resp.status === 404){
                         alert("You must be logged in to see your project list")
                         return []
                     }
-                    else if(resp.status === 404){
+                    else if(resp.status === 403){
                         alert("You are not allowed to see this project list")
                         return []
                     }
@@ -111,12 +111,34 @@ and open the template in the editor.
             <div class="user-project" data-id="${b.id}">
                 <div class="inline"><a class="viewBtn" href="italianTranscription.html?projectID=${b.id}">View Transcription</a></div>
                 <div class="inline title">${b.name}</div>
-                <div class="inline"><a class="deleteBtn" onclick="deleteProject(${b.id});">Delete Transcription</a></div>
+                <div class="inline"><a class="deleteBtn" onclick="deleteProject(${b.id}, event);">Delete Transcription</a></div>
             </div>`, ``)
         }
         
-        let deleteProject = function(projectID){
-            alert("Delete Project is still being developed.  Stay tuned.")
+        let deleteProject = async function(projectID, event){
+            return await fetch("deleteProject?projectID="+projectID, {
+                method: "POST",
+                mode: "cors",
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8'
+                },
+                body: projectID
+            })
+            .then(resp => {
+                if(resp.ok){
+                   event.target.closest(".user-project").remove()
+                }
+                else if(resp.status === 404){
+                    alert("You must be logged in to delete a project")
+                }
+                else if(resp.status === 403){
+                    alert("You are not allowed to delete this project")
+                }
+            })
+            .catch(err => {
+                alert("Error deleting project")
+                return err
+            })
         }
         
         //Page initializer

@@ -75,7 +75,7 @@ public class GetAllUserProjects extends HttpServlet {
                    mapper.writeValue(resp.getOutputStream(), result);
                 }
                 else{
-                   resp.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                   resp.sendError(HttpServletResponse.SC_FORBIDDEN);
                 }
             } 
             catch (SQLException ex) {
@@ -83,7 +83,7 @@ public class GetAllUserProjects extends HttpServlet {
             }
         } 
         else{
-            resp.sendError(HttpServletResponse.SC_FORBIDDEN);
+            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED);
         }
    }
 
