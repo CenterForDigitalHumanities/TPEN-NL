@@ -16,7 +16,7 @@ and open the template in the editor.
     </head>
     <body>
         <header>Header</header>
-        <div class="record" data-id="maybe">
+        <div id="projectsList" class="record" data-id="maybe">
             <h4>A Label</h4>
             <div class="row">
                 <img class="thumbnail" src="http://placekitten.com/65/80">
@@ -30,44 +30,35 @@ and open the template in the editor.
         <footer>Header</footer>
     </body>
     <script type="text/javascript">
-        //getAllProjectsForThisUserFromDataset("please")
-        function getUserProjects(projectID, userID, username){
-            var url = "projects?username="+username;
-            //How can I check if current user is the admin of the project? 
-            var projectName = "";
-            $.ajax({
-                url: url,
-                type:"GET",
-                success: function(data){
-                    var userProjects = data;
-                    $.each(userProjects, function(){
-                        //the project name is properly decoded here.
-                        projectName = this.name;
-                        projectName=decodeURIComponent(projectName);
-                        var projectID = this.id;
-                        projectID = projectID.replace("projects/", "");
-                        //console.log('User is admin: '+userIsProjectAdmin)
-                        if(!userIsProjectAdmin){
-                            $('#projectList').append("<li><a title=\"" + projectName + "\" class=\"tpenButton projectTitle\" href='project.html?projectID="+projectID+"'>"+projectName+"</a></li>");
-                        }
-                        else{
-                            $('#projectList').append("<li projectID='"+projectID+"'>\n\
-                            <a title=\"" + projectName + "\" class=\"tpenButton projectTitle\" href='project.html?projectID="+projectID+"'> "+projectName+" </a>\n\
-                            <span style='z-index:1; cursor:pointer;' title=\"delete project\" class=\"delete ui-icon ui-icon-closethick right\" onclick=\"deleteProject("+projectID+");\"></span>\n\
-                            </li>");
-                    //<span style='z-index:1000; cursor:pointer;' title=\"delete project\" class=\"delete ui-icon ui-icon-closethick right\" onclick=\"deleteProject();\"></span>
-                        }
-                    });
-                },
-                error: function(jqXHR,error, errorThrown) {  
-                    if(jqXHR.status && jqXHR.status==400){
-                         alert(jqXHR.responseText); 
-                    }
-                    else if (jqXHR.status && jqXHR.status==404){
-                        alert("A project does not exist with this ID:"+projectID+".  Try with a different ID.");
-                    }
-                }
-            });
+        let getUserProjects = async function(lookupID){
+            let url = "projects?uid="+lookupID;
+            let projectName = "";
+            return projectList =  await fetch(url)
+                .then(resp => resp.json())
+                .catch(err => {return err})
         }
+        
+        let formatAndRenderProjects = function(projectList){
+             projectsList.innerHTML = projectList.reduce((a, b) => a += `
+                <div class="record" data-id="${b.id}">
+                    <h4>${b.name}</h4>
+                    <div class="row">
+                        <img class="thumbnail" src="http://placekitten.com/65/80">
+                        <dl>
+                        </dl>
+                    </div>
+                    <div class="btn-group">
+                        <a href="./newberryTrans.html?projectID=${b.id}">View Transcription</a>
+                        <span style='z-index:1; cursor:pointer;' title=\"delete project\" class=\"delete ui-icon ui-icon-closethick right\" onclick=\"deleteProject("${b.id}");\">Delete Transcription</span>
+                    </div>
+                </div>`, ``)
+        }
+        
+        getUserProjects().then(projects => {formatAndRenderProjects(projects)})
+        .catch(err => {
+            alert("Could not get user projects.")
+            console.error(err)
+        })
+
     </script>
 </html>

@@ -25,14 +25,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import static edu.slu.util.LangUtils.buildQuickMap;
-import static edu.slu.util.ServletUtils.getUID;
+import edu.slu.util.ServletUtils;
 import static edu.slu.util.ServletUtils.reportInternalError;
 import textdisplay.Project;
 import user.User;
 
 
 /**
- * Servlet to retrieve information about all a user's projects.
+ * Retrieve all projects that belong to a given user.
  * This is a transformation of tpen function to web service. It's using tpen MySQL database. 
  * @author tarkvara
  */
@@ -49,24 +49,32 @@ public class GetAllUserProjects extends HttpServlet {
     */
    @Override
    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int uid = getUID(req, resp);
-        if (uid > 0) {
-           resp.setContentType("application/json");
+        int session_userID = ServletUtils.getUID(req, resp); //The logged in user that asked for the list
+        int lookup_userID = Integer.parseInt(req.getParameter("uid")); //The userID whose projects list the requestor wants
+        req.setCharacterEncoding("UTF-8");
+        if (session_userID > 0) {
+           resp.setContentType("application/json; charset=utf-8");
            try {
-              User u = new User(uid);
-              Project[] projs = u.getUserProjects();
-              List<Map<String, Object>> result = new ArrayList<>();
-              for (Project p: projs) {
-                 result.add(buildQuickMap("id", "projects/" + p.getProjectID(), "name", p.getProjectName()));
-              }
-              ObjectMapper mapper = new ObjectMapper();
-              mapper.writeValue(resp.getOutputStream(), result);
+                User requestor = new User(session_userID);
+                User lookup = new User(lookup_userID);
+                if(requestor.isAdmin() || session_userID == lookup_userID){
+                  Project[] projs = lookup.getUserProjects();
+                  List<Map<String, Object>> result = new ArrayList<>();
+                  for (Project p: projs) {
+                     result.add(buildQuickMap("id", "projects/" + p.getProjectID(), "name", p.getProjectName()));
+                  }
+                  ObjectMapper mapper = new ObjectMapper();
+                  mapper.writeValue(resp.getOutputStream(), result);
+                }
+                else{
+                  resp.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                }
            } catch (SQLException ex) {
               reportInternalError(resp, ex);
            }
         } 
-        else {
-            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+        else{
+            resp.sendError(HttpServletResponse.SC_FORBIDDEN);
         }
    }
 
