@@ -31,5 +31,43 @@ and open the template in the editor.
     </body>
     <script type="text/javascript">
         //getAllProjectsForThisUserFromDataset("please")
+        function getUserProjects(projectID, userID, username){
+            var url = "projects?username="+username;
+            //How can I check if current user is the admin of the project? 
+            var projectName = "";
+            $.ajax({
+                url: url,
+                type:"GET",
+                success: function(data){
+                    var userProjects = data;
+                    $.each(userProjects, function(){
+                        //the project name is properly decoded here.
+                        projectName = this.name;
+                        projectName=decodeURIComponent(projectName);
+                        var projectID = this.id;
+                        projectID = projectID.replace("projects/", "");
+                        //console.log('User is admin: '+userIsProjectAdmin)
+                        if(!userIsProjectAdmin){
+                            $('#projectList').append("<li><a title=\"" + projectName + "\" class=\"tpenButton projectTitle\" href='project.html?projectID="+projectID+"'>"+projectName+"</a></li>");
+                        }
+                        else{
+                            $('#projectList').append("<li projectID='"+projectID+"'>\n\
+                            <a title=\"" + projectName + "\" class=\"tpenButton projectTitle\" href='project.html?projectID="+projectID+"'> "+projectName+" </a>\n\
+                            <span style='z-index:1; cursor:pointer;' title=\"delete project\" class=\"delete ui-icon ui-icon-closethick right\" onclick=\"deleteProject("+projectID+");\"></span>\n\
+                            </li>");
+                    //<span style='z-index:1000; cursor:pointer;' title=\"delete project\" class=\"delete ui-icon ui-icon-closethick right\" onclick=\"deleteProject();\"></span>
+                        }
+                    });
+                },
+                error: function(jqXHR,error, errorThrown) {  
+                    if(jqXHR.status && jqXHR.status==400){
+                         alert(jqXHR.responseText); 
+                    }
+                    else if (jqXHR.status && jqXHR.status==404){
+                        alert("A project does not exist with this ID:"+projectID+".  Try with a different ID.");
+                    }
+                }
+            });
+        }
     </script>
 </html>
