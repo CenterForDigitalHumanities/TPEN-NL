@@ -6,28 +6,70 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>My Transcriptions</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <!--<script src="js/manuscriptFilters.js" type="text/javascript"></script>-->
-        <script src="js/tpen.js" type="text/javascript"></script>
-        <!--<link rel="stylesheet" href="css/tpen.css" type="text/css" media="screen, projection">-->
         <link rel="stylesheet" href="css/style.css" type="text/css" media="screen, projection">
+        <style>
+            .user-project{
+                width: auto;
+                margin : 0 auto;
+                max-width: 75em;
+                border : 1px solid lightgray;
+                text-align: center;
+                padding: 8px 0px;
+            }
+            .user-project:nth-child(even) {background-color: white;}
+            .user-project:nth-child(odd) {background-color: lightgray;}
+            .viewBtn{
+                display : inline-flex;
+                background: white;
+                color: darkorange;
+                border: 1px solid darkorange;
+                padding: 3px 6px;
+                text-align: center;
+                font-weight: bold;
+                cursor: pointer;
+                text-decoration: underline;
+                font-size: 0.75em;
+            }
+            .viewBtn:hover{
+                color : white;
+                background-color: darkorange;
+            }
+            .deleteBtn{
+                display : inline-flex;
+                background: white;
+                color: #264aa0;
+                border: 1px solid #264aa0;
+                padding: 3px 6px;
+                text-align: center;
+                font-weight: bold;
+                cursor: pointer;
+                text-decoration: underline;
+                font-size: 0.75em;
+            }
+            .deleteBtn:hover{
+                color : white;
+                background-color: #264aa0;
+            }
+            .inline{
+                position: relative;
+                display : inline-block;
+                margin : 0px 6px;
+            }
+            .inline.title{
+                width : 55em;
+            }
+        </style>
     </head>
     <body>
         <header>Header</header>
-        <div id="projectsList" class="record" data-id="maybe">
-            <h4>A Label</h4>
-            <div class="row">
-                <img class="thumbnail" src="http://placekitten.com/65/80">
-                <dl>
-                </dl>
-            </div>
-            <div class="btn-group">
-                <a href="somewhere">Button</a> <a href="somewhere">DO</a>
-            </div>
+        <h1>My Transcriptions</h1>
+        <div id="projectsList">
+            Gathering projects...
         </div>
-        <footer>Header</footer>
+        <footer>Footer</footer>
     </body>
     <script type="text/javascript">
         /**
@@ -36,11 +78,27 @@ and open the template in the editor.
          * @returns {Promise}
          */
         let getUserProjects = async function(lookupID){
+            //Note that for now the use case for providing the userID is not active.  The logged in user wants their own projects.
             let url = "projects";
             let projectName = "";
             return projectList =  await fetch(url)
-                .then(resp => resp.json())
-                .catch(err => {return err})
+                .then(resp => {
+                    if(resp.status === 403){
+                        alert("You must be logged in to see your project list")
+                        return []
+                    }
+                    else if(resp.status === 404){
+                        alert("You are not allowed to see this project list")
+                        return []
+                    }
+                    else{
+                        return resp.json()
+                    }
+                })
+                .catch(err => {
+                    alert("Error retrieving and parsing project list.")
+                    return err
+                })
         }
         
         /**
@@ -50,24 +108,20 @@ and open the template in the editor.
         let formatAndRenderProjects = function(projectList){
             //FIXME how do I know if a given project is French, Italian, Spanish, etc.
             projectsList.innerHTML = projectList.reduce((a, b) => a += `
-            <div class="record" data-id="${b.id}">
-                <h4>${b.name}</h4>
-                <div class="row">
-                    <img class="thumbnail" src="http://placekitten.com/65/80">
-                    <dl>
-                    </dl>
-                </div>
-                <div class="btn-group">
-                    <a href="./newberryTrans.html?projectID=${b.id}">View Transcription</a>
-                    <span style='z-index:1; cursor:pointer;' title=\"delete project\" class=\"delete ui-icon ui-icon-closethick right\" onclick=\"deleteProject("${b.id}");\">Delete Transcription</span>
-                </div>
+            <div class="user-project" data-id="${b.id}">
+                <div class="inline"><a class="viewBtn" href="italianTranscription.html?projectID=${b.id}">View Transcription</a></div>
+                <div class="inline title">${b.name}</div>
+                <div class="inline"><a class="deleteBtn" onclick="deleteProject(${b.id});">Delete Transcription</a></div>
             </div>`, ``)
         }
         
+        let deleteProject = function(projectID){
+            alert("Delete Project is still being developed.  Stay tuned.")
+        }
+        
         //Page initializer
-        getUserProjects(000).then(projects => {formatAndRenderProjects(projects)})
+        getUserProjects(007).then(projects => {formatAndRenderProjects(projects)})
         .catch(err => {
-            alert("Could not get user projects.")
             console.error(err)
         })
 

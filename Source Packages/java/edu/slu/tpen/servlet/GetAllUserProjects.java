@@ -50,36 +50,37 @@ public class GetAllUserProjects extends HttpServlet {
    @Override
    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int session_userID = ServletUtils.getUID(req, resp); //The logged in user that asked for the list
-        int lookup_userID; //The userID whose projects list the requestor wants
-        if(null == req.getParameter("uid")){
-            //Then the user that is logged in wants their own project list
-            lookup_userID = session_userID;
-        }
-        else{
-            //The user that is logged in is asking for another user's projects list.
-            lookup_userID = Integer.parseInt(req.getParameter("uid"));
-        }
+        resp.setContentType("application/json; charset=utf-8");
         req.setCharacterEncoding("UTF-8");
-        if (session_userID > 0) {
-           resp.setContentType("application/json; charset=utf-8");
-           try {
+        if(session_userID > 0) {
+            int lookup_userID; //The userID whose projects list the requestor wants
+            if(null == req.getParameter("uid")){
+                //Then the user that is logged in wants their own project list
+                lookup_userID = session_userID;
+            }
+            else{
+                //The user that is logged in is asking for a different user's projects list.
+                lookup_userID = Integer.parseInt(req.getParameter("uid"));
+            }
+            try {
                 User requestor = new User(session_userID);
                 User lookup = new User(lookup_userID);
                 if(requestor.isAdmin() || session_userID == lookup_userID){
-                  Project[] projs = lookup.getUserProjects();
-                  List<Map<String, Object>> result = new ArrayList<>();
-                  for (Project p: projs) {
-                     result.add(buildQuickMap("id", "projects/" + p.getProjectID(), "name", p.getProjectName()));
-                  }
-                  ObjectMapper mapper = new ObjectMapper();
-                  mapper.writeValue(resp.getOutputStream(), result);
+                   Project[] projs = lookup.getUserProjects();
+                   List<Map<String, Object>> result = new ArrayList<>();
+                   for (Project p: projs) {
+                      result.add(buildQuickMap("id", ""+p.getProjectID(), "name", p.getProjectName()));
+                   }
+                   ObjectMapper mapper = new ObjectMapper();
+                   mapper.writeValue(resp.getOutputStream(), result);
                 }
                 else{
-                  resp.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                   resp.sendError(HttpServletResponse.SC_UNAUTHORIZED);
                 }
-           } catch (SQLException ex) {
-              reportInternalError(resp, ex);
-           }
+            } 
+            catch (SQLException ex) {
+                reportInternalError(resp, ex);
+            }
         } 
         else{
             resp.sendError(HttpServletResponse.SC_FORBIDDEN);
