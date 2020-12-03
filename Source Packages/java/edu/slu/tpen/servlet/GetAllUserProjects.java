@@ -50,7 +50,15 @@ public class GetAllUserProjects extends HttpServlet {
    @Override
    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int session_userID = ServletUtils.getUID(req, resp); //The logged in user that asked for the list
-        int lookup_userID = Integer.parseInt(req.getParameter("uid")); //The userID whose projects list the requestor wants
+        int lookup_userID; //The userID whose projects list the requestor wants
+        if(null == req.getParameter("uid")){
+            //Then the user that is logged in wants their own project list
+            lookup_userID = session_userID;
+        }
+        else{
+            //The user that is logged in is asking for another user's projects list.
+            lookup_userID = Integer.parseInt(req.getParameter("uid"));
+        }
         req.setCharacterEncoding("UTF-8");
         if (session_userID > 0) {
            resp.setContentType("application/json; charset=utf-8");

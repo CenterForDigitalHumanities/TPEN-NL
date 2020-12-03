@@ -30,31 +30,42 @@ and open the template in the editor.
         <footer>Header</footer>
     </body>
     <script type="text/javascript">
+        /**
+         * Request for all projects that belong to the provided userID.
+         * @param {type} lookupID The user id whose project list needs to be retrieved.  
+         * @returns {Promise}
+         */
         let getUserProjects = async function(lookupID){
-            let url = "projects?uid="+lookupID;
+            let url = "projects";
             let projectName = "";
             return projectList =  await fetch(url)
                 .then(resp => resp.json())
                 .catch(err => {return err})
         }
         
+        /**
+         * Turn project data into a rendered HTML project list
+         * @param {JSONArray} Array of project data, each data node is a JSON Object.
+         */
         let formatAndRenderProjects = function(projectList){
-             projectsList.innerHTML = projectList.reduce((a, b) => a += `
-                <div class="record" data-id="${b.id}">
-                    <h4>${b.name}</h4>
-                    <div class="row">
-                        <img class="thumbnail" src="http://placekitten.com/65/80">
-                        <dl>
-                        </dl>
-                    </div>
-                    <div class="btn-group">
-                        <a href="./newberryTrans.html?projectID=${b.id}">View Transcription</a>
-                        <span style='z-index:1; cursor:pointer;' title=\"delete project\" class=\"delete ui-icon ui-icon-closethick right\" onclick=\"deleteProject("${b.id}");\">Delete Transcription</span>
-                    </div>
-                </div>`, ``)
+            //FIXME how do I know if a given project is French, Italian, Spanish, etc.
+            projectsList.innerHTML = projectList.reduce((a, b) => a += `
+            <div class="record" data-id="${b.id}">
+                <h4>${b.name}</h4>
+                <div class="row">
+                    <img class="thumbnail" src="http://placekitten.com/65/80">
+                    <dl>
+                    </dl>
+                </div>
+                <div class="btn-group">
+                    <a href="./newberryTrans.html?projectID=${b.id}">View Transcription</a>
+                    <span style='z-index:1; cursor:pointer;' title=\"delete project\" class=\"delete ui-icon ui-icon-closethick right\" onclick=\"deleteProject("${b.id}");\">Delete Transcription</span>
+                </div>
+            </div>`, ``)
         }
         
-        getUserProjects().then(projects => {formatAndRenderProjects(projects)})
+        //Page initializer
+        getUserProjects(000).then(projects => {formatAndRenderProjects(projects)})
         .catch(err => {
             alert("Could not get user projects.")
             console.error(err)
