@@ -29,7 +29,7 @@ import edu.slu.util.ServletUtils;
 import static edu.slu.util.ServletUtils.reportInternalError;
 import textdisplay.Project;
 import user.User;
-
+import textdisplay.Folio;
 
 /**
  * Retrieve all projects that belong to a given user.
@@ -66,13 +66,18 @@ public class GetAllUserProjects extends HttpServlet {
                 User requestor = new User(session_userID);
                 User lookup = new User(lookup_userID);
                 if(requestor.isAdmin() || session_userID == lookup_userID){
-                   Project[] projs = lookup.getUserProjects();
-                   List<Map<String, Object>> result = new ArrayList<>();
-                   for (Project p: projs) {
-                      result.add(buildQuickMap("id", ""+p.getProjectID(), "name", p.getProjectName()));
-                   }
-                   ObjectMapper mapper = new ObjectMapper();
-                   mapper.writeValue(resp.getOutputStream(), result);
+                    Project[] projs = lookup.getUserProjects();
+                    List<Map<String, Object>> result = new ArrayList<>();
+                    //Would decision to pick interface be best as a helper function??
+                    for (Project p: projs) {
+                        int folioNum = p.firstPage();
+                        if(folioNum > -1){
+                            String interfaceLink = p.mintInterfaceLinkFromFolio(folioNum);
+                            result.add(buildQuickMap("id", ""+p.getProjectID(), "name", p.getProjectName(), "interface", interfaceLink));
+                        }
+                    }
+                    ObjectMapper mapper = new ObjectMapper();
+                    mapper.writeValue(resp.getOutputStream(), result);
                 }
                 else{
                    resp.sendError(HttpServletResponse.SC_FORBIDDEN);
