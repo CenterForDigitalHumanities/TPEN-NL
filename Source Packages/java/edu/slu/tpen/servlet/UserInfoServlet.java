@@ -40,6 +40,7 @@ public class UserInfoServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
         int UID = ServletUtils.getUID(request, response);
+        response.addHeader("Access-Control-Allow-Origin", "*"); 
         if(null != session && UID > 0){
             try {
                 User user = new User(UID);
