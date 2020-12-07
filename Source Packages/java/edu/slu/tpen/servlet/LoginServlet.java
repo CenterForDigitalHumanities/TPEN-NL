@@ -105,7 +105,7 @@ public class LoginServlet extends HttpServlet {
             System.out.println(u.getUID());
             if (u.getUID() > 0) {
                HttpSession sess = req.getSession();
-               sess.setAttribute("UID", u.getUID());
+               sess.setAttribute("UID", ""+u.getUID());
 //               System.out.println("HAve UID!!!!!!!!!!");
 //               System.out.println(u.getUID());
 //               System.out.println(sess.getAttribute("UID"));
