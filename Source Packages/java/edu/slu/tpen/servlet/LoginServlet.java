@@ -54,6 +54,8 @@ public class LoginServlet extends HttpServlet {
    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
       try {
          String mail = null, password = null;
+         resp.addHeader("Access-Control-Allow-Origin", "*");
+         resp.addHeader("Access-Control-Allow-Headers", "Content-Type");
          if (req.getContentLength() > 0) {
             String contentType = getBaseContentType(req);
             if (contentType.equals("application/json")) {
@@ -91,10 +93,10 @@ public class LoginServlet extends HttpServlet {
             resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
          } else {
             // Only supplied one of user-id and password.
-            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
          }
       } catch (NoSuchAlgorithmException ex) {
-         reportInternalError(resp, ex);
+            reportInternalError(resp, ex);
       }
    }
 
