@@ -30,6 +30,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static edu.slu.util.ServletUtils.getBaseContentType;
 import static edu.slu.util.ServletUtils.reportInternalError;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import javax.servlet.ServletInputStream;
+import net.sf.json.JSONObject;
 import user.User;
 
 
@@ -52,34 +56,60 @@ public class LoginServlet extends HttpServlet {
     */
    @Override
    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.addHeader("Access-Control-Allow-Origin", "*");
+        resp.addHeader("Access-Control-Allow-Headers", "Content-Type");
+        resp.addHeader("Access-Control-Allow-Methods", "*");
+        System.out.println("LOGIN SERVLET!");
       try {
          String mail = null, password = null;
-         resp.addHeader("Access-Control-Allow-Origin", "*");
-         resp.addHeader("Access-Control-Allow-Headers", "Content-Type");
          if (req.getContentLength() > 0) {
             String contentType = getBaseContentType(req);
+            System.out.println("ctype");
+            System.out.println(contentType);
             if (contentType.equals("application/json")) {
-               ObjectMapper mapper = new ObjectMapper();
-               Map<String, String> creds = mapper.readValue(req.getInputStream(), new TypeReference<Map<String, String>>() {});
-               mail = creds.get("mail");
-               password = creds.get("password");
-            }else if(contentType.equals("application/x-www-form-urlencoded")){
+                StringBuilder bodyString;
+                BufferedReader bodyReader;
+                ServletInputStream input = req.getInputStream();
+                InputStreamReader reader = new InputStreamReader(input, "utf-8");
+                bodyReader = new BufferedReader(reader);
+                bodyString = new StringBuilder();
+                String line;
+                while ((line = bodyReader.readLine()) != null)
+                {
+                  bodyString.append(line);
+                }
+                System.out.println("body string");
+                System.out.println(bodyString.toString());
+               JSONObject creds = JSONObject.fromObject(bodyString.toString());
+               System.out.println("creds");
+               System.out.println(creds);
+               mail = creds.getString("mail");
+               password = creds.getString("password");
+            }
+            else if(contentType.equals("application/x-www-form-urlencoded")){
                 mail = req.getParameter("uname");
                 password = req.getParameter("password");
             }
-         } else {
+         } 
+         else {
             // Deprecated approach where user-name and password are passed on the query string.
             mail = req.getParameter("uname");
             password = req.getParameter("password");
          }
+         System.out.println("usr and pwd");
+         System.out.println(mail);
+         System.out.println(password);
          if (mail != null && password != null) {
             User u = new User(mail, password);
+            System.out.println("User ID");
+            System.out.println(u.getUID());
             if (u.getUID() > 0) {
-               HttpSession sess = req.getSession(true);
+               HttpSession sess = req.getSession();
                sess.setAttribute("UID", u.getUID());
 //               System.out.println("HAve UID!!!!!!!!!!");
 //               System.out.println(u.getUID());
 //               System.out.println(sess.getAttribute("UID"));
+                System.out.println("Login Servlet Session ID: "+sess.getId());
                PrintWriter writer = resp.getWriter();
                writer.print(sess.getId());
             } else {
@@ -93,10 +123,10 @@ public class LoginServlet extends HttpServlet {
             resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
          } else {
             // Only supplied one of user-id and password.
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED);
          }
       } catch (NoSuchAlgorithmException ex) {
-            reportInternalError(resp, ex);
+         reportInternalError(resp, ex);
       }
    }
 
@@ -109,4 +139,14 @@ public class LoginServlet extends HttpServlet {
    public String getServletInfo() {
       return "T-PEN Login Servlet";
    }
+   
+   @Override
+   protected void doOptions(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+            //These headers must be present to pass browser preflight for CORS
+            response.addHeader("Access-Control-Allow-Origin", "*");
+            response.addHeader("Access-Control-Allow-Headers", "*");
+            response.addHeader("Access-Control-Allow-Methods", "*");
+            response.setStatus(200);
+    }
 }

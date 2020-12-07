@@ -39,9 +39,20 @@ public class UserInfoServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
+        
         int UID = ServletUtils.getUID(request, response);
         response.addHeader("Access-Control-Allow-Origin", "*");
         response.addHeader("Access-Control-Allow-Headers", "Content-Type");
+        response.addHeader("Access-Control-Allow-Methods", "*");
+        System.out.println("Do we have session?");
+        if(null != session){
+            System.out.println("Session found in /geti");
+            System.out.println("Session ID: "+session.getId());
+        }
+        else{
+            System.out.println("No Session");  
+        }
+        System.out.println("UID: "+UID);
         if(null != session && UID > 0){
             try {
                 User user = new User(UID);
@@ -61,6 +72,16 @@ public class UserInfoServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doPost(req, resp); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    @Override
+    protected void doOptions(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+            //These headers must be present to pass browser preflight for CORS
+            response.addHeader("Access-Control-Allow-Origin", "*");
+            response.addHeader("Access-Control-Allow-Headers", "*");
+            response.addHeader("Access-Control-Allow-Methods", "*");
+            response.setStatus(200);
     }
     
 }
