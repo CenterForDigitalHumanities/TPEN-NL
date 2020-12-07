@@ -1683,5 +1683,24 @@ public class Project {
       }
    }
    
+   public String mintInterfaceLinkFromFolio(int folioNum) throws SQLException{
+        Folio f = new Folio(folioNum);
+        String imageURL = f.getImageURL();
+        String interfaceLink = "";
+        if(imageURL.contains("italianpaleography:")){
+            //https://iiif.library.utoronto.ca/image/v2/italianpaleography:IP_003_001/full/512,/0/default.jpg
+            interfaceLink = "italianTranscription.html?projectID="+projectID;
+        }
+        else if(imageURL.contains("paleography:")){
+            //https://iiif.library.utoronto.ca/v2/paleography:2086/full/2000,/0/default.jpg
+            //https://paleography.library.utoronto.ca/islandora/object/paleography:1826/datastream/JPGHIRES/view
+            interfaceLink = "newberryTrans.html?projectID="+projectID;
+        }
+        else{
+            //Hmm, this is bad.
+        }
+        return interfaceLink;
+   }
+   
    private static final Logger LOG = Logger.getLogger(Project.class.getName());
 }
