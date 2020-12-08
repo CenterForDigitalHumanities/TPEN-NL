@@ -5840,14 +5840,14 @@ function activateScrollView(){
         var devOrProd = document.location.host;
         // ex. transcribe-dev.library.utoronto.ca or transcribe.library.utoronto.ca
         var lang = document.location.pathname;
-        // ex. /paleography/newberryTrans.html
+        // ex. /TPEN-NL/newberryTrans.html
         var parojectLink = "";
         if(devOrProd.indexOf("transcribe-dev.library") > -1){
             switch(lang){
-                case "/paleography/newberryTrans.html":
+                case "/TPEN-NL/newberryTrans.html":
                     homeLink = "https://centerfordigitalhumanities.github.io/Newberry-French-paleography/";
                 break;
-                case "/paleography/italianTranscription.html":
+                case "/TPEN-NL/italianTranscription.html":
                     homeLink ="https://centerfordigitalhumanities.github.io/Newberry-Italian-paleography/";
                 break;
                 default:
@@ -5856,10 +5856,10 @@ function activateScrollView(){
         }
         else if(devOrProd.indexOf("transcribe.library") > -1){
             switch(lang){
-                case "/paleography/newberryTrans.html":
+                case "/TPEN-NL/newberryTrans.html":
                     homeLink = "https://centerfordigitalhumanities.github.io/Newberry-French-paleography/";
                 break;
-                case "/paleography/italianTranscription.html":
+                case "/TPEN-NL/italianTranscription.html":
                     homeLink ="https://centerfordigitalhumanities.github.io/Newberry-Italian-paleography/";
                 break;
                 default:
@@ -5869,10 +5869,10 @@ function activateScrollView(){
         else{
             //We are not in an environment we do not expect.  For now, let's just point to paleography dev.
             switch(lang){
-                case "/paleography/newberryTrans.html":
+                case "/TPEN-NL/newberryTrans.html":
                     homeLink = "https://centerfordigitalhumanities.github.io/Newberry-French-paleography/";
                 break;
-                case "/paleography/italianTranscription.html":
+                case "/TPEN-NL/italianTranscription.html":
                     homeLink ="https://centerfordigitalhumanities.github.io/Newberry-Italian-paleography/";
                 break;
                 default:
