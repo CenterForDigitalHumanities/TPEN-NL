@@ -3083,7 +3083,7 @@ function splitPage(event, tool) {
         if(currentCanvasLabel.split("_").length - 1 === 2){ //Must be in format like FP_000_000
             //We need to get the UTL canvas id for this particular canvas to support direct linking to the transcription for this object
             utlID = currentCanvasLabel.substring(0,currentCanvasLabel.lastIndexOf("_")).toLowerCase();
-            iframeDirectLink = buildIframeDirectLink("content/transcript_"+utlID+"?response_type=embed");
+            iframeDirectLink = buildIframeDirectLink("transcript/"+utlID+"?response_type=embed");
             $("#partialTransSplit").children("iframe").attr("data_src", iframeDirectLink);
         }
         else{
@@ -3100,7 +3100,7 @@ function splitPage(event, tool) {
         if(currentCanvasLabel.split("_").length - 1 === 2){ //Must be in format like FP_000_000
             //We need to get the UTL canvasID for this particular canvas to support direct linking to the essay for this object
             utlID = currentCanvasLabel.substring(0, currentCanvasLabel.lastIndexOf("_")).toLowerCase();
-            iframeDirectLink = buildIframeDirectLink("content/about_"+utlID+"?response_type=embed");
+            iframeDirectLink = buildIframeDirectLink("essay/"+utlID+"?response_type=embed");
             $("#essaySplit").children("iframe").attr("data_src", iframeDirectLink);
         }
         else{
