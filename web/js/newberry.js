@@ -5881,8 +5881,8 @@ function activateScrollView(){
         }
         setIframeLinks();
         $("#homeBtn").attr("href", homeLink);
-        $("#projectsBtn").attr("href", "/my_transcriptions.html");
-        $("#helpContact").attr("href", "/contact.html");
+        $("#projectsBtn").attr("href", homeLink+"/my_transcriptions.html");
+        $("#helpContact").attr("href", homeLink+"/contact.html");
     }
     
     /*
