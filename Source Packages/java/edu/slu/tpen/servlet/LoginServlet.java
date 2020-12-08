@@ -59,13 +59,10 @@ public class LoginServlet extends HttpServlet {
         resp.addHeader("Access-Control-Allow-Origin", "*");
         resp.addHeader("Access-Control-Allow-Headers", "Content-Type");
         resp.addHeader("Access-Control-Allow-Methods", "*");
-        System.out.println("LOGIN SERVLET!");
       try {
          String mail = null, password = null;
          if (req.getContentLength() > 0) {
             String contentType = getBaseContentType(req);
-            System.out.println("ctype");
-            System.out.println(contentType);
             if (contentType.equals("application/json")) {
                 StringBuilder bodyString;
                 BufferedReader bodyReader;
@@ -78,11 +75,7 @@ public class LoginServlet extends HttpServlet {
                 {
                   bodyString.append(line);
                 }
-                System.out.println("body string");
-                System.out.println(bodyString.toString());
                JSONObject creds = JSONObject.fromObject(bodyString.toString());
-               System.out.println("creds");
-               System.out.println(creds);
                mail = creds.getString("mail");
                password = creds.getString("password");
             }
@@ -96,20 +89,11 @@ public class LoginServlet extends HttpServlet {
             mail = req.getParameter("uname");
             password = req.getParameter("password");
          }
-         System.out.println("usr and pwd");
-         System.out.println(mail);
-         System.out.println(password);
          if (mail != null && password != null) {
             User u = new User(mail, password);
-            System.out.println("User ID");
-            System.out.println(u.getUID());
             if (u.getUID() > 0) {
                HttpSession sess = req.getSession();
                sess.setAttribute("UID", ""+u.getUID());
-//               System.out.println("HAve UID!!!!!!!!!!");
-//               System.out.println(u.getUID());
-//               System.out.println(sess.getAttribute("UID"));
-                System.out.println("Login Servlet Session ID: "+sess.getId());
                PrintWriter writer = resp.getWriter();
                writer.print(sess.getId());
             } else {
@@ -117,7 +101,6 @@ public class LoginServlet extends HttpServlet {
             }
          } else if (mail == null && password == null) {
             // Passing null data indicates a logout.
-            // System.out.println("Email and pwd null   !!!!!!!!!!");
             HttpSession sess = req.getSession(true);
             sess.removeAttribute("UID");
             resp.setStatus(HttpServletResponse.SC_NO_CONTENT);

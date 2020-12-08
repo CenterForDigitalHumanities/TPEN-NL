@@ -44,15 +44,6 @@ public class UserInfoServlet extends HttpServlet {
         response.addHeader("Access-Control-Allow-Origin", "*");
         response.addHeader("Access-Control-Allow-Headers", "Content-Type");
         response.addHeader("Access-Control-Allow-Methods", "*");
-        System.out.println("Do we have session?");
-        if(null != session){
-            System.out.println("Session found in /geti");
-            System.out.println("Session ID: "+session.getId());
-        }
-        else{
-            System.out.println("No Session");  
-        }
-        System.out.println("UID: "+UID);
         if(null != session && UID > 0){
             try {
                 User user = new User(UID);
