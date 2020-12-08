@@ -5845,44 +5845,44 @@ function activateScrollView(){
         if(devOrProd.indexOf("transcribe-dev.library") > -1){
             switch(lang){
                 case "/paleography/newberryTrans.html":
-                    homeLink = "https://paleography-dev.library.utoronto.ca/";
+                    homeLink = "https://centerfordigitalhumanities.github.io/Newberry-French-paleography/";
                 break;
                 case "/paleography/italianTranscription.html":
-                    homeLink ="https://italian-paleography-dev.library.utoronto.ca/";
+                    homeLink ="https://centerfordigitalhumanities.github.io/Newberry-Italian-paleography/";
                 break;
                 default:
-                    homeLink = "https://paleography-dev.library.utoronto.ca/";
+                    homeLink = "https://centerfordigitalhumanities.github.io/Newberry-French-paleography/";
             }
         }
         else if(devOrProd.indexOf("transcribe.library") > -1){
             switch(lang){
                 case "/paleography/newberryTrans.html":
-                    homeLink = "https://paleography.library.utoronto.ca/";
+                    homeLink = "https://centerfordigitalhumanities.github.io/Newberry-French-paleography/";
                 break;
                 case "/paleography/italianTranscription.html":
-                    homeLink ="https://italian-paleography.library.utoronto.ca/";
+                    homeLink ="https://centerfordigitalhumanities.github.io/Newberry-Italian-paleography/";
                 break;
                 default:
-                    homeLink = "https://paleography.library.utoronto.ca/";
+                    homeLink = "https://centerfordigitalhumanities.github.io/Newberry-French-paleography/";
             }
         }
         else{
             //We are not in an environment we do not expect.  For now, let's just point to paleography dev.
             switch(lang){
                 case "/paleography/newberryTrans.html":
-                    homeLink = "https://paleography-dev.library.utoronto.ca/";
+                    homeLink = "https://centerfordigitalhumanities.github.io/Newberry-French-paleography/";
                 break;
                 case "/paleography/italianTranscription.html":
-                    homeLink ="https://italian-paleography-dev.library.utoronto.ca/";
+                    homeLink ="https://centerfordigitalhumanities.github.io/Newberry-Italian-paleography/";
                 break;
                 default:
-                    homeLink = "https://paleography-dev.library.utoronto.ca/";
+                    homeLink = "https://centerfordigitalhumanities.github.io/Newberry-French-paleography/";
             }
         }
         setIframeLinks();
         $("#homeBtn").attr("href", homeLink);
-        $("#projectsBtn").attr("href", homeLink+"my-transcriptions");
-        $("#helpContact").attr("href", homeLink+"contact");
+        $("#projectsBtn").attr("href", "/my_transcriptions.html");
+        $("#helpContact").attr("href", "/contact.html");
     }
     
     /*
