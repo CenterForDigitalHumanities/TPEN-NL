@@ -6002,7 +6002,7 @@ document.addEventListener("DOMContentLoaded",()=>{
       if (f === null) {
         document.body.append(document.createElement("footer"))
       }
-      if (NL instanceof Map) {
+      if (!(window['NL'] instanceof Map)) {
         
         // French will be the generic, but if it matters, we'll add this in.
         const src= /italian/i.test(document.title) 
