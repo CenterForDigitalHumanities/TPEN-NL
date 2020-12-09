@@ -45,7 +45,6 @@ import javax.servlet.http.HttpSession;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import servlets.createManuscript;
 import textdisplay.Folio;
 import textdisplay.Project;
 import tokens.TokenManager;
@@ -146,7 +145,6 @@ public class CreateProjectServlet extends HttpServlet {
             if (null == city) {
                 city = "fromWebService";
             }
-            textdisplay.Manuscript m = null;
 //            System.out.println("msID ============= " + m.getID());
 //            String urls = request.getParameter("urls");
 //            String [] seperatedURLs = urls.split(";");
@@ -155,12 +153,11 @@ public class CreateProjectServlet extends HttpServlet {
 
             String str_manifest = request.getParameter("scmanifest"); //This will be a URL
             List<Integer> ls_folios_keys = new ArrayList();
+            JSONObject manifest = new JSONObject();
             if (null != str_manifest) {
-                JSONObject jo = resolveManifestURL(str_manifest);
-                archive = jo.getString("@id");
-                //create a manuscript
-                m = new textdisplay.Manuscript("newBerry", archive, city, city, -999);
-                JSONArray sequences = (JSONArray) jo.get("sequences");
+                manifest = resolveManifestURL(str_manifest);
+                archive = manifest.getString("@id");
+                JSONArray sequences = (JSONArray) manifest.get("sequences");
                 List<String> ls_pageNames = new LinkedList();
                 for (int i = 0; i < sequences.size(); i++) {
                     JSONObject inSequences = (JSONObject) sequences.get(i);
@@ -175,7 +172,7 @@ public class CreateProjectServlet extends HttpServlet {
                                     JSONObject image = images.getJSONObject(n);
                                     JSONObject resource = image.getJSONObject("resource");
                                     String imageName = resource.getString("@id");
-                                    int folioKey = textdisplay.Folio.createFolioRecordFromNewBerry(city, canvas.getString("label"), imageName, archive, m.getID(), 0); //why imageName.replace('_', '&')
+                                    int folioKey = textdisplay.Folio.createFolioRecordFromNewBerry(city, canvas.getString("label"), imageName, archive, 98765, 0); //why imageName.replace('_', '&')
                                     ls_folios_keys.add(folioKey);
                                 }
                             }
@@ -189,9 +186,9 @@ public class CreateProjectServlet extends HttpServlet {
 
             //create a project
             
-            String tmpProjName = m.getShelfMark() + " project";
-            if (request.getParameter("title") != null) {
-                tmpProjName = request.getParameter("title");
+            String tmpProjName = manifest.getString("label");
+            if(tmpProjName == null || tmpProjName.equals("")){
+                tmpProjName = "NO NAME";
             }
             try (Connection conn = ServletUtils.getDBConnection()) {
                 conn.setAutoCommit(false);
@@ -210,14 +207,11 @@ public class CreateProjectServlet extends HttpServlet {
                     for (int i = 0; i < ls_folios_keys.size(); i++) {
                         Folio folio = new Folio(ls_folios_keys.get(i));
                         array_folios[i] = folio;
-                        //Parse folio.getImageURL() to retrieve paleography pid, and then generate new canvas id
                         String imageURL = folio.getImageURL();
                         // use regex to extract paleography pid
                         String canvasID = man.getProperties().getProperty("PALEO_CANVAS_ID_PREFIX") + imageURL.replaceAll("^.*(paleography[^/]+).*$", "$1");
-                        //String canvasID = man.getProperties().getProperty("SERVERURL") + tmpProjName + "/canvas/" + URLEncoder.encode(folio.getPageName(), "UTF-8"); // for slu testing
-
                         //create anno list for original canvas
-                        JSONObject annoList = CreateAnnoListUtil.createEmptyAnnoList(newProject.getProjectID(), canvasID, man.getProperties().getProperty("TESTING"), new JSONArray(), UID, request.getLocalName() );
+                        JSONObject annoList = CreateAnnoListUtil.createAnnoList(newProject.getProjectID(), canvasID, man.getProperties().getProperty("TESTING"), new JSONArray(), UID, request.getLocalName() );
                         URL postUrl = new URL(Constant.ANNOTATION_SERVER_ADDR + "/create.action");
                         HttpURLConnection uc = (HttpURLConnection) postUrl.openConnection();
                         uc.setDoInput(true);
@@ -239,17 +233,16 @@ public class CreateProjectServlet extends HttpServlet {
                     }
                 }
                 newProject.setFolios(conn, array_folios);
-                newProject.addLogEntry(conn, "<span class='log_manuscript'></span>Added manuscript " + m.getShelfMark(), UID);
+                newProject.addLogEntry(conn, "<span class='log_manuscript'></span>Added Manifest " + manifest.getString("@id"), UID);
                 int projectID = newProject.getProjectID();
                 newProject.importData(UID);
                 conn.commit();
-                
                 String propVal = man.getProperties().getProperty("CREATE_PROJECT_RETURN_DOMAIN");
                 //return trimed project url
-                return "/project/" + projectID;
+                return propVal + "/project/" + projectID;
             }
         } catch (SQLException ex) {
-            Logger.getLogger(createManuscript.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CreateProjectServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
         return "500";
     }

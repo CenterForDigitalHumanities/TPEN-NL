@@ -151,6 +151,7 @@ public class Folio {
                if (rs.next()) {
                   archive = rs.getString("archive");
                }
+               /*
                if (linePositions.length == 0 && folioNumber > 0) {
                   //run the Line detector, this was a Folio we knew about but never ran detection on.
                   detect();
@@ -159,6 +160,7 @@ public class Folio {
                   rs = stmt3.executeQuery();
                   linePositions = loadLines(rs).toArray(new Line[0]);
                }
+               */
             }
          }
       }
@@ -264,7 +266,7 @@ public class Folio {
             stmt.setString(2, pageName);
             stmt.setString(3, imageName);
             stmt.setString(4, archive);
-            stmt.setInt(5, msID);
+            stmt.setInt(5, msID); //Note: This will always be -1.  We do not use the Manuscript data type.
             stmt.setString(6, imageName);
             stmt.setInt(7, sequence);
             stmt.execute();
@@ -633,35 +635,32 @@ public class Folio {
     * Get the url where an unscaled version of the image can be found
     */
    public String getImageURL() throws SQLException{
-    TokenManager man = null;
-    String url = null;
-      String query = "select uri from folios where pageNumber=?";
-      if (getArchive().equals("CEEC") || getArchive().equals("ecodices")) {
-         query = "select imageName from folios where pageNumber=?";
-      }
-      try (Connection j = DatabaseWrapper.getConnection()) {
-         try (PreparedStatement ps = j.prepareStatement(query)) {
-            ps.setInt(1, folioNumber);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-               url = rs.getString(1);
-               if (url.startsWith("/")) {
-                  url = "file://" + url;
-               } else {
-                   try{
-                        man = new TokenManager();
-                        url = url.replace("http://t-pen.org/TPEN/", man.getProperties().getProperty("SERVERURL"));
+        TokenManager man = null;
+        String url = null;
+        String query = "select uri from folios where pageNumber=?";
+        try (Connection j = DatabaseWrapper.getConnection()) {
+            try (PreparedStatement ps = j.prepareStatement(query)) {
+                ps.setInt(1, folioNumber);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    url = rs.getString(1);
+                    if (url.startsWith("/")) {
+                       url = "file://" + url;
+                    } else {
+                        try{
+                            man = new TokenManager();
+                            // If it's a reference to the T-PEN pageImage servlet, point it at the
+                            // current T-PEN instance.     
+                            url = url.replace("http://t-pen.org/TPEN/", man.getProperties().getProperty("SERVERURL"));
+                        }
+                        catch(IOException e){
+                            url = null;
+                        }
                     }
-                    catch(IOException e){
-                        url = null;
-                    }
-                        // If it's a reference to the T-PEN pageImage servlet, point it at the
-                        // current T-PEN instance.                        
                 }
             }
-         }
-      }
-      return url;
+        }
+        return url;
    }
 
    /**

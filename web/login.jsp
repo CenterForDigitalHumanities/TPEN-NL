@@ -71,7 +71,11 @@
 <%
             user.User thisUser = null;
             if (session.getAttribute("UID") != null)
-                {
+                {%>
+                <script>
+                    document.location = "my_transcriptions.html";
+                </script>
+                <%
                 thisUser = new user.User(Integer.parseInt(session.getAttribute("UID").toString()));
                 }%>
 <html>

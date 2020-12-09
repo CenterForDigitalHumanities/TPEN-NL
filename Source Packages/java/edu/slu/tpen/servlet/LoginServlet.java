@@ -30,6 +30,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static edu.slu.util.ServletUtils.getBaseContentType;
 import static edu.slu.util.ServletUtils.reportInternalError;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import javax.servlet.ServletInputStream;
+import net.sf.json.JSONObject;
 import user.User;
 
 
@@ -52,20 +56,35 @@ public class LoginServlet extends HttpServlet {
     */
    @Override
    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.addHeader("Access-Control-Allow-Origin", "*");
+        resp.addHeader("Access-Control-Allow-Headers", "Content-Type");
+        resp.addHeader("Access-Control-Allow-Methods", "*");
       try {
          String mail = null, password = null;
          if (req.getContentLength() > 0) {
             String contentType = getBaseContentType(req);
             if (contentType.equals("application/json")) {
-               ObjectMapper mapper = new ObjectMapper();
-               Map<String, String> creds = mapper.readValue(req.getInputStream(), new TypeReference<Map<String, String>>() {});
-               mail = creds.get("mail");
-               password = creds.get("password");
-            }else if(contentType.equals("application/x-www-form-urlencoded")){
+                StringBuilder bodyString;
+                BufferedReader bodyReader;
+                ServletInputStream input = req.getInputStream();
+                InputStreamReader reader = new InputStreamReader(input, "utf-8");
+                bodyReader = new BufferedReader(reader);
+                bodyString = new StringBuilder();
+                String line;
+                while ((line = bodyReader.readLine()) != null)
+                {
+                  bodyString.append(line);
+                }
+               JSONObject creds = JSONObject.fromObject(bodyString.toString());
+               mail = creds.getString("mail");
+               password = creds.getString("password");
+            }
+            else if(contentType.equals("application/x-www-form-urlencoded")){
                 mail = req.getParameter("uname");
                 password = req.getParameter("password");
             }
-         } else {
+         } 
+         else {
             // Deprecated approach where user-name and password are passed on the query string.
             mail = req.getParameter("uname");
             password = req.getParameter("password");
@@ -73,11 +92,8 @@ public class LoginServlet extends HttpServlet {
          if (mail != null && password != null) {
             User u = new User(mail, password);
             if (u.getUID() > 0) {
-               HttpSession sess = req.getSession(true);
-               sess.setAttribute("UID", u.getUID());
-//               System.out.println("HAve UID!!!!!!!!!!");
-//               System.out.println(u.getUID());
-//               System.out.println(sess.getAttribute("UID"));
+               HttpSession sess = req.getSession();
+               sess.setAttribute("UID", ""+u.getUID());
                PrintWriter writer = resp.getWriter();
                writer.print(sess.getId());
             } else {
@@ -85,7 +101,6 @@ public class LoginServlet extends HttpServlet {
             }
          } else if (mail == null && password == null) {
             // Passing null data indicates a logout.
-            // System.out.println("Email and pwd null   !!!!!!!!!!");
             HttpSession sess = req.getSession(true);
             sess.removeAttribute("UID");
             resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
@@ -107,4 +122,14 @@ public class LoginServlet extends HttpServlet {
    public String getServletInfo() {
       return "T-PEN Login Servlet";
    }
+   
+   @Override
+   protected void doOptions(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+            //These headers must be present to pass browser preflight for CORS
+            response.addHeader("Access-Control-Allow-Origin", "*");
+            response.addHeader("Access-Control-Allow-Headers", "*");
+            response.addHeader("Access-Control-Allow-Methods", "*");
+            response.setStatus(200);
+    }
 }
