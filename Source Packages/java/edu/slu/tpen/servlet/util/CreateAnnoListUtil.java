@@ -14,7 +14,7 @@ import net.sf.json.JSONObject;
  * @author hanyan
  */
 public class CreateAnnoListUtil {
-    public static JSONObject createEmptyAnnoList(Integer projectID, String canvasID, String testingFlag, JSONArray resource, int uID, String localName){
+    public static JSONObject createAnnoList(Integer projectID, String canvasID, String testingFlag, JSONArray resource, int uID, String localName){
         JSONObject canvasList = new JSONObject();
         canvasList.element("@type", "sc:AnnotationList");
         canvasList.element("on", canvasID);

@@ -237,44 +237,45 @@
                 }
             } else { // projectID is null
                 if (request.getParameter("delete") != null) {
-                    //do they have permission to do that?
-                    out.print("<h4>Delete: "+projectID+"</h4>");
                     int projectNumToDelete = Integer.parseInt(request.getParameter("projDelete"));
-                    out.print("<h4>OK, this? :  "+projectNumToDelete+"<h/4>");
                     textdisplay.Project todel = new textdisplay.Project(projectNumToDelete);
-                    out.print("<h4>Yeah, this :  "+todel.getProjectID()+"<h/4>");
                     user.Group projectGroup = new user.Group(todel.getGroupID());
+                    isMember = projectGroup.isMember(UID);
+                    isAdmin = (thisUser.isAdmin() || projectGroup.isAdmin(UID));
+                    if(isAdmin){
+                        isMember = isAdmin;
+                    }
                     if (isAdmin) {
-                        if (todel.delete()) {
-                            //redirect to first project
-                            out.print("<h4>BOOM, deleted <h/4>");
-                            //out.print("<script>document.location=\"project.jsp\";</script>");
-                            return;
-                        }
-
+                        todel.delete();
                         textdisplay.Project[] p = thisUser.getUserProjects();
                         if (p.length > 0) {
                             projectID = p[0].getProjectID();
                         }
-        %>
-        <script>
-            document.location = "project.jsp?projectID=<%out.print(projectID);%>";
-        </script>
-        <%                        
-            } else {
-                //couldnt delete, you arent the project creator. You can remove yourself from the group working on this project by visting ...
-            }
-        } else {
-            textdisplay.Project[] p = thisUser.getUserProjects();
-            if (p.length > 0) {
-                projectID = p[0].getProjectID();
-            }
-            if (projectID > 0) {
-        %>
-        <script>
-            document.location = "project.jsp?projectID=<%out.print(projectID);%>";
-        </script>
-        <%                         
+                        %>
+                        <script>
+                            document.location = "project.jsp?projectID=<%out.print(projectID);%>";
+                        </script>
+                        <%                        
+                    } else {
+                        //couldnt delete, you arent the project creator. You can remove yourself from the group working on this project by visting ...
+                         %>
+                            <script>
+                                alert("Could not Delete, NOT AN ADMIN");
+                                document.location = "project.jsp?projectID=<%out.print(projectID);%>";
+                            </script>
+                        <%       
+                    }
+                } else {
+                    textdisplay.Project[] p = thisUser.getUserProjects();
+                    if (p.length > 0) {
+                        projectID = p[0].getProjectID();
+                    }
+                    if (projectID > 0) {
+                    %>
+                    <script>
+                        document.location = "project.jsp?projectID=<%out.print(projectID);%>";
+                    </script>
+                    <%                         
                     } else {
                         out.print("<div class=\"error\">No project specified!</div>");
                     }
@@ -386,23 +387,28 @@
                     $(window).load(function(){
                         equalHeights("tall",100);
                         $("a:contains('Transcribe')").parent().each(function(){
-                            $(this).removeClass('loadingBook').css("background","url('<%
-                int pageno = 501;
-                try {
-                    if (request.getParameter("p") != null) {
-                        pageno = Integer.parseInt(request.getParameter("p"));
-                    } else {
-                        pageno = thisProject.firstPage();
-                    }
-                } catch (NumberFormatException e) {
-                }
-                textdisplay.Folio thisFolio = new textdisplay.Folio(pageno, true);
-                                out.print(thisFolio.getImageURLResize(600));%>&quality=30') -30px -60px no-repeat");
-                                        });
-                                        //cache the page image for the project after loading the page
-                                        //                msImage = new Image();
-                                        //                msImage.src = <%out.print(thisFolio.getImageURLResize(2000));%>;
-                                        //                $("#samplePreview").append("<span style='z-index:5;position:absolute;bottom:0'></span>");
+                        $(this).removeClass('loadingBook').css("background","url('<%
+                            int pageno = 501;
+                            if (request.getParameter("delete") != null){
+                                pageno = 0;
+                            }
+                            else{
+                                try {
+                                    if (request.getParameter("p") != null) {
+                                        pageno = Integer.parseInt(request.getParameter("p"));
+                                    } 
+                                    else {
+                                        pageno = thisProject.firstPage();
+                                    }
+                                    textdisplay.Folio thisFolio = new textdisplay.Folio(pageno, true);
+                                    out.print(thisFolio.getImageURLResize(600));
+                                } catch (ArrayIndexOutOfBoundsException e) {
+                                    //Good luck
+                                }
+                            }
+                            %>&quality=30') -30px -60px no-repeat"); 
+                    });
+                    
                                            
         });
         </script>
@@ -926,21 +932,22 @@
                     $("#addingTools").fadeOut();
                 }
                 function copyProject(projID, transData){
-//                    $(".hideWhileCopying").hide();
-//                    $("#copyingNotice").show();
-//                    var url = "copyProject";
-//                    var withAnnos = "WithAnnotations";
-//                    var params = {"projectID":projID};
-//                    if(transData){
-//                       url += withAnnos;
-//                    }
-//                    //Need to have a UI so the users knows a copy is taking place / completed / failed.
-//                    $.post(url, params, function(data){
-//                        $(".hideWhileCopying").show();
-//                        $("#copyingNotice").hide();
-//                        location.reload(); //This is to force pagination to get this project into the project list
-//                    });
-                      alert("This functionality is not quite yet ready.  Contact digitalhumanities@slu.edu for more information.  Ask for Patrick.");
+                    $(".hideWhileCopying").hide();
+                    $("#copyingNotice").show();
+                    var url = "copyProject";
+                    var params = {"projectID":projID};
+                    if(transData){
+                       url += "AndTranscription";
+                    }
+                    else{
+                       url += "DataOnly";
+                    }
+                    //Need to have a UI so the users knows a copy is taking place / completed / failed.
+                    $.post(url, params, function(data){
+                        $(".hideWhileCopying").show();
+                        $("#copyingNotice").hide();
+                        location.reload(); //This is to force pagination to get this project into the project list
+                    });
                 }
                 function openHelpVideo(source){
                     $("#helpVideoArea").show();

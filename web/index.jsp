@@ -25,23 +25,28 @@
 
     int UID = 0;
     if (session.getAttribute("UID") != null) {
+        %>
+        <script>
+            document.location = "my_transcriptions.html";
+        </script>
+        <%
         thisUser = new user.User(Integer.parseInt(session.getAttribute("UID").toString()));
         UID = thisUser.getUID();
         if (request.getParameter("accept") != null) {
             thisUser.acceptUserAgreement();
         }
     }
-    if (request.getParameter("makeCopy") != null) {
-        Project thisProject;
-        if (request.getParameter("projectID") != null) {
-            thisProject = new Project(Integer.parseInt(request.getParameter("projectID")));
-            try (Connection conn = ServletUtils.getDBConnection()) {
-               conn.setAutoCommit(false);
-               thisProject.copyProject(conn, UID);
-               conn.commit();
-            }
-        }
-    }
+//    if (request.getParameter("makeCopy") != null) {
+//        Project thisProject;
+//        if (request.getParameter("projectID") != null) {
+//            thisProject = new Project(Integer.parseInt(request.getParameter("projectID")));
+//            try (Connection conn = ServletUtils.getDBConnection()) {
+//               conn.setAutoCommit(false);
+//               thisProject.copyProject(conn, UID);
+//               conn.commit();
+//            }
+//        }
+//    }
     %>
 <html itemscope itemtype="http://schema.org/Product">
     <head>

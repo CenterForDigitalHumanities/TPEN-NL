@@ -26,7 +26,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import net.sf.json.*;
 import textdisplay.Folio;
-import textdisplay.PartnerProject;
 import textdisplay.Project;
 import tokens.TokenManager;
 
@@ -37,7 +36,7 @@ import tokens.TokenManager;
  * Copy all project metadata and the annotation list with its annotations for each canvas (here named folio).  Makes use of Mongo Bulk operation capabilities
  * to limit the amount of necessary http connections which greatly improved speed.
  */
-public class CopyProjectAndAnnos extends HttpServlet {
+public class CopyProjectAndTranscription extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -58,9 +57,17 @@ public class CopyProjectAndAnnos extends HttpServlet {
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
         Date date = new Date();
         //System.out.println("Copying at "+dateFormat.format(date));
-        if(null != request.getParameter("projectID") && uID != -1){
+        if(null == request.getParameter("projectID")){
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            result = "Invalid project speficied.";
+        }
+        else if(uID == -1){
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            result = "You are not logged in.";
+        }
+        else{
             Integer projectID = Integer.parseInt(request.getParameter("projectID"));      
-            System.out.println("Copy project and annos for "+projectID);
+            //System.out.println("Copy project and annos for "+projectID);
             try {
                 //find original project and copy to a new project. 
                 Project templateProject = new Project(projectID);
@@ -71,12 +78,9 @@ public class CopyProjectAndAnnos extends HttpServlet {
                 {
                     Project thisProject = new Project(templateProject.copyProjectWithoutTranscription(conn, uID));
                     TokenManager man = new TokenManager();
-                    //set partener project. It is to make a connection on switch board. 
+                    //set partner project. It is to make a connection on switch board. 
                     thisProject.setAssociatedPartnerProject(projectID);
-                    //PartnerProject theTemplate = new PartnerProject(projectID);
-                    //thisProject.copyButtonsFromProject(conn, theTemplate.getTemplateProject());
-                    //thisProject.copyHotkeysFromProject(conn, theTemplate.getTemplateProject());
-                    //^^copyProjectWithoutTranscription already does this, don't do it again here. 
+                    //^^copyProjectWithoutTranscription does special chars and XML 
                     conn.commit();
                     Folio[] folios = thisProject.getFolios();
                     //System.out.println("Created a new project template.  What was the ID assigned to it: "+thisProject.getProjectID());
@@ -86,12 +90,10 @@ public class CopyProjectAndAnnos extends HttpServlet {
                         {
                             //System.out.println("Starting copy for canvas");
                             Folio folio = folios[i];
-                            //Parse folio.getImageURL() to retrieve paleography pid, and then generate new canvas id
                             String imageURL = folio.getImageURL();
                             // use regex to extract paleography pid
                             //THIS MUST MATCH THE NAMING CONVENTION IN JSONLDEXporter
                             String canvasID = man.getProperties().getProperty("PALEO_CANVAS_ID_PREFIX") + imageURL.replaceAll("^.*(paleography[^/]+).*$", "$1"); //for paleo
-                            //String canvasID = man.getProperties().getProperty("SERVERURL") + templateProject.getProjectName() + "/canvas/" + URLEncoder.encode(folio.getPageName(), "UTF-8"); // for slu testing
                             JSONArray ja_allAnnoLists = Canvas.getAnnotationListsForProject(projectID, canvasID, uID, man);
                             JSONObject jo_annotationList = new JSONObject();
                             //^^ this does all the filtering and will either have 0 or 1 lists for this particular version of TPEN
@@ -196,7 +198,7 @@ public class CopyProjectAndAnnos extends HttpServlet {
                             else{
                                 //System.out.println("No annotation list for this canvas.  do not call batch save.  just save empty list.");
                             }
-                            JSONObject canvasList = CreateAnnoListUtil.createEmptyAnnoList(thisProject.getProjectID(), canvasID, man.getProperties().getProperty("TESTING"), new_resources, uID, request.getLocalName());
+                            JSONObject canvasList = CreateAnnoListUtil.createAnnoList(thisProject.getProjectID(), canvasID, man.getProperties().getProperty("TESTING"), new_resources, uID, request.getLocalName());
                             canvasList.element("copiedFrom", request.getParameter("projectID"));
                             URL postUrl = new URL(Constant.ANNOTATION_SERVER_ADDR + "/create.action");
                             HttpURLConnection uc = (HttpURLConnection) postUrl.openConnection();
@@ -245,7 +247,7 @@ public class CopyProjectAndAnnos extends HttpServlet {
                 }
                 else{
                     System.out.println("Could not get a project name, this is an error.");
-                    response.setStatus(codeOverwrite);
+                    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                     result = "Could not find a project name";
                 }
             } 
@@ -256,11 +258,7 @@ public class CopyProjectAndAnnos extends HttpServlet {
                 response.getWriter().print(e);
             }
         }
-        else{
-            response.setStatus(response.SC_FORBIDDEN);
-            result = "Unauthorized or invalid project speficied.";
-        }
-        Date date2 = new Date();
+       // Date date2 = new Date();
        //.out.println();
        // System.out.println("Copying done at "+dateFormat.format(date2));
         response.getWriter().print(result);
@@ -271,6 +269,14 @@ public class CopyProjectAndAnnos extends HttpServlet {
         doPost(request, response);
     }
     
+    /**
+     * Check the old annotation store for existing data.  If found, the data will be migrated into the RERUM v1 store.  
+     * @see Canvas.java
+     * @param params The mongoDB query parameters
+     * @return
+     * @throws MalformedURLException
+     * @throws IOException 
+     */
     public static JSONArray getFromV0(JSONObject params) throws MalformedURLException, IOException{
         URL postUrl = new URL(Constant.OLD_ANNOTATION_SERVER_ADDR + "/anno/getAnnotationByProperties.action");
         JSONArray v0Objs = new JSONArray();
