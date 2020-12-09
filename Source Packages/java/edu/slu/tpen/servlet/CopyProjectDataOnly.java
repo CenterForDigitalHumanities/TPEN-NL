@@ -101,7 +101,7 @@ public class CopyProjectDataOnly extends HttpServlet {
                             // use regex to extract paleography pid
                             String canvasID = man.getProperties().getProperty("PALEO_CANVAS_ID_PREFIX") + imageURL.replaceAll("^.*(paleography[^/]+).*$", "$1");
                             String testingProp = "true";
-                            JSONObject annoList = CreateAnnoListUtil.createEmptyAnnoList(thisProject.getProjectID(), canvasID, testingProp, new JSONArray(), uID, request.getLocalName());
+                            JSONObject annoList = CreateAnnoListUtil.createAnnoList(thisProject.getProjectID(), canvasID, testingProp, new JSONArray(), uID, request.getLocalName());
                             URL postUrl = new URL(Constant.ANNOTATION_SERVER_ADDR + "/create.action");
                             HttpURLConnection uc = (HttpURLConnection) postUrl.openConnection();
                             uc.setDoInput(true);

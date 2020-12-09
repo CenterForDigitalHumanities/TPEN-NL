@@ -198,7 +198,7 @@ public class CopyProjectAndTranscription extends HttpServlet {
                             else{
                                 //System.out.println("No annotation list for this canvas.  do not call batch save.  just save empty list.");
                             }
-                            JSONObject canvasList = CreateAnnoListUtil.createEmptyAnnoList(thisProject.getProjectID(), canvasID, man.getProperties().getProperty("TESTING"), new_resources, uID, request.getLocalName());
+                            JSONObject canvasList = CreateAnnoListUtil.createAnnoList(thisProject.getProjectID(), canvasID, man.getProperties().getProperty("TESTING"), new_resources, uID, request.getLocalName());
                             canvasList.element("copiedFrom", request.getParameter("projectID"));
                             URL postUrl = new URL(Constant.ANNOTATION_SERVER_ADDR + "/create.action");
                             HttpURLConnection uc = (HttpURLConnection) postUrl.openConnection();
