@@ -25,6 +25,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.sql.Connection;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -44,7 +47,7 @@ import tokens.TokenManager;
  * to the template project on switch board. 
  * @author hanyan
  */
-public class CopyProjectForPracticerServlet extends HttpServlet {
+public class CopyProjectDataOnly extends HttpServlet {
     
     @Override
     /**
@@ -54,9 +57,20 @@ public class CopyProjectForPracticerServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String result = "";
         int uID = ServletUtils.getUID(request, response);
-        if(null != request.getParameter("projectID") && uID != -1){
+        response.setHeader("Content-Type", "application/json; charset=utf-8");
+        response.setCharacterEncoding("UTF-8");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
+        Date date = new Date();
+        if(null == request.getParameter("projectID")){
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            result = "Invalid project speficied.";
+        }
+        else if(uID == -1){
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            result = "You are not logged in.";
+        }
+        else{
             Integer projectID = Integer.parseInt(request.getParameter("projectID"));
-
             try {
                 //find original project and copy to a new project. 
                 Project templateProject = new Project(projectID);
@@ -75,9 +89,6 @@ public class CopyProjectForPracticerServlet extends HttpServlet {
                     Project thisProject = new Project(templateProject.copyProjectWithoutTranscription(conn, uID));
                     //set partener project. It is to make a connection on switch board. 
                     thisProject.setAssociatedPartnerProject(projectID);
-                    PartnerProject theTemplate = new PartnerProject(projectID);
-                    thisProject.copyButtonsFromProject(conn, theTemplate.getTemplateProject());
-                    thisProject.copyHotkeysFromProject(conn, theTemplate.getTemplateProject());
                     conn.commit();
                     Folio[] folios = thisProject.getFolios();
                     if(null != folios && folios.length > 0)
@@ -90,7 +101,7 @@ public class CopyProjectForPracticerServlet extends HttpServlet {
                             // use regex to extract paleography pid
                             String canvasID = man.getProperties().getProperty("PALEO_CANVAS_ID_PREFIX") + imageURL.replaceAll("^.*(paleography[^/]+).*$", "$1");
                             String testingProp = "true";
-                            JSONObject annoList = CreateAnnoListUtil.createEmptyAnnoList(thisProject.getProjectID(), canvasID, testingProp, new JSONArray(), uID, request.getLocalName());
+                            JSONObject annoList = CreateAnnoListUtil.createAnnoList(thisProject.getProjectID(), canvasID, testingProp, new JSONArray(), uID, request.getLocalName());
                             URL postUrl = new URL(Constant.ANNOTATION_SERVER_ADDR + "/create.action");
                             HttpURLConnection uc = (HttpURLConnection) postUrl.openConnection();
                             uc.setDoInput(true);
@@ -126,9 +137,6 @@ public class CopyProjectForPracticerServlet extends HttpServlet {
             } catch(Exception e){
                 e.printStackTrace();
             }
-        }
-        else{
-            result = "" + response.SC_FORBIDDEN;
         }
         response.getWriter().print(result);
     }

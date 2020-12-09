@@ -321,8 +321,16 @@
         <servlet-class>edu.slu.tpen.servlet.CreateProjectServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>copyProject</servlet-name>
-        <servlet-class>edu.slu.tpen.servlet.CopyProjectForPracticerServlet</servlet-class>
+        <servlet-name>CopyProjectDataOnly</servlet-name>
+        <servlet-class>edu.slu.tpen.servlet.CopyProjectDataOnly</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CopyProjectAndLineParsing</servlet-name>
+        <servlet-class>edu.slu.tpen.servlet.CopyProjectAndLineParsing</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CopyProjectAndTranscription</servlet-name>
+        <servlet-class>edu.slu.tpen.servlet.CopyProjectAndTranscription</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>updateLineServlet</servlet-name>
@@ -352,15 +360,6 @@
         <servlet-name>GetAnnotationByPropertiesServlet</servlet-name>
         <servlet-class>edu.slu.tpen.servlet.GetAnnotationByPropertiesServlet</servlet-class>
     </servlet>
-    <!-- Depricated.  This turned in to CopyProjectAndAnnos    
-    <servlet>
-        <servlet-name>copyProjWithAnnoServlet</servlet-name>
-        <servlet-class>edu.slu.tpen.servlet.CopyProjWithAnnoServlet</servlet-class>
-    </servlet>-->
-    <servlet>
-        <servlet-name>CopyProjectAndAnnos</servlet-name>
-        <servlet-class>edu.slu.tpen.servlet.CopyProjectAndAnnos</servlet-class>
-    </servlet>
     <servlet-mapping>
         <servlet-name>ProjectServlet</servlet-name>
         <url-pattern>/project/*</url-pattern>
@@ -370,8 +369,16 @@
         <url-pattern>/createProject</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>copyProject</servlet-name>
-        <url-pattern>/copyProject</url-pattern>
+        <servlet-name>CopyProjectDataOnly</servlet-name>
+        <url-pattern>/copyProjectDataOnly</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CopyProjectAndLineParsing</servlet-name>
+        <url-pattern>/copyProjectAndLineParsing</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CopyProjectAndTranscription</servlet-name>
+        <url-pattern>/copyProjectAndTranscription</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>updateLineServlet</servlet-name>
@@ -400,10 +407,6 @@
     <servlet-mapping>
         <servlet-name>GetAnnotationByPropertiesServlet</servlet-name>
         <url-pattern>/getAnno</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>CopyProjectAndAnnos</servlet-name>
-        <url-pattern>/copyProjectWithAnnotations</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>UpdateV0AnnoListServlet</servlet-name>
