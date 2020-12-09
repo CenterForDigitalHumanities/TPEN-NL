@@ -5985,7 +5985,7 @@ function populateDefaultImage(){
 /*
  * Newberry Templates
  */
-document.addEventListener("load",()=>{
+document.addEventListener("DOMContentLoaded",()=>{
 
 /**
  * When we care less about readability, this could be minified a bit.
