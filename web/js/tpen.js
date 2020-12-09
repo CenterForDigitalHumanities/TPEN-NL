@@ -484,23 +484,3 @@ if ($("body").is("#transcriptionPage")){
         #trimTitle \n\
     ").attr("dir", "auto");
     }
-/*
- * Newberry Templates
- */
-document.addEventListener("load",()=>{
-  if (!imgTop){ // prevent on transcription interfaces
-    const h = document.querySelector("body>header")
-    const f = document.querySelector("body>footer")
-    if (h !== null) {
-      document.body.prepend(document.createElement("header"))
-    }
-    if (f !== null) {
-      document.body.append(document.createElement("footer"))
-    }
-    if (typeof NL !== "object") {
-      let templates = document.createElement("script")
-      templates.setAttribute("src", "https://centerfordigitalhumanities.github.io/Newberry-French-paleography/www/script/templates.js")
-      document.body.append(templates)
-    }
-  }
-})
