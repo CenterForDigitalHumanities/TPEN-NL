@@ -932,21 +932,22 @@
                     $("#addingTools").fadeOut();
                 }
                 function copyProject(projID, transData){
-//                    $(".hideWhileCopying").hide();
-//                    $("#copyingNotice").show();
-//                    var url = "copyProject";
-//                    var withAnnos = "WithAnnotations";
-//                    var params = {"projectID":projID};
-//                    if(transData){
-//                       url += withAnnos;
-//                    }
-//                    //Need to have a UI so the users knows a copy is taking place / completed / failed.
-//                    $.post(url, params, function(data){
-//                        $(".hideWhileCopying").show();
-//                        $("#copyingNotice").hide();
-//                        location.reload(); //This is to force pagination to get this project into the project list
-//                    });
-                      alert("This functionality is not quite yet ready.  Contact digitalhumanities@slu.edu for more information.  Ask for Patrick.");
+                    $(".hideWhileCopying").hide();
+                    $("#copyingNotice").show();
+                    var url = "copyProject";
+                    var params = {"projectID":projID};
+                    if(transData){
+                       url += "AndTranscription";
+                    }
+                    else{
+                       url += "DataOnly";
+                    }
+                    //Need to have a UI so the users knows a copy is taking place / completed / failed.
+                    $.post(url, params, function(data){
+                        $(".hideWhileCopying").show();
+                        $("#copyingNotice").hide();
+                        location.reload(); //This is to force pagination to get this project into the project list
+                    });
                 }
                 function openHelpVideo(source){
                     $("#helpVideoArea").show();

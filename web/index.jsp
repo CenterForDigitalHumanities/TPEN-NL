@@ -36,17 +36,17 @@
             thisUser.acceptUserAgreement();
         }
     }
-    if (request.getParameter("makeCopy") != null) {
-        Project thisProject;
-        if (request.getParameter("projectID") != null) {
-            thisProject = new Project(Integer.parseInt(request.getParameter("projectID")));
-            try (Connection conn = ServletUtils.getDBConnection()) {
-               conn.setAutoCommit(false);
-               thisProject.copyProject(conn, UID);
-               conn.commit();
-            }
-        }
-    }
+//    if (request.getParameter("makeCopy") != null) {
+//        Project thisProject;
+//        if (request.getParameter("projectID") != null) {
+//            thisProject = new Project(Integer.parseInt(request.getParameter("projectID")));
+//            try (Connection conn = ServletUtils.getDBConnection()) {
+//               conn.setAutoCommit(false);
+//               thisProject.copyProject(conn, UID);
+//               conn.commit();
+//            }
+//        }
+//    }
     %>
 <html itemscope itemtype="http://schema.org/Product">
     <head>
