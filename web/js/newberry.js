@@ -5981,3 +5981,37 @@ function populateDefaultImage(){
     $('.transcriptionImage').attr('src', url_default);
     $("#fullPageImg").attr("src", url_default);
 }
+
+/*
+ * Newberry Templates
+ */
+document.addEventListener("DOMContentLoaded",()=>{
+
+/**
+ * When we care less about readability, this could be minified a bit.
+ * ["header","footer"].forEach(tag=>document.querySelector("body>"+tag)||document.body.prepend(document.createElement(tag)))
+ * NL instanceof Map || document.body.append(document.createElement("script").setAttribute("src", /italian/i.test(document.title) ? "https://centerfordigitalhumanities.github.io/Newberry-Italian-paleography/www/script/templates.js" : "https://centerfordigitalhumanities.github.io/Newberry-French-paleography/www/script/templates.js"))
+ */
+
+    if (!window['imgTop']){ // prevent on transcription interfaces
+      const h = document.querySelector("body>header")
+      const f = document.querySelector("body>footer")
+      if (h === null) {
+        document.body.prepend(document.createElement("header"))
+      }
+      if (f === null) {
+        document.body.append(document.createElement("footer"))
+      }
+      if (!(window['NL'] instanceof Map)) {
+        
+        // French will be the generic, but if it matters, we'll add this in.
+        const src= /italian/i.test(document.title) 
+        ? "https://centerfordigitalhumanities.github.io/Newberry-Italian-paleography/www/script/templates.js"
+        : "https://centerfordigitalhumanities.github.io/Newberry-French-paleography/www/script/templates.js"
+        
+        let templates = document.createElement("script")
+        templates.setAttribute("src", src)
+        document.body.append(templates)
+      }
+    }
+  })
