@@ -45,7 +45,11 @@
     var creatorID = -1;
     var doit = ""; //A timeout used later.
     var lineUpdateWorking = false;
-    var homeLink = "";
+    const homeLinkMap = new Map([
+        ["italianTranscription.html","https://centerfordigitalhumanities.github.io/Newberry-Italian-paleography/"],
+        ["newberryTrans.html","https://centerfordigitalhumanities.github.io/Newberry-French-paleography/"],
+    ]);
+    const homeLink = homeLinkMap.get(document.location.pathname.split("/").pop())
     var lazyURL = "";
     
     //var basePath = window.location.protocol + "//" + window.location.host;
@@ -3083,7 +3087,7 @@ function splitPage(event, tool) {
         if(currentCanvasLabel.split("_").length - 1 === 2){ //Must be in format like FP_000_000
             //We need to get the UTL canvas id for this particular canvas to support direct linking to the transcription for this object
             utlID = currentCanvasLabel.substring(0,currentCanvasLabel.lastIndexOf("_")).toLowerCase();
-            iframeDirectLink = buildIframeDirectLink("transcript/"+utlID+"?response_type=embed");
+            iframeDirectLink = buildIframeDirectLink("transcriptions/"+utlID+"?response_type=embed");
             $("#partialTransSplit").children("iframe").attr("data_src", iframeDirectLink);
         }
         else{
@@ -5837,48 +5841,6 @@ function activateScrollView(){
      * to hard code links.
      */
     function setPaleographyLinks(){
-        var devOrProd = document.location.host;
-        // ex. transcribe-dev.library.utoronto.ca or transcribe.library.utoronto.ca
-        var lang = document.location.pathname;
-        // ex. /TPEN-NL/newberryTrans.html
-        var parojectLink = "";
-        if(devOrProd.indexOf("transcribe-dev.library") > -1){
-            switch(lang){
-                case "/TPEN-NL/newberryTrans.html":
-                    homeLink = "https://centerfordigitalhumanities.github.io/Newberry-French-paleography/";
-                break;
-                case "/TPEN-NL/italianTranscription.html":
-                    homeLink ="https://centerfordigitalhumanities.github.io/Newberry-Italian-paleography/";
-                break;
-                default:
-                    homeLink = "https://centerfordigitalhumanities.github.io/Newberry-French-paleography/";
-            }
-        }
-        else if(devOrProd.indexOf("transcribe.library") > -1){
-            switch(lang){
-                case "/TPEN-NL/newberryTrans.html":
-                    homeLink = "https://centerfordigitalhumanities.github.io/Newberry-French-paleography/";
-                break;
-                case "/TPEN-NL/italianTranscription.html":
-                    homeLink ="https://centerfordigitalhumanities.github.io/Newberry-Italian-paleography/";
-                break;
-                default:
-                    homeLink = "https://centerfordigitalhumanities.github.io/Newberry-French-paleography/";
-            }
-        }
-        else{
-            //We are not in an environment we do not expect.  For now, let's just point to paleography dev.
-            switch(lang){
-                case "/TPEN-NL/newberryTrans.html":
-                    homeLink = "https://centerfordigitalhumanities.github.io/Newberry-French-paleography/";
-                break;
-                case "/TPEN-NL/italianTranscription.html":
-                    homeLink ="https://centerfordigitalhumanities.github.io/Newberry-Italian-paleography/";
-                break;
-                default:
-                    homeLink = "https://centerfordigitalhumanities.github.io/Newberry-French-paleography/";
-            }
-        }
         setIframeLinks();
         $("#homeBtn").attr("href", homeLink);
         $("#projectsBtn").attr("href", "my_transcriptions.html");
