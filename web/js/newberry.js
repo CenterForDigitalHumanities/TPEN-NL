@@ -3123,33 +3123,30 @@ function splitPage(event, tool) {
             splitScreen.height(Page.height() - 40).scrollTop(0); // header space
             splitScreen.css("width", splitWidthAdjustment);
     }
-}
+    liveTool = tool;
+    var newCanvasHeight = 1 / ratio * newCanvasWidth;
+    var newImgBtmTop = imgBottomPositionRatio * newCanvasHeight;
+    var newImgTopTop = imgTopPositionRatio * newCanvasHeight;
+    $("#transcriptionCanvas").css({
+        "width": newCanvasWidth + "px",
+        "height": newCanvasHeight + "px"
+    });
+    $(".lineColIndicatorArea").css("height", newCanvasHeight + "px");
+    $("#imgBottom img").css("top", newImgBtmTop + "px");
+    $("#imgBottom .lineColIndicatorArea").css("top", newImgBtmTop + "px");
+    $("#imgTop img").css("top", newImgTopTop + "px");
+    $("#imgTop .lineColIndicatorArea").css("top", newImgTopTop + "px");
 
-liveTool = tool;
-var newCanvasHeight = 1 / ratio * newCanvasWidth;
-var newImgBtmTop = imgBottomPositionRatio * newCanvasHeight;
-var newImgTopTop = imgTopPositionRatio * newCanvasHeight;
-$("#transcriptionCanvas").css({
-    "width": newCanvasWidth + "px",
-    "height": newCanvasHeight + "px"
-});
-$(".lineColIndicatorArea").css("height", newCanvasHeight + "px");
-$("#imgBottom img").css("top", newImgBtmTop + "px");
-$("#imgBottom .lineColIndicatorArea").css("top", newImgBtmTop + "px");
-$("#imgTop img").css("top", newImgTopTop + "px");
-$("#imgTop .lineColIndicatorArea").css("top", newImgTopTop + "px");
-
-if (resize) {
-    attachTemplateResize();
-}
-else {
-    detachTemplateResize();
-    $("#templateResizeBar").hide();
-}
-setTimeout(function () {
-    adjustForMinimalLines();
-}, 1000);
-    
+    if (resize) {
+        attachTemplateResize();
+    }
+    else {
+        detachTemplateResize();
+        $("#templateResizeBar").hide();
+    }
+    setTimeout(function () {
+        adjustForMinimalLines();
+    }, 1000);
 }
 /*
  * Make the lines in the Text Preview split be in order.
