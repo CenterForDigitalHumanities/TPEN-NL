@@ -3085,7 +3085,16 @@ function splitPage(event, tool) {
             $("#compareSplit").css("width", splitWidthAdjustment);
             break
         case "partialTrans":
-            var currentCanvasLabel = transcriptionFolios[currentFolio - 1]["label"];
+            //var currentCanvasLabel = transcriptionFolios[currentFolio - 1]["label"];
+            var currentCanvasID = transcriptionFolios[currentFolio - 1]["@id"];
+            var utlID = "";
+            //We need to get the UTL canvas id for this particular canvas to support direct linking to the transcription for this object
+            utlID = currentCanvasID.substring(currentCanvasID.lastIndexOf("paleography:"), currentCanvasID.length - 1).replace("paleography:", "");
+            iframeDirectLink = buildIframeDirectLink("transcription/" + utlID);
+            $("#partialTransSplit").children("iframe").attr("data_src", iframeDirectLink);
+            
+            /**
+            var currentCanvasID = transcriptionFolios[currentFolio - 1]["label"];
             var utlID = "";
             if (currentCanvasLabel.split("_").length - 1 === 2) { //Must be in format like FP_000_000
                 //We need to get the UTL canvas id for this particular canvas to support direct linking to the transcription for this object
@@ -3097,23 +3106,31 @@ function splitPage(event, tool) {
                 //This is not a UTL canvas or a canvas with a different label format.  Default to list of partial trans
                 //The default is already populated in the html, so do nothing and the default will fire.
             }
+            */
+           
             splitScreen.find("iframe").attr("src", splitScreen.find("iframe").attr("data_src"));
             splitScreen.height(Page.height() - 40).scrollTop(0); // header space
             splitScreen.css("width", splitWidthAdjustment);
             break
         case "essay":
-            var currentCanvasLabel = transcriptionFolios[currentFolio - 1]["label"];
+            var currentCanvasLabel = transcriptionFolios[currentFolio - 1]["@id"];
             var utlID = "";
+            utlID = currentCanvasID.substring(currentCanvasID.lastIndexOf("paleography:"), currentCanvasID.length - 1).replace("paleography:", "");
+            iframeDirectLink = buildIframeDirectLink("essay/" + utlID);
+            $("#partialTransSplit").children("iframe").attr("data_src", iframeDirectLink);
+            
+            /**
             if (currentCanvasLabel.split("_").length - 1 === 2) { //Must be in format like FP_000_000
                 //We need to get the UTL canvasID for this particular canvas to support direct linking to the essay for this object
                 utlID = currentCanvasLabel.substring(0, currentCanvasLabel.lastIndexOf("_")).toLowerCase().replace("ip_","").replace("fp_","");
-                iframeDirectLink = buildIframeDirectLink("essay/" + utlID + "?response_type=embed");
+                iframeDirectLink = buildIframeDirectLink("essay/" + utlID + ".md");
                 $("#essaySplit").children("iframe").attr("data_src", iframeDirectLink);
             }
             else {
                 //This is not a UTL canvas or a canvas with a different @id format.  Default to list of essays
                 //The default is already populated in the html, so do nothing and the default will fire.
             }
+                                        */
             splitScreen.find("iframe").attr("src", splitScreen.find("iframe").attr("data_src"));
             splitScreen.height(Page.height() - 40).scrollTop(0); // header space
             splitScreen.css("width", splitWidthAdjustment);
