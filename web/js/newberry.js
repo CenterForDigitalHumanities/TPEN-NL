@@ -3109,7 +3109,7 @@ function splitPage(event, tool) {
             //var currentCanvasLabel = transcriptionFolios[currentFolio - 1]["@id"];
             var utlID = transcriptionFolios[currentFolio - 1]._utl_id.replace("paleography:","");
             iframeDirectLink = buildIframeDirectLink("essay/" + utlID);
-            $("#partialTransSplit").children("iframe").attr("data_src", iframeDirectLink);
+            $("#essaySplit").children("iframe").attr("data_src", iframeDirectLink);
             splitScreen.find("iframe").attr("src", splitScreen.find("iframe").attr("data_src"));
             splitScreen.height(Page.height() - 40).scrollTop(0); // header space
             splitScreen.css("width", splitWidthAdjustment);
