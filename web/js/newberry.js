@@ -5264,7 +5264,7 @@ function updateURL(piece, classic) {
         else {
             toAddressBar = replaceURLVariable("p", tpenFolios[currentFolio - 1].folioNumber);
         }
-        var relocator = "project.html?" + "projectID=" + projectID + "&p=" + tpenFolios[currentFolio - 1].folioNumber;
+        var relocator = "buttons.jsp?" + "projectID=" + projectID;
         $(".editButtons").attr("href", relocator);
     }
 

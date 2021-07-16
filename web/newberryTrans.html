@@ -259,14 +259,14 @@
                         <div id="specialCharsFloat" class="flex-container special-charactered">
                             <div id="charactersPopin" class="specialCharacters"  title="Special Characters" >
                             </div>
-                            <a title="Edit Special Characters" class="lookLikeButtons editButtons exitPage" href="project.html">
+                            <a title="Edit Special Characters" class="lookLikeButtons editButtons exitPage" href="buttons.jsp">
                                 Edit <i class="fa fa-edit"></i>
                             </a>
                         </div>
                         <div id="xmlTagFloat" class="flex-container xml-tagged">
                             <div id="xmlTagPopin" class="xmlTags" title="Custom XML Tags">
                             </div>
-                            <a title="Edit XML Tags" class="lookLikeButtons editButtons exitPage" href="project.html?">
+                            <a title="Edit XML Tags" class="lookLikeButtons editButtons exitPage" href="buttons.jsp">
                                 Edit <i class="fa fa-edit"></i>
                             </a>
                         </div>
@@ -367,10 +367,10 @@
                         </div>
                         <div id="editTransButtons" class="actions">
                             <h4 id="editBtns" title="Edit available XML Tags and Special Characters" class="clear-left">Workspace Tags & Chars</h4>
-                            <a title="Edit Special Characters" class="lookLikeButtons editButtons exitPage" href="project.html">
+                            <a title="Edit Special Characters" class="lookLikeButtons editButtons exitPage" href="buttons.jsp">
                                 Edit Special Characters <i class="fa fa-edit"></i>
                             </a>
-                            <a title="Edit XML Tags" class="lookLikeButtons editButtons exitPage" href="project.html">
+                            <a title="Edit XML Tags" class="lookLikeButtons editButtons exitPage" href="buttons.jsp">
                                 Edit XML Tags <i class="fa fa-edit"></i>
                             </a>
                         </div>
@@ -983,7 +983,7 @@
                     if (theURL.indexOf("projectID=") > -1){
                         var projID = getURLVariable("projectID");
                         theProjectID = parseInt(projID);
-                        $(".editButtons").attr("href", "project.html?projectID="+theProjectID);
+                        $(".editButtons").attr("href", "buttons.jsp?projectID="+theProjectID);
                         $("#transcriptionText").val(projID);
                         $("#loadBtn").click();
                     }
