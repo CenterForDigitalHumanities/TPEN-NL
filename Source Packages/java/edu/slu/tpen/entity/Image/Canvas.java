@@ -300,6 +300,8 @@ public class Canvas {
                     System.out.println("The list detected does not seem to be formatted correctly for TPEN_NL, this could be an error 1...");
                 }
             }
+            
+            /*
             //Then nothing from v1 is what we were looking for.  Check in v0.
             if(listsToReturn.isEmpty()){
                 parameter.remove("__rerum.history.next");
@@ -336,6 +338,7 @@ public class Canvas {
                     listsToReturn.add(masterList);
                 }
             }
+            */
         }
         //I believe this always inteds just to return one list based on the filtering above.
         Date date2 = new Date();
