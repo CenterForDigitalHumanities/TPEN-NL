@@ -79,6 +79,7 @@ public class GetProjectTPENServlet extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        request.setCharacterEncoding("UTF-8");
         response.setContentType("application/json; charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
