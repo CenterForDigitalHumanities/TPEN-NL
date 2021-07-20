@@ -42,7 +42,6 @@
         <script type="text/javascript" src="js/newberry.js"></script>
         <script>
             logout()
-            
             async function logout(){
                 await fetch("logout")
                     .then(response => response.text())
@@ -61,10 +60,6 @@
                         document.getElementById("status").innerHTML = "There was an issue logging out.  You may still be logged in.  Refresh the page to try again."
                         document.getElementById("status").style.color = "red"
                     })
-            }
-            
-            function showLinks(){
-                status.innerHTML = "You have logged out successfully."
             }
         </script>
     </body>
