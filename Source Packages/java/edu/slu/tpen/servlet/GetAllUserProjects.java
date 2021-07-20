@@ -51,6 +51,7 @@ public class GetAllUserProjects extends HttpServlet {
    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int session_userID = ServletUtils.getUID(req, resp); //The logged in user that asked for the list
         resp.setContentType("application/json; charset=utf-8");
+        resp.setCharacterEncoding("UTF-8");
         req.setCharacterEncoding("UTF-8");
         if(session_userID > 0) {
             int lookup_userID; //The userID whose projects list the requestor wants

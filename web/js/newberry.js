@@ -3085,35 +3085,45 @@ function splitPage(event, tool) {
             $("#compareSplit").css("width", splitWidthAdjustment);
             break
         case "partialTrans":
-            var currentCanvasLabel = transcriptionFolios[currentFolio - 1]["label"];
-            var utlID = "";
-            if (currentCanvasLabel.split("_").length - 1 === 2) { //Must be in format like FP_000_000
-                //We need to get the UTL canvas id for this particular canvas to support direct linking to the transcription for this object
-                utlID = currentCanvasLabel.substring(0, currentCanvasLabel.lastIndexOf("_")).toLowerCase();
-                iframeDirectLink = buildIframeDirectLink("transcriptions/" + utlID + "?response_type=embed");
-                $("#partialTransSplit").children("iframe").attr("data_src", iframeDirectLink);
-            }
-            else {
-                //This is not a UTL canvas or a canvas with a different label format.  Default to list of partial trans
-                //The default is already populated in the html, so do nothing and the default will fire.
-            }
+            /**
+             * Note that we are trying to connect to the partial transcription FOR THIS MANUSCRIPT.
+             * The Manuscript has a unique paleography ID that is not the project ID or folio ID or canvas @id.
+             * That utl ID is noted on the Canvas objects in memory in the _utl_id property.  The value came from
+             * the "archive" noted on the Folio object.  The regex that passes it forward is 
+             * 
+             * f.getArchive().replaceAll("^.*(paleography[^/]+).*$", "$1")
+             * 
+             * 
+             * For French, those IDs look like paleography:2066 and will point to /2066 which is static page 2066.md
+             * For Italian, those IDs look like paleography:IP_003 and will point to /003 which is static page 003.md
+             * Do we ever need to worry about paleography:FP_XYZ?
+             */
+            //var currentCanvasID = transcriptionFolios[currentFolio - 1]["@id"];
+            var utlID = transcriptionFolios[currentFolio - 1]._utl_id.replace("paleography:","").replace("IP_", "");
+            iframeDirectLink = buildIframeDirectLink("transcription/" + utlID);
+            $("#partialTransSplit").children("iframe").attr("data_src", iframeDirectLink);
             splitScreen.find("iframe").attr("src", splitScreen.find("iframe").attr("data_src"));
             splitScreen.height(Page.height() - 40).scrollTop(0); // header space
             splitScreen.css("width", splitWidthAdjustment);
             break
         case "essay":
-            var currentCanvasLabel = transcriptionFolios[currentFolio - 1]["label"];
-            var utlID = "";
-            if (currentCanvasLabel.split("_").length - 1 === 2) { //Must be in format like FP_000_000
-                //We need to get the UTL canvasID for this particular canvas to support direct linking to the essay for this object
-                utlID = currentCanvasLabel.substring(0, currentCanvasLabel.lastIndexOf("_")).toLowerCase();
-                iframeDirectLink = buildIframeDirectLink("essay/" + utlID + "?response_type=embed");
-                $("#essaySplit").children("iframe").attr("data_src", iframeDirectLink);
-            }
-            else {
-                //This is not a UTL canvas or a canvas with a different @id format.  Default to list of essays
-                //The default is already populated in the html, so do nothing and the default will fire.
-            }
+            /**
+             * Note that we are trying to connect to the partial transcription FOR THIS MANUSCRIPT.
+             * The Manuscript has a unique paleography ID that is not the project ID or folio ID or canvas @id.
+             * That utl ID is noted on the Canvas objects in memory in the _utl_id property.  The value came from
+             * the "archive" noted on the Folio object.  The regex that passes it forward is 
+             * 
+             * f.getArchive().replaceAll("^.*(paleography[^/]+).*$", "$1")
+             * 
+             * 
+             * For French, those IDs look like paleography:2066 and will point to /2066 which is static page 2066.md
+             * For Italian, those IDs look like paleography:IP_003 and will point to /003 which is static page 003.md
+             * Do we ever need to worry about paleography:FP_XYZ?
+             */
+            //var currentCanvasLabel = transcriptionFolios[currentFolio - 1]["@id"];
+            var utlID = transcriptionFolios[currentFolio - 1]._utl_id.replace("paleography:","").replace("IP_", "");
+            iframeDirectLink = buildIframeDirectLink("essay/" + utlID);
+            $("#essaySplit").children("iframe").attr("data_src", iframeDirectLink);
             splitScreen.find("iframe").attr("src", splitScreen.find("iframe").attr("data_src"));
             splitScreen.height(Page.height() - 40).scrollTop(0); // header space
             splitScreen.css("width", splitWidthAdjustment);
@@ -5268,7 +5278,7 @@ function updateURL(piece, classic) {
         else {
             toAddressBar = replaceURLVariable("p", tpenFolios[currentFolio - 1].folioNumber);
         }
-        var relocator = "project.html?" + "projectID=" + projectID + "&p=" + tpenFolios[currentFolio - 1].folioNumber;
+        var relocator = "buttons.jsp?" + "projectID=" + projectID;
         $(".editButtons").attr("href", relocator);
     }
 

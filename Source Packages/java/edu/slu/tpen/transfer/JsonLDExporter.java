@@ -193,8 +193,10 @@ public class JsonLDExporter {
         //System.out.println("++++++++++++++++++++++++++++++++++");
         //System.out.println("It took "+getDateDiff(date4,date5,TimeUnit.SECONDS)+" seconds to get the list for this page");
         //result.put("resources", resources);
+        String arch = f.getArchive().replaceAll("^.*(paleography[^/]+).*$", "$1");
         result.put("otherContent", otherContent);
         result.put("images", images);
+        result.put("_utl_id", arch);
         Date date2 = new Date();
        //System.out.println("Finished build page for "+f.getPageName()+" at "+dateFormat.format(date2)+".  It took "+getDateDiff(date,date2,TimeUnit.SECONDS)+" seconds");
         //System.out.println("==============================================");
