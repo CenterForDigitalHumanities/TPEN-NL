@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<!--
+    Just loading this page fires the logout.  The only reason to be directed to this page is to perform a logout.
+    Do all confirmations in the client script.
+-->
+<html>
+    <head>
+        <title>Newberry Paleography Logout</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/style.css" type="text/css" media="screen, projection">
+        <style>
+            #links-out{
+                
+            }
+            
+            #links-out a{
+                display: block;
+            }
+            
+            #status{
+                
+            }
+        </style>
+    </head>
+    <body>
+        <header></header>
+        <h1>Newberry Paleography Logout</h1>
+        <div id="status">
+            Logging Out...
+        </div>
+        
+        <h2>Site Links</h2>
+        <div id="links-out">
+            <a href="http://paleo.rerum.io">Newberry Paleography Login</a>
+            <a href="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/">Newberry French Paleography</a>
+            <a href="https://centerfordigitalhumanities.github.io/Newberry-Italian-paleography/">Newberry Italian Paleography</a>
+            <a href="http://t-pen.org">T-PEN Transcription</a>
+            <a href="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/about-team">About Newberry Paleography</a>
+        </div>
+        <footer></footer>
+        <script type="text/javascript" src="js/newberry.js"></script>
+        <script>
+            logout()
+            
+            async function logout(){
+                await fetch("logout")
+                    .then(response => response.text())
+                    .then(text => {
+                        if (text === "Logout complete"){
+                            document.getElementById("status").innerHTML = "You have logged out of Newberry Paleography successfully."
+                            document.getElementById("status").style.color = "green"
+                        }
+                        else{
+                            document.getElementById("status").innerHTML = "There was an issue logging out.  You may still be logged in.  Refresh the page to try again."
+                            document.getElementById("status").style.color = "red"
+                        }
+                    })
+            }
+            
+            function showLinks(){
+                status.innerHTML = "You have logged out successfully."
+            }
+        </script>
+    </body>
+</html>
