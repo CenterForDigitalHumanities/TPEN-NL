@@ -56,6 +56,11 @@
                             document.getElementById("status").style.color = "red"
                         }
                     })
+                    .catch(err => {
+                        console.error(err)
+                        document.getElementById("status").innerHTML = "There was an issue logging out.  You may still be logged in.  Refresh the page to try again."
+                        document.getElementById("status").style.color = "red"
+                    })
             }
             
             function showLinks(){
