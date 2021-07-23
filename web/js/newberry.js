@@ -3005,7 +3005,7 @@ function scrollTextPreview() {
 /*
  * Split the interface to make room for avilable split tools.
  */
-function splitPage(event, tool) {
+async function splitPage(event, tool) {
     var resize = true;
     var newCanvasWidth = window.innerWidth * .55;
     var ratio = originalCanvasWidth / originalCanvasHeight;
@@ -3102,7 +3102,14 @@ function splitPage(event, tool) {
             var utlID = transcriptionFolios[currentFolio - 1]._utl_id.replace("paleography:","").replace("IP_", "");
             iframeDirectLink = buildIframeDirectLink("transcription/" + utlID);
             $("#partialTransSplit").children("iframe").attr("data_src", iframeDirectLink);
-            splitScreen.find("iframe").attr("src", splitScreen.find("iframe").attr("data_src"));
+            var available = await resourceIsAvailable(iframeDirectLink)
+                .then(bool => {return bool})
+            if(available){
+                splitScreen.find("iframe").attr("src", splitScreen.find("iframe").attr("data_src"));
+            }
+            else{
+                splitScreen.find("iframe").attr("src", "notfound.html");
+            }
             splitScreen.height(Page.height() - 40).scrollTop(0); // header space
             splitScreen.css("width", splitWidthAdjustment);
             break
@@ -3124,7 +3131,14 @@ function splitPage(event, tool) {
             var utlID = transcriptionFolios[currentFolio - 1]._utl_id.replace("paleography:","").replace("IP_", "");
             iframeDirectLink = buildIframeDirectLink("essay/" + utlID);
             $("#essaySplit").children("iframe").attr("data_src", iframeDirectLink);
-            splitScreen.find("iframe").attr("src", splitScreen.find("iframe").attr("data_src"));
+            var available = await resourceIsAvailable(iframeDirectLink)
+                .then(bool => {return bool})
+            if(available){
+                splitScreen.find("iframe").attr("src", splitScreen.find("iframe").attr("data_src"));
+            }
+            else{
+                splitScreen.find("iframe").attr("src", "notfound.html");
+            }
             splitScreen.height(Page.height() - 40).scrollTop(0); // header space
             splitScreen.css("width", splitWidthAdjustment);
             break
@@ -3157,6 +3171,15 @@ function splitPage(event, tool) {
     setTimeout(function () {
         adjustForMinimalLines();
     }, 1000);
+}
+
+async function resourceIsAvailable(iframeLink){
+    return fetch(iframeLink,{
+            method: "GET",
+            mode: "cors"
+    })
+    .then(resp => {return resp.status === 200})
+    .catch(err => {return false})
 }
 /*
  * Make the lines in the Text Preview split be in order.
