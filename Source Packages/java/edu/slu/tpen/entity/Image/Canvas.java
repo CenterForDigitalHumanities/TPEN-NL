@@ -183,7 +183,12 @@ public class Canvas {
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
         Date date = new Date();
         //System.out.println("Ask for lists at "+dateFormat.format(date));
-        URL postUrl = new URL(Constant.ANNOTATION_SERVER_ADDR + "/getByProperties.action");
+
+        int lim = 75;
+        int skip = 0;
+        String serv = "/getByProperties.action?skip=" + skip + "&limit=" + lim;
+
+        URL postUrl = new URL(Constant.ANNOTATION_SERVER_ADDR + serv);
         JSONObject historyWildCard = new JSONObject();
         historyWildCard.element("$exists", true);
         historyWildCard.element("$size", 0);
@@ -239,6 +244,54 @@ public class Canvas {
         String jarray = sb.toString();
         jarray = jarray.trim();
         JSONArray theLists = JSONArray.fromObject(jarray);
+        if (theLists.size() == 75) {
+            // FIXME: This is a copy-paste, so it can be extracted out as a method with refactoring
+            // It also only goes up to 150 items (i.e. it is not recursive yet)
+            String serv2 = "/getByProperties.action?skip=" + lim + "&limit=" + lim;
+            URL postUrl2 = new URL(Constant.ANNOTATION_SERVER_ADDR + serv);
+            HttpURLConnection connection2 = (HttpURLConnection) postUrl.openConnection();
+            connection2.setDoOutput(true);
+            connection2.setDoInput(true);
+            connection2.setRequestMethod("POST");
+            connection2.setUseCaches(false);
+            connection2.setInstanceFollowRedirects(true);
+            connection2.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+            connection2.connect();
+            DataOutputStream out2 = new DataOutputStream(connection2.getOutputStream());
+            out2.writeBytes(parameter.toString());
+            out2.flush();
+            out2.close(); 
+            StringBuilder sb2 = new StringBuilder();
+            try{
+                BufferedReader reader = new BufferedReader(new InputStreamReader(connection2.getInputStream(),"utf-8"));
+                String line="";
+                while ((line = reader.readLine()) != null){
+                    line = new String(line.getBytes(), "utf-8");
+                    sb2.append(line);
+                }
+                reader.close();
+            }
+            catch (IOException ex){
+                //Forward error response from RERUM
+                System.out.println("Get from RERUM had trouble...");
+                BufferedReader error = new BufferedReader(new InputStreamReader(connection2.getErrorStream(),"utf-8"));
+                String errorLine = "";
+                
+                while ((errorLine = error.readLine()) != null){  
+                    sb2.append(errorLine);
+                } 
+                error.close();
+                er = true;
+                System.out.println(sb2.toString());
+            }
+            connection2.disconnect();
+            //FIXME: Every now and then, this line throws an error: A JSONArray text must start with '[' at character 1 of &lt
+            //I think this is the result of a 503 coming from the server, which needs investigation.
+            String jarray2 = sb.toString();
+            jarray = jarray.trim();
+            JSONArray theLists2 = JSONArray.fromObject(jarray);
+            theLists.addAll(theLists2);
+        }
         JSONArray listsToReturn = new JSONArray();
         JSONObject masterList = new JSONObject();
         Date date4 = new Date();
