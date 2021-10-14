@@ -12,6 +12,15 @@ and open the template in the editor.
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css" type="text/css" media="screen, projection">
     <style>
+        body {
+            font-size: clamp(1em, 1.6vw, 2.2em);
+        }
+
+        #search-btn {
+            display: none !important;
+            /* no search from project list */
+        }
+
         #projectsList {
             margin: 0 auto;
             max-width: 35em;
@@ -35,7 +44,8 @@ and open the template in the editor.
 
         .title {
             display: block;
-            transition: .5s color;
+            text-decoration: none;
+            transition: 250ms color;
         }
 
         .title:hover {
