@@ -1703,7 +1703,7 @@ public class Project {
    }
    
    public static int getMasterProjectID(String projName) throws SQLException{
-        String query = "SELECT MIN(id) FROM projects WHERE name=?";
+        String query = "SELECT MIN(id) FROM project WHERE name=?";
         Connection j = null;
         PreparedStatement ps=null;
         int id = -1;
@@ -1714,7 +1714,8 @@ public class Project {
             ResultSet rs = ps.executeQuery();
             Project p = null;
             if(rs.next()){
-                id = rs.getInt("project.id");
+                //Result set is one row with one column with the id we are looking for
+                id = rs.getInt(1);
             }
             return id;
         } 

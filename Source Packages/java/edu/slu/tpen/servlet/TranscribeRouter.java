@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import net.sf.json.JSONObject;
 import textdisplay.Project;
+import tokens.TokenManager;
 import user.User;
 
 /**
@@ -43,6 +44,7 @@ public class TranscribeRouter extends HttpServlet {
         String paleoObj = "";
         int uid = ServletUtils.getUID(req, resp);
         boolean skip = true;
+        TokenManager man = new TokenManager();
         //If you choose not to automatically skip, put some method here to define what makes skip true.
         resp.addHeader("Access-Control-Allow-Origin", "*");
         resp.addHeader("Access-Control-Allow-Methods", "GET");
@@ -61,7 +63,7 @@ public class TranscribeRouter extends HttpServlet {
                 if(folioNum > -1){
                    interfaceLink = proj.mintInterfaceLinkFromFolio(folioNum);
                 }
-                String redirectURL = "http://paleo.rerum.io/TPEN-NL/"+interfaceLink;
+                String redirectURL = man.getProperties().getProperty("SERVERURL")+interfaceLink;
                 resp.sendRedirect(redirectURL);
             } 
             else{
@@ -69,7 +71,10 @@ public class TranscribeRouter extends HttpServlet {
                 System.out.println("TODO run copy project and redirect to resulting ID");  
                 resp.sendError(HttpServletResponse.SC_NOT_FOUND);
                 int masterID = Project.getMasterProjectID(paleoObj);
-                URL postUrl = new URL("http://paleo.rerum.io/TPEN-NL/copyProjectAndTranscription?projectID="+masterID); //copyProjectAndLineParsing
+                System.out.println("Is this the right masterID? '"+masterID+"'");
+                
+                /*
+                URL postUrl = new URL(man.getProperties().getProperty("SERVERURL")+"copyProjectAndTranscription?projectID="+masterID); //copyProjectAndLineParsing
                 HttpURLConnection connection = (HttpURLConnection) postUrl.openConnection();
                 connection.setDoOutput(true);
                 connection.setDoInput(true);
@@ -91,6 +96,17 @@ public class TranscribeRouter extends HttpServlet {
                         sb.append(line);
                     }
                     reader.close();
+                    System.out.println("Copy project has finished for router");
+                    System.out.println(sb.toString());
+                    System.out.println(Integer.parseInt(sb.toString().replace(man.getProperties().getProperty("CREATE_PROJECT_RETURN_DOMAIN")+"project/", "")));
+                    Project resultingProject = new Project(Integer.parseInt(sb.toString().replace(man.getProperties().getProperty("CREATE_PROJECT_RETURN_DOMAIN")+"project/", "")));
+                    int folioNum = resultingProject.firstPage();
+                    String interfaceLink = "";
+                    if(folioNum > -1){
+                       interfaceLink = proj.mintInterfaceLinkFromFolio(folioNum);
+                    }
+                    String redirectURL = "http://paleo.rerum.io/TPEN-NL/"+interfaceLink;
+                    resp.sendRedirect(redirectURL);
                 }
                 catch (IOException ex){
                     //Copy Project Error
@@ -104,8 +120,10 @@ public class TranscribeRouter extends HttpServlet {
                     er = true;
                     System.out.println(sb.toString());
                 }
-                connection.disconnect();
-                
+                finally{
+                    connection.disconnect();
+                }
+                */
             }
         } 
         else {
