@@ -1041,15 +1041,15 @@ DatabaseWrapper.closePreparedStatement(ps);
 
     public Project getUserProjectForPaleoObject(String paleoID) throws SQLException{
         new ProjectPriority(UID).verifyPriorityContents();
-        String query = "select distinct(project.id) from project where name=? join groupmembers on grp=GID join projectpriorities on id=projectID where groupmembers.UID=? and projectpriorities.uid=?";
+        String query = "select distinct(project.id) from project join groupmembers on grp=GID join projectpriorities on id=projectID where groupmembers.UID=? and projectpriorities.uid=? and project.name=?";
         Connection j = null;
         PreparedStatement ps=null;
         try{
             j = DatabaseWrapper.getConnection();
             ps = j.prepareStatement(query);
-            ps.setString(1, paleoID);
+            ps.setInt(1, UID);
             ps.setInt(2, UID);
-            ps.setInt(3, UID);
+            ps.setString(3, paleoID);
             ResultSet rs = ps.executeQuery();
             Project p = null;
             if(rs.next()){
