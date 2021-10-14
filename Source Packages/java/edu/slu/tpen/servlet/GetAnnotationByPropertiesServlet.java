@@ -27,7 +27,30 @@ public class GetAnnotationByPropertiesServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("Get annotation by properties internal servlet params below...");
         System.out.println(request.getParameter("content"));
-        URL postUrl = new URL(Constant.ANNOTATION_SERVER_ADDR + "/getByProperties.action");
+        String l = request.getParameter("limit");
+        String s = request.getParameter("skip");
+        int lim = 75;
+        int skip = 0;
+        if(null != l){
+            try{
+                lim = Integer.parseInt(l);
+            }
+            catch(Exception e){
+                lim = 75;
+            }
+        }
+        if(null != s){
+            try{
+                skip = Integer.parseInt(s);
+            }
+            catch(Exception e){
+                skip = 0;
+            }
+        }
+        String serv = "/getByProperties.action?skip=" + skip + "&limit=" + lim;
+            
+        //Point to rerum server v1
+        URL postUrl = new URL(Constant.ANNOTATION_SERVER_ADDR + serv);
         HttpURLConnection connection = (HttpURLConnection) postUrl.openConnection();
         connection.setDoOutput(true);
         connection.setDoInput(true);
