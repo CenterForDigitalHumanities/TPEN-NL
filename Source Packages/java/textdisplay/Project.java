@@ -1702,5 +1702,27 @@ public class Project {
         return interfaceLink;
    }
    
+   public static int getMasterProjectID(String projName) throws SQLException{
+        String query = "SELECT MIN(id) FROM projects WHERE name=?";
+        Connection j = null;
+        PreparedStatement ps=null;
+        int id = -1;
+        try{
+            j = DatabaseWrapper.getConnection();
+            ps = j.prepareStatement(query);
+            ps.setString(1, projName);
+            ResultSet rs = ps.executeQuery();
+            Project p = null;
+            if(rs.next()){
+                id = rs.getInt("project.id");
+            }
+            return id;
+        } 
+        finally{
+            DatabaseWrapper.closeDBConnection(j);
+            DatabaseWrapper.closePreparedStatement(ps);
+        }
+   }
+   
    private static final Logger LOG = Logger.getLogger(Project.class.getName());
 }

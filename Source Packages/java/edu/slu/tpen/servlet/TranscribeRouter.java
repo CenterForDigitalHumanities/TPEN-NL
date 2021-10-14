@@ -5,7 +5,12 @@
 package edu.slu.tpen.servlet;
 
 import edu.slu.util.ServletUtils;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,6 +18,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import net.sf.json.JSONObject;
 import textdisplay.Project;
 import user.User;
 
@@ -62,6 +68,44 @@ public class TranscribeRouter extends HttpServlet {
                 //This user did not have a project yet.  Get the master project ID, run /copyProject, and redirect to the resulting link
                 System.out.println("TODO run copy project and redirect to resulting ID");  
                 resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+                int masterID = Project.getMasterProjectID(paleoObj);
+                URL postUrl = new URL("http://paleo.rerum.io/TPEN-NL/copyProjectAndTranscription?projectID="+masterID); //copyProjectAndLineParsing
+                HttpURLConnection connection = (HttpURLConnection) postUrl.openConnection();
+                connection.setDoOutput(true);
+                connection.setDoInput(true);
+                connection.setRequestMethod("POST");
+                connection.setUseCaches(false);
+                connection.setInstanceFollowRedirects(true);
+                connection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+                connection.connect();
+                DataOutputStream out = new DataOutputStream(connection.getOutputStream());
+                out.flush();
+                out.close(); 
+                boolean er = false;
+                StringBuilder sb = new StringBuilder();
+                try{
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(),"utf-8"));
+                    String line="";
+                    while ((line = reader.readLine()) != null){
+                        line = new String(line.getBytes(), "utf-8");
+                        sb.append(line);
+                    }
+                    reader.close();
+                }
+                catch (IOException ex){
+                    //Copy Project Error
+                    System.out.println("Copy Project Error in Transcribe Router...");
+                    BufferedReader error = new BufferedReader(new InputStreamReader(connection.getErrorStream(),"utf-8"));
+                    String errorLine = "";
+                    while ((errorLine = error.readLine()) != null){  
+                        sb.append(errorLine);
+                    } 
+                    error.close();
+                    er = true;
+                    System.out.println(sb.toString());
+                }
+                connection.disconnect();
+                
             }
         } 
         else {
