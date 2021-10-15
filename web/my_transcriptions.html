@@ -4,7 +4,7 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
-<html>
+<html lang="en">
 
 <head>
     <title>My Transcriptions</title>
@@ -13,85 +13,90 @@ and open the template in the editor.
     <link rel="stylesheet" href="css/style.css" type="text/css" media="screen, projection">
     <style>
         body {
-            font-size: clamp(1em, 1.6vw, 2.2em);
+            font-size: clamp(1em, 1.6vw, 2.2em)
         }
 
         #search-btn {
-            display: none !important;
-            /* no search from project list */
+            display: none !important
+        }
+
+        #site-name {
+            text-align: center;
+            margin: 0;
+            padding: 0
         }
 
         #projectsList {
             margin: 0 auto;
-            max-width: 35em;
+            max-width: 35em
         }
 
         .user-project {
             width: auto;
-            border: 1px solid lightgray;
-            padding: 0.3em;
-            margin: 0px 6px;
-            position: relative;
+            border: 1px solid #d3d3d3;
+            padding: .3em;
+            margin: 0 6px;
+            position: relative
         }
 
         .user-project:nth-child(even) {
-            background-color: white;
+            background-color: #fff
         }
 
         .user-project:nth-child(odd) {
-            background-color: lightgray;
+            background-color: #d3d3d3
         }
 
         .title {
             display: block;
             text-decoration: none;
-            transition: 250ms color;
+            transition: 250ms color
         }
 
         .title:hover {
-            color: #b43d2e;
+            color: #b43d2e
         }
 
         a.title:hover::before {
             content: "✎";
             position: absolute;
             left: -1.2em;
-            top: -0.2em;
+            top: -.2em
         }
 
         .deleteBtn {
             position: absolute;
-            right: 0.4em;
-            top: 0.6em;
-            background: white;
+            right: .4em;
+            top: .6em;
+            background: #fff;
             color: #264aa0;
             border: 1px solid #264aa0;
-            padding: 0.2em 0.4em;
+            padding: .2em .4em;
             text-align: center;
-            font-weight: bold;
+            font-weight: 700;
             cursor: pointer;
             text-decoration: none;
-            font-size: 0.6em;
+            font-size: .6em
         }
 
         .deleteBtn:hover {
-            color: white;
-            background-color: #264aa0;
+            color: #fff;
+            background-color: #264aa0
         }
 
         .inline {
             display: inline-block;
-            margin: 0px 6px;
+            margin: 0 6px
         }
 
         #gatheringProjects {
-            background-image: url(./images/loading2.gif);
+            background-image: url(images/loading2.gif);
             display: block;
             background-repeat: no-repeat;
             background-size: contain;
             height: 300px;
             width: 400px;
-            margin: 0 auto;
+            margin: 0 auto
         }
 
         h1,
@@ -100,20 +105,116 @@ and open the template in the editor.
         h4 {
             font-weight: 200 !important;
             font-family: 'EB Garamond', 'Times New Roman', serif !important;
-            color: black;
+            color: #000
         }
 
         .ruled {
             padding: 2% 0 1.5% 3%;
             color: #002a5c;
             margin: 0 0 1.2em;
-            border-bottom: 1px solid lightblue;
+            border-bottom: 1px solid #add8e6
+        }
+
+        .container {
+            max-width: var(--grid-maxWidth);
+            margin: 0 auto;
+            width: 96%;
+            padding: 0 calc(var(--grid-gutter)/ 2);
+            display: flex;
+            flex-direction: column
+        }
+
+        ul li.leaf {
+            list-style-image: none;
+            list-style-type: none
+        }
+
+        .nav>li>a {
+            color: #000;
+            font-size: .8em;
+            text-decoration: none;
+            position: relative
+        }
+
+        @media (min-width:981px) {
+            nav .nav {
+                display: flex;
+                margin: 0 auto
+            }
+
+            li.leaf {
+                padding: 0;
+                margin: 0
+            }
+
+            .nav>li>a {
+                border-bottom: 2px solid #b43d2e;
+                padding: 5px 15px
+            }
+
+            .nav>li>a:hover {
+                background: 0 0;
+                border-bottom: 2px solid orange
+            }
+        }
+
+        .nav {
+            margin: 0;
+            padding: 0;
+            list-style: none
+        }
+
+        #header,
+        .menu-bar,
+        .nav {
+            z-index: 100 !important;
+            opacity: 1
+        }
+
+        .nav {
+            margin-bottom: 0;
+            padding-left: 0;
+            list-style: none
+        }
+
+        li.leaf {
+            padding: 0;
+            margin: 0
         }
     </style>
 </head>
 
 <body>
-    <header>Header</header>
+    <header class="header clearfix">
+        <div id="branding" class="branding-elements clearfix">
+            <div style="margin: 0px auto;">
+                <div class="newberry-header hiddem-sm hidden-xs">
+                </div>
+
+                <h1 id="site-name">
+                    <div id="logo" style="display: inline;">
+                        <img aria-hidden="true" role="presentation" alt=""
+                            src="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/www/images/NewberryLogo_with_tag.png">
+                    </div>
+                </h1>
+            </div>
+        </div>
+        <nav class="container">
+            <ul class="nav nav-bar">
+                <li class="first leaf">
+                    <a href="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/">French
+                        Renaissance Paleography</a>
+                </li>
+                <li class="leaf">
+                    <a href="https://centerfordigitalhumanities.github.io/Newberry-Italian-paleography/">Italian
+                        Paleography</a>
+                </li>
+                <li class="last leaf">
+                    <a href="http://paleo.rerum.io/TPEN-NL/logout.html" title="">Logout</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
     <h1 class="ruled">My Transcriptions</h1>
     <p>To continue working on a transcription, click the manuscript name.
         Remove by clicking the "&cross;" button.</p>
@@ -121,7 +222,29 @@ and open the template in the editor.
         <div id="gatheringProjects"></div>
         Gathering projects...
     </div>
-    <footer>Footer</footer>
+    <footer>
+        <link rel="stylesheet" href="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/www/css/style.css">
+        <div class="row container">
+            <div class="col" style="flex-grow:2;">
+                <h2> Partners </h2>
+                    <div class="row">
+                        <a class="col" href="http://www.newberry.org/" target="_blank"><img alt="Newberry" src="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/www/images/NewberryLogo_with_tag.png"></a>
+                        <a class="col" href="http://onesearch.library.utoronto.ca" target="_blank"><img alt="University of Toronto Libraries" src="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/www/images/UTL-logo.png"></a>
+                    </div>
+                    <div class="row">
+                        <a class="col" href="http://lib.slu.edu/" style="line-height: 23.1111px;" target="_blank"><img alt="St. Louis University" src="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/www/images/slu.gif" style="width: 346px;"></a>
+                        <a class="col" href="http://www.itergateway.org/" target="_blank"><img alt="Iter" src="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/www/images/iter-logo-new.png"></a>
+                    </div>
+            </div>
+            <div class="col">
+                <slot></slot>
+                <h2 class="pane-title"> Contact </h2>
+                <p><a href="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/contact">Contact</a><br><a href="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/about-team">About the Team</a><br><a href="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/contact">Terms of Use</a></p>
+                <p>Supported by a grant from The Andrew W. Mellon Foundation</p>
+                <p><a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img alt="Creative Commons Licence" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" style="border-width:0"></a><br><a href="https://www.newberry.org/paleography">French Renaissance Paleography</a> is licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.</p>
+            </div>
+        </div>
+    </footer>
 </body>
 <script type="text/javascript" src="js/newberry.js"></script>
 <script type="text/javascript">
@@ -169,7 +292,6 @@ and open the template in the editor.
      */
     let formatAndRenderProjects = function (projectList) {
         //FIXME how do I know if a given project is French, Italian, Spanish, etc.
-        if (window?.gatheringProjects?.style) { gatheringProjects.style.display = "none" }
         if (projectList.length > 0) {
             //Note that there will be a b.interface for the link.
             projectsList.innerHTML = projectList.reduce((a, b) => a += `
