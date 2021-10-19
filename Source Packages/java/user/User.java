@@ -1373,11 +1373,6 @@ PreparedStatement qry=null;
         }
     }
     
-    public int getUserProjectFromPaleoID(String paleoID){
-        String query = "select id from projects where UID=?";
-        return 1;
-    }
-    
 }
     
     

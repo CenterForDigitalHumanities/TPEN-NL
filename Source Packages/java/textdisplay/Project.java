@@ -389,7 +389,6 @@ public class Project {
          name = "new project";
       }
       try (PreparedStatement stmt = conn.prepareStatement("insert into project (name, grp, schemaURL,linebreakCharacterLimit ) values(?,?,'',5000)", PreparedStatement.RETURN_GENERATED_KEYS)) {
-         System.out.println("generate new Project with name "+name);
          stmt.setString(1, name);
          stmt.setInt(2, group);
          stmt.execute();
