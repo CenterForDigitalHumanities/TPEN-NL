@@ -49,28 +49,21 @@ public class TranscribeRouter extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException, SQLException {
-        System.out.println("In /transcribe router");
+        req.setCharacterEncoding("UTF-8");
         String projectName = "";
         int uid = ServletUtils.getUID(req, resp);
-        boolean skip = true;
-        String redirectURL = "";
         Project proj = null;
         String interfaceLink = "";
         TokenManager man = new TokenManager();
         int folioNum = -1;
-        //If you choose not to automatically skip, put some method here to define what makes skip true.
-        resp.addHeader("Access-Control-Allow-Origin", "*");
-        resp.addHeader("Access-Control-Allow-Methods", "GET");
-        System.out.println("UID detected is "+uid);
+        resp.setHeader("Access-Control-Allow-Origin", "*");
+        resp.setHeader("Access-Control-Allow-Methods", "GET");
         if (uid >= 0) {
             projectName = req.getPathInfo().substring(1);
-            System.out.println("Name of proj is '"+projectName+"'");
-            //projectName = req.getParameter("name");
             User lookup = new User(uid);
             proj = lookup.getUserProjectForPaleoObject(projectName);         
             if (null != proj && proj.getProjectID() > 0) {
                 //Then this user has a project already.  Redirect to that project.
-                System.out.println("Found existing project for user: "+proj.getProjectID());
                 folioNum = proj.firstPage();
                 if(folioNum > -1){
                    interfaceLink = proj.mintInterfaceLinkFromFolio(folioNum);
@@ -84,8 +77,7 @@ public class TranscribeRouter extends HttpServlet {
             else{
                 //This user did not have a project yet.  Get the master project ID, run /copyProject, and redirect to the resulting link
                 int masterID = Project.getMasterProjectID(projectName);
-                System.out.println("Is this the right masterID? '"+masterID+"'");
-                int copiedProjectID = copyProjectAndTranscription(uid, masterID, req.getLocalName());
+                int copiedProjectID = copyProjectAndLineParsing(uid, masterID, req.getLocalName());
                 if(copiedProjectID > 0){
                     proj = new Project(copiedProjectID);
                     folioNum = proj.firstPage();
@@ -105,7 +97,8 @@ public class TranscribeRouter extends HttpServlet {
             }
         } 
         else {
-            /* They need to be logged into T-PEN to run this! */
+            //They need to be logged into T-PEN to run this!
+            //TODO! When we have the auth workflow right, we will need to redirect them appropriately.
             System.out.println("You must be logged in to activate the /transcribe router!");
             resp.sendError(HttpServletResponse.SC_UNAUTHORIZED);
         }
@@ -158,14 +151,19 @@ public class TranscribeRouter extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    //copyProjectAndTranscriptions
+    /**
+     * Same logic as the copyProjectAndTranscription Servlet
+     * @param uID
+     * @param projectID
+     * @param localName
+     * @return 
+     */
     private int copyProjectAndTranscription(int uID, int projectID, String localName){
         int result = -1;
         boolean er = false;
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
         Date date = new Date();
         //System.out.println("Copying at "+dateFormat.format(date));    
-        //System.out.println("Copy project and annos for "+projectID);
         try {
             //find original project and copy to a new project. 
             Project templateProject = new Project(projectID);
@@ -350,11 +348,18 @@ public class TranscribeRouter extends HttpServlet {
         catch(Exception e){
             System.out.println("Exception Caught.  Could not copy project.");
             result = -1;
-            System.out.println(e.getStackTrace());
+            System.out.println(e);
         }
         return result;
     }
     
+    /**
+     * Same logic as the copyProjectAndTranscription servlet
+     * @param uID
+     * @param projectID
+     * @param localName
+     * @return 
+     */
     private int copyProjectAndLineParsing(int uID, int projectID, String localName){
         int result = -1;
         int codeOverwrite = 500;
