@@ -1729,8 +1729,9 @@ public class Project {
             if(rs.next()){
                 //Result set is one row with one column with the id we are looking for
                 id = rs.getInt(1);
+                System.out.println("Found master id: "+id);
             }
-            return -1;
+            return id;
         } 
         finally{
             DatabaseWrapper.closeDBConnection(j);

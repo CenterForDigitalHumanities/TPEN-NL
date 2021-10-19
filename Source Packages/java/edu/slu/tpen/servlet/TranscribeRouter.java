@@ -61,9 +61,11 @@ public class TranscribeRouter extends HttpServlet {
         if (uid >= 0) {
             projectName = req.getPathInfo().substring(1);
             User lookup = new User(uid);
+            System.out.println("Look up user project '"+projectName+"'");
             proj = lookup.getUserProjectForPaleoObject(projectName);         
             if (null != proj && proj.getProjectID() > 0) {
                 //Then this user has a project already.  Redirect to that project.
+                System.out.println("Route to user project "+proj.getProjectID());
                 folioNum = proj.firstPage();
                 if(folioNum > -1){
                    interfaceLink = proj.mintInterfaceLinkFromFolio(folioNum);
@@ -76,6 +78,7 @@ public class TranscribeRouter extends HttpServlet {
             } 
             else{
                 //This user did not have a project yet.  Get the master project ID, run /copyProject, and redirect to the resulting link
+                System.out.println("User does not have a project by this name.  Make a new one for them by copying the master");
                 int masterID = Project.getMasterProjectID(projectName);
                 int copiedProjectID = copyProjectAndLineParsing(uid, masterID, req.getLocalName());
                 if(copiedProjectID > 0){
