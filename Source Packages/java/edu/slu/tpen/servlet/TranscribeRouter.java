@@ -61,11 +61,10 @@ public class TranscribeRouter extends HttpServlet {
         if (uid >= 0) {
             projectName = req.getPathInfo().substring(1);
             User lookup = new User(uid);
-            System.out.println("Look up user project '"+projectName+"'");
-            proj = lookup.getUserProjectForPaleoObject(projectName);         
+            proj = lookup.getUserProjectByProjectName(projectName);         
             if (null != proj && proj.getProjectID() > 0) {
                 //Then this user has a project already.  Redirect to that project.
-                System.out.println("Route to user project "+proj.getProjectID());
+                //System.out.println("Route to user project "+proj.getProjectID());
                 folioNum = proj.firstPage();
                 if(folioNum > -1){
                    interfaceLink = proj.mintInterfaceLinkFromFolio(folioNum);
@@ -78,7 +77,7 @@ public class TranscribeRouter extends HttpServlet {
             } 
             else{
                 //This user did not have a project yet.  Get the master project ID, run /copyProject, and redirect to the resulting link
-                System.out.println("User does not have a project by this name.  Make a new one for them by copying the master");
+                System.out.println("User does not have a project with name '"+projectName+"'.  Make a new one for them by copying the master");
                 int masterID = Project.getMasterProjectID(projectName);
                 int copiedProjectID = copyProjectAndLineParsing(uid, masterID, req.getLocalName());
                 if(copiedProjectID > 0){
@@ -151,15 +150,17 @@ public class TranscribeRouter extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Short description";
+        return "Functions as a router through the url patter /transcribe/{projectName}.  "
+            + "If a user has a project by that projectName, they are redirect into the transcription interface for it.  "
+            + "If not, a copy of the master project is created and they are redirected to the transcription interface for the new project.";
     }// </editor-fold>
 
     /**
-     * Same logic as the copyProjectAndTranscription Servlet
+     * Same logic as the copyProjectAndTranscription Servlet.  Returns -1 upon failures.
      * @param uID
      * @param projectID
      * @param localName
-     * @return 
+     * @return Integer result
      */
     private int copyProjectAndTranscription(int uID, int projectID, String localName){
         int result = -1;
@@ -357,11 +358,11 @@ public class TranscribeRouter extends HttpServlet {
     }
     
     /**
-     * Same logic as the copyProjectAndTranscription servlet
+     * Same logic as the copyProjectAndTranscription servlet.  Returns -1 upon failures.
      * @param uID
      * @param projectID
      * @param localName
-     * @return 
+     * @return Integer result
      */
     private int copyProjectAndLineParsing(int uID, int projectID, String localName){
         int result = -1;
