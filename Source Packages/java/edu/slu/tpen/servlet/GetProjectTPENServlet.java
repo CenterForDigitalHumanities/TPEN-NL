@@ -99,7 +99,6 @@ public class GetProjectTPENServlet extends HttpServlet {
 //                    System.out.println("group Id ===== " + proj.getGroupID() + " is member " + group.isMember(uid));
                     if (group.isMember(uid) || isTPENAdmin) {
                         if (checkModified(request, proj)) {
-                            
                             jsonMap.put("project", gson.toJson(proj));
 //                            System.out.println("project json ====== " + gson.toJson(proj));
                             int projectID = proj.getProjectID();

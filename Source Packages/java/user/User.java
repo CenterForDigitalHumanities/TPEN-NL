@@ -1032,6 +1032,38 @@ DatabaseWrapper.closeDBConnection(j);
 DatabaseWrapper.closePreparedStatement(ps);
             }
         }
+    
+    /**
+     * Return an array of all projects this user is a member of with name equal to the paleography object id.
+     * @return array of projects
+     * @throws SQLException
+     */
+
+    public Project getUserProjectByProjectName(String projectName) throws SQLException{
+        new ProjectPriority(UID).verifyPriorityContents();
+        String query = "select distinct(project.id) from project join groupmembers on grp=GID join projectpriorities on id=projectID where groupmembers.UID=? and projectpriorities.uid=? and project.name=?";
+        Connection j = null;
+        PreparedStatement ps=null;
+        try{
+            j = DatabaseWrapper.getConnection();
+            ps = j.prepareStatement(query);
+            ps.setInt(1, UID);
+            ps.setInt(2, UID);
+            ps.setString(3, projectName);
+            ResultSet rs = ps.executeQuery();
+            Project p = null;
+            if(rs.next()){
+                p = new Project(rs.getInt("project.id"));
+            }
+            return p;
+        } 
+        finally{
+            DatabaseWrapper.closeDBConnection(j);
+            DatabaseWrapper.closePreparedStatement(ps);
+        }
+    }
+    
+    
 
     /**
      * Returns a dropdown of all the users who have work that can be reviewed
@@ -1341,4 +1373,6 @@ PreparedStatement qry=null;
         }
     }
     
-    }
+}
+    
+    

@@ -35,6 +35,7 @@ import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 import org.owasp.esapi.ESAPI;
 import static edu.slu.util.ServletUtils.getDBConnection;
+import java.io.UnsupportedEncodingException;
 import user.Group;
 import user.User;
 import utils.UserTool;
@@ -476,7 +477,6 @@ public class Project {
       String toret = new Metadata(this.projectID).getTitle();
  //     System.out.println("metadata from project "+this.projectID+". title must have a value or it will use project name: "+toret);
       if (toret.compareTo("") == 0) {
-          System.out.println("non title, gotta get name: "+this.projectName);
          toret = this.projectName;
          if (toret == null || toret.compareTo("") == 0) {
             toret = "unknown project";
@@ -687,7 +687,6 @@ public class Project {
       //if (containsUserUploadedManuscript()) {
       //   throw new Exception("Cannot copy a project with user uploaded images!");
       //}
-      System.out.println("Creating a project template from "+projectName);
       //TPEN_NL does not want someone who copied a project to be able to edit it.  Only creators of master transcriptions (and whoever they promote).
       Group g = new Group(conn, projectName, leaderUID, false);
       //Only the user that created this transcription can see it because they are the only contributor in the group. 
@@ -1683,6 +1682,13 @@ public class Project {
       }
    }
    
+   /**
+    * Given a provided folio ID, check the imageURL for that folio.  Check it's pattern and decipher which interface it belongs to.
+    * Return the link to the correct interface.
+    * @param folioNum
+    * @return
+    * @throws SQLException 
+    */
    public String mintInterfaceLinkFromFolio(int folioNum) throws SQLException{
         Folio f = new Folio(folioNum);
         String imageURL = f.getImageURL();
@@ -1700,6 +1706,36 @@ public class Project {
             //Hmm, this is bad.
         }
         return interfaceLink;
+   }
+   
+   /**
+    * For a given project.name, find the "master" project ID.  
+    * The master projectID will be the lowest project ID for the project will the provided name.
+    * @param projName
+    * @return
+    * @throws SQLException 
+    */
+   public static int getMasterProjectID(String projName) throws SQLException{
+        String query = "SELECT MIN(id) FROM project WHERE name=?";
+        Connection j = null;
+        PreparedStatement ps=null;
+        int id = -1;
+        try{
+            j = DatabaseWrapper.getConnection();
+            ps = j.prepareStatement(query);
+            ps.setString(1, projName);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                //Result set is one row with one column with the id we are looking for
+                id = rs.getInt(1);
+                System.out.println("Found master id: "+id);
+            }
+            return id;
+        } 
+        finally{
+            DatabaseWrapper.closeDBConnection(j);
+            DatabaseWrapper.closePreparedStatement(ps);
+        }
    }
    
    private static final Logger LOG = Logger.getLogger(Project.class.getName());
