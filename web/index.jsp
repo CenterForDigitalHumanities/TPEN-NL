@@ -254,7 +254,7 @@
                         var src = [
                             "https://maps.googleapis.com/maps/api/staticmap?",
                             "center=",city,
-                            "&markers=icon:http://www.t-pen.org/paleography/images/quillpin.png|",city,
+                            "&markers=icon:http://newberry.rerum.io/paleography/images/quillpin.png|",city,
                             "&sensor=false&scale=1&zoom=3&visibility=simplified&maptype=terrain",
                             "&key=AIzaSyCo380ccyCHOeJRDqKIjCiTzOcwm-ZqjmU",  
                             "&size=",mapwidth,"x",mapheight
@@ -500,9 +500,9 @@
                         <h3>Available Repositories</h3>
                         <div class="lists">
                           <div id="cityMapContain">
-                                          <img id="cityMap" alt="map" src="https://maps.googleapis.com/maps/api/staticmap?center=St.%20Louis&zoom=3&sensor=false&scale=1&size=300x200&maptype=terrain&visibility=simplified&markers=icon:http://www.t-pen.org/paleography/images/quillpin.png%257St.%20Louis&key=AIzaSyCo380ccyCHOeJRDqKIjCiTzOcwm-ZqjmU" />
+                                          <img id="cityMap" alt="map" src="https://maps.googleapis.com/maps/api/staticmap?center=St.%20Louis&zoom=3&sensor=false&scale=1&size=300x200&maptype=terrain&visibility=simplified&markers=icon:http://newberry.rerum.io/paleography/images/quillpin.png%257St.%20Louis&key=AIzaSyCo380ccyCHOeJRDqKIjCiTzOcwm-ZqjmU" />
                                           <div id="cityMapZoom">
-                                              <img alt="inset" src="https://maps.googleapis.com/maps/api/staticmap?center=St.%20Louis&zoom=10&sensor=false&scale=1&size=100x140&maptype=terrain&visibility=simplified&markers=icon:http://www.t-pen.org/paleography/images/quillpin.png%257St.%20Louis&key=AIzaSyCo380ccyCHOeJRDqKIjCiTzOcwm-ZqjmU" />
+                                              <img alt="inset" src="https://maps.googleapis.com/maps/api/staticmap?center=St.%20Louis&zoom=10&sensor=false&scale=1&size=100x140&maptype=terrain&visibility=simplified&markers=icon:http://newberry.rerum.io/paleography/images/quillpin.png%257St.%20Louis&key=AIzaSyCo380ccyCHOeJRDqKIjCiTzOcwm-ZqjmU" />
                                           </div>
                           </div>
                             <%
