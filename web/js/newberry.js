@@ -4313,6 +4313,7 @@ function updateLine(line, cleanup, loadingLine) {
                                         var together = colLetter + lineNum;
                                         updateTranscriptionPreviewLine(together, currentLineText);
                                         lineUpdateWorking = false;
+                                        $("#lineUpdateNotice").hide();
                                     })
                                     .fail(function (responseData, status, jqXHR) {
                                         $(".trexHead").show();
