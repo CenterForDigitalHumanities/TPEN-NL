@@ -1700,7 +1700,7 @@ public class Project {
         else if(imageURL.contains("paleography:")){
             //https://iiif.library.utoronto.ca/v2/paleography:2086/full/2000,/0/default.jpg
             //https://paleography.library.utoronto.ca/islandora/object/paleography:1826/datastream/JPGHIRES/view
-            interfaceLink = "newberryTrans.html?projectID="+projectID;
+            interfaceLink = "frenchTranscription.html?projectID="+projectID;
         }
         else{
             //Hmm, this is bad.
