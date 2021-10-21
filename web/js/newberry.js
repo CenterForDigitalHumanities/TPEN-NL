@@ -4189,7 +4189,7 @@ function updateLine(line, cleanup, loadingLine) {
     lineUpdateWorking = true;
     var lineUpdateTimer = setTimeout(function () {
         $("#lineUpdateNotice").fadeIn(1000);
-    }, 2300);
+    }, 0);
     clearTimeout(typingTimer);
     var onCanvas = $("#transcriptionCanvas").attr("canvasid");
     currentFolio = parseInt(currentFolio);
@@ -4271,6 +4271,8 @@ function updateLine(line, cleanup, loadingLine) {
                                     // so move to that line once the current line is saved.
                                     // Additional errors saving will throw a trexhead.
                                     updatePresentation(loadingLine);
+                                    clearTimeout(lineUpdateTimer);
+                                    $("#lineUpdateNotice").hide();
                                 }
                                 var updatedLine = responseData["new_obj_state"];
                                 var originalID = responseData["original_object_id"];
@@ -4311,8 +4313,6 @@ function updateLine(line, cleanup, loadingLine) {
                                         var together = colLetter + lineNum;
                                         updateTranscriptionPreviewLine(together, currentLineText);
                                         lineUpdateWorking = false;
-                                        clearTimeout(lineUpdateTimer);
-                                        $("#lineUpdateNotice").hide();
                                     })
                                     .fail(function (responseData, status, jqXHR) {
                                         $(".trexHead").show();
