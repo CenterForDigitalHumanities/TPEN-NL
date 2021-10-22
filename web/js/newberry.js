@@ -5875,7 +5875,7 @@ function closeHelpVideo() {
 function setPaleographyLinks() {
     setIframeLinks();
     $("#homeBtn").attr("href", homeLink);
-    $("#projectsBtn").attr("href", "my_transcriptions.html");
+    $("#projectsBtn").attr("href", "my-transcriptions.html");
     $("#helpContact").attr("href", "contact.html");
 }
 
