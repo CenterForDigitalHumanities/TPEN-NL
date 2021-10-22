@@ -420,6 +420,7 @@ public class Project {
             this.projectID = projectID;
             this.linebreakCharacterLimit = rs.getInt("linebreakCharacterLimit");
             String imageBoundingStr = rs.getString("imageBounding");
+            this.collection = rs.getString("collection");
             if (imageBoundingStr.compareTo("columns") == 0) {
                this.projectImageBounding = imageBounding.columns;
             }
