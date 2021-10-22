@@ -503,6 +503,8 @@ function lastFolio() {
 }
 /* Load the interface to the previous page from the one you are on. */
 function previousFolio() {
+    updateLine(focusItem[1], false, null);
+
     currentFolio = parseInt(currentFolio);
     var parsing = false;
     if ($("#parsingDiv").is(":visible")) {
@@ -532,6 +534,8 @@ function previousFolio() {
 
 /* Load the interface to the next page from the one you are on. */
 function nextFolio() {
+    updateLine(focusItem[1], false, null);
+
     currentFolio = parseInt(currentFolio);
     var parsing = false;
     if ($("#parsingDiv").is(":visible")) {
