@@ -1722,6 +1722,10 @@ public class Project {
         DatabaseWrapper.closePreparedStatement(ps);
    }
     
+    public String getCollection(){
+        return this.collection;
+    }
+    
     public static void setCollectionForAllProjects(){
         Connection j = null;
         PreparedStatement ps = null;
