@@ -58,6 +58,7 @@ public class Project {
    String projectName;
    String linebreakSymbol = "-";
    private imageBounding projectImageBounding;
+   String collection;
 
    /**
     * What is the preferred level of parsing for this project.
@@ -1689,24 +1690,93 @@ public class Project {
     * @return
     * @throws SQLException 
     */
-   public String mintInterfaceLinkFromFolio(int folioNum) throws SQLException{
-        Folio f = new Folio(folioNum);
-        String imageURL = f.getImageURL();
-        String interfaceLink = "";
-        if(imageURL.contains("italianpaleography:")){
-            //https://iiif.library.utoronto.ca/image/v2/italianpaleography:IP_003_001/full/512,/0/default.jpg
-            interfaceLink = "italian-transcription.html?projectID="+projectID;
-        }
-        else if(imageURL.contains("paleography:")){
-            //https://iiif.library.utoronto.ca/v2/paleography:2086/full/2000,/0/default.jpg
-            //https://paleography.library.utoronto.ca/islandora/object/paleography:1826/datastream/JPGHIRES/view
-            interfaceLink = "french-transcription.html?projectID="+projectID;
-        }
-        else{
-            //Hmm, this is bad.
-        }
-        return interfaceLink;
+    public String mintInterfaceLinkFromFolio(int folioNum) throws SQLException{
+         Folio f = new Folio(folioNum);
+         String imageURL = f.getImageURL();
+         String interfaceLink = "";
+         if(imageURL.contains("italianpaleography:")){
+             //https://iiif.library.utoronto.ca/image/v2/italianpaleography:IP_003_001/full/512,/0/default.jpg
+             interfaceLink = "italian-transcription.html?projectID="+projectID;
+         }
+         else if(imageURL.contains("paleography:")){
+             //https://iiif.library.utoronto.ca/v2/paleography:2086/full/2000,/0/default.jpg
+             //https://paleography.library.utoronto.ca/islandora/object/paleography:1826/datastream/JPGHIRES/view
+             interfaceLink = "french-transcription.html?projectID="+projectID;
+         }
+         else{
+             //Hmm, this is bad.
+         }
+         return interfaceLink;
+    }
+    
+    public void setCollection(String collectionName, int projectID) throws SQLException {
+        this.collection = collectionName;
+        Connection j = null;
+        PreparedStatement ps = null;
+        j = DatabaseWrapper.getConnection();
+        ps = j.prepareStatement("update project set collection=? where id=?");
+        ps.setString(1, collectionName);
+        ps.setInt(2, projectID);
+        ps.executeUpdate();
+        DatabaseWrapper.closeDBConnection(j);
+        DatabaseWrapper.closePreparedStatement(ps);
    }
+    
+    public static void setCollectionForAllProjects(){
+        Connection j = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        System.out.println("Set all collections for projects");
+        try {
+           j = DatabaseWrapper.getConnection();
+           ps = j.prepareStatement("select id from project");
+           rs = ps.executeQuery();
+        }
+        catch(Exception e){
+            System.out.println("Had an error, could not select id from projects");
+        }
+        try{
+           while (rs.next()) {
+                Project p = new Project(rs.getInt("id"));
+                try{
+                    System.out.println("Set collection for project "+rs.getInt("id"));
+                    int folioNum = -1;
+                    Folio f;
+                    String imageURL = "";
+                    try{
+                        folioNum = p.firstPage(); 
+                        f = new Folio(folioNum);
+                        imageURL = f.getImageURL();
+                    }
+                    catch(Exception e){
+                        System.out.println("Had an error around firstPage");
+                    }
+
+                    if(imageURL.contains("italianpaleography:")){
+                        p.setCollection("italian", rs.getInt("id"));
+                    }
+                    else if(imageURL.contains("paleography:")){
+                        //https://iiif.library.utoronto.ca/v2/paleography:2086/full/2000,/0/default.jpg
+                        //https://paleography.library.utoronto.ca/islandora/object/paleography:1826/datastream/JPGHIRES/view
+                        p.setCollection("french", rs.getInt("id"));
+                    }
+                    else{
+                        System.out.println("Could not determine collection for "+rs.getInt("id"));
+                        p.setCollection("", rs.getInt("id"));
+                    }
+               }
+                catch(Exception e){
+                    System.out.println("Had an error, this is caught inside the while but not at firstPage.  Could not determine collection for "+rs.getInt("id"));
+                    p.setCollection("", rs.getInt("id"));
+                }
+            } 
+        }
+        catch(Exception e){
+            System.out.println("Had an error, this is caught outside the while.");
+        }
+        DatabaseWrapper.closeDBConnection(j);
+        DatabaseWrapper.closePreparedStatement(ps);
+    }
    
    /**
     * For a given project.name, find the "master" project ID.  
