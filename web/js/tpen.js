@@ -463,7 +463,7 @@ if ($("body").is("#transcriptionPage")){
         $.post(url, params)
         .success(function(data){
             projectID = data;
-            window.location.href = "newberryTrans.html?projectID="+projectID;
+            window.location.href = "frenchTranscription.html?projectID="+projectID;
         })
         .fail(function(data){
             alert("Could not create project");

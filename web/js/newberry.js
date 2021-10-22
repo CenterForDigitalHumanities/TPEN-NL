@@ -46,8 +46,8 @@ var creatorID = -1;
 var doit = ""; //A timeout used later.
 var lineUpdateWorking = false;
 const homeLinkMap = new Map([
-    ["italianTranscription.html", "https://centerfordigitalhumanities.github.io/Newberry-Italian-paleography/"],
-    ["newberryTrans.html", "https://centerfordigitalhumanities.github.io/Newberry-French-paleography/"],
+    ["italian-transcription.html", "https://centerfordigitalhumanities.github.io/Newberry-Italian-paleography/"],
+    ["french-transcription.html", "https://centerfordigitalhumanities.github.io/Newberry-French-paleography/"],
 ]);
 const homeLink = homeLinkMap.get(document.location.pathname.split("/").pop())
 var lazyURL = "";
@@ -228,7 +228,7 @@ function commitLocalChangesToServer(andLeave) {
 
 
     /*
-     * The natural behavior of $.when() fails us here.  See newberryTrans.html for the custom jQuery.whenAll() notes.
+     * The natural behavior of $.when() fails us here.  See french-transcription.html for the custom jQuery.whenAll() notes.
      * 
      * http://jsfiddle.net/InfinitiesLoop/yQsYK/51/
      * https://stackoverflow.com/questions/5518181/jquery-deferreds-when-and-the-fail-callback-arguments
@@ -2433,7 +2433,7 @@ function startMoveImg() {
     $(".transcriptlet").children("textarea").attr("disabled", "");
     $("#imgTop, #imgBottom").css("cursor", "url(" + "images/open_grab.png),auto");
     $("#imgTop,#imgBottom").mousedown(function (event) { $("#imgTop, #imgBottom").css("cursor", "url(" + "images/close_grab.png),auto"); moveImg(event); });
-    //The event is unregistered in the keyup on newberryTrans.html
+    //The event is unregistered in the keyup on french-transcription.html
 }
 
 /** 
@@ -2483,7 +2483,7 @@ function moveImg(event) {
             $("#imgTop").trigger('mousemove');
             $("#imgBottom").trigger('mousemove');
         });
-    //These events are unregistered in keyup() on newberryTrans.html
+    //These events are unregistered in keyup() on french-transcription.html
 };
 
 /*
