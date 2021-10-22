@@ -4483,7 +4483,7 @@ function saveNewLine(lineBefore, newLine) {
                         "startid": dbLine["@id"],
                         "endid": dbLine["@id"],
                         "linenum": $(".parsing").length
-                    });
+                    }).removeClass("newColumn");;
                     saveNewLineToServer(newAnnoList)
                         .then(function (responseData, status, jqXHR) {
                             var newObjState = responseData["new_obj_state"];
