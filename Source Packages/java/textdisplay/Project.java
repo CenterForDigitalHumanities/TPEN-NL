@@ -1695,12 +1695,12 @@ public class Project {
         String interfaceLink = "";
         if(imageURL.contains("italianpaleography:")){
             //https://iiif.library.utoronto.ca/image/v2/italianpaleography:IP_003_001/full/512,/0/default.jpg
-            interfaceLink = "italianTranscription.html?projectID="+projectID;
+            interfaceLink = "italian-transcription.html?projectID="+projectID;
         }
         else if(imageURL.contains("paleography:")){
             //https://iiif.library.utoronto.ca/v2/paleography:2086/full/2000,/0/default.jpg
             //https://paleography.library.utoronto.ca/islandora/object/paleography:1826/datastream/JPGHIRES/view
-            interfaceLink = "frenchTranscription.html?projectID="+projectID;
+            interfaceLink = "french-transcription.html?projectID="+projectID;
         }
         else{
             //Hmm, this is bad.
