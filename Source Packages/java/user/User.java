@@ -250,7 +250,7 @@ PreparedStatement qry=null;
                 Uname = rs.getString("Uname");
                 lname = rs.getString("lname");
                 fname = rs.getString("fname");
-                email = rs.getEmail("email");
+                email = rs.getString("email");
                 this.openID = rs.getString("openID");
                 }
             } finally
