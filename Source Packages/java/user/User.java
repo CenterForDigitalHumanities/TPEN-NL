@@ -37,6 +37,7 @@ public class User
     private String Uname;
     private String fname;
     private String lname;
+    private String email;
     private String openID;
 
     private String getOpenID()
@@ -220,6 +221,13 @@ DatabaseWrapper.closePreparedStatement(ps);
         {
         return lname;
         }
+    /**Get the email of the owner of this comment
+     * @return
+     */
+    public String getEmail()
+        {
+        return email;
+        }
 
     /** Populate the user's info from the database
      * @param id user's unique id
@@ -242,6 +250,7 @@ PreparedStatement qry=null;
                 Uname = rs.getString("Uname");
                 lname = rs.getString("lname");
                 fname = rs.getString("fname");
+                email = rs.getEmail("email");
                 this.openID = rs.getString("openID");
                 }
             } finally
@@ -446,7 +455,7 @@ DatabaseWrapper.closePreparedStatement(ps);
             try
             {
                 TokenManager man = new TokenManager();
-                m.sendMail(man.getProperties().getProperty("EMAILSERVER"), "TPEN@t-pen.org", man.getProperties().getProperty("NOTIFICATIONEMAIL"), "TPEN contact", body);
+                m.sendMail(man.getProperties().getProperty("EMAILSERVER"), "renaissance@newberry.org", man.getProperties().getProperty("NOTIFICATIONEMAIL"), "Newberry Paleography contact", body);
             } 
             catch (Exception e)
             {
@@ -478,8 +487,9 @@ DatabaseWrapper.closePreparedStatement(ps);
             body += "Proceed to http://t-pen.org/TPEN/admin.jsp to approve their account";
             try
                 {
+                    // TODO: Just approve the user
                     TokenManager man = new TokenManager();
-                    m.sendMail(man.getProperties().getProperty("EMAILSERVER"), "TPEN@t-pen.org", man.getProperties().getProperty("NOTIFICATIONEMAIL"), "new user request", body);
+                    m.sendMail(man.getProperties().getProperty("EMAILSERVER"), "renaissance@newberry.org", man.getProperties().getProperty("NOTIFICATIONEMAIL"), "new user request", body);
                 } 
             catch (Exception e)
                 {
@@ -782,11 +792,11 @@ DatabaseWrapper.closeDBConnection(j);
 DatabaseWrapper.closePreparedStatement(ps);
             }
         textdisplay.mailer m = new textdisplay.mailer();
-        String body = "Your TPEN password has been set to " + newPass + "\n" + "You should head to http://t-pen.org and change it.";
+        String body = "Your Newberry Paleography password has been set to " + newPass + "\n" + "You should head to http://newberry.rerum.io/paleography/ and change it.";
 //        System.out.print("new pass is "+pass+"\n");
         try{
             TokenManager man = new TokenManager();
-            m.sendMail(man.getProperties().getProperty("EMAILSERVER"), "TPEN@t-pen.org", this.Uname, "TPEN Password Reset", body);
+            m.sendMail(man.getProperties().getProperty("EMAILSERVER"), "renaissance@newberry.org", this.email, "Newberry Paleography Password Reset", body);
         }
         catch (IOException e){
             //Had trouble mailing...return new password anyway
