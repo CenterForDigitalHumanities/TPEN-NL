@@ -671,7 +671,7 @@ DatabaseWrapper.closePreparedStatement(ps);
     public static User[] getAllUsers() throws SQLException {
         User[] allUsers;
         //Note we might when some sanity checks here, like WHERE Uname!="" or something.
-        String query = "SELECT * FROM users";
+        String query = "SELECT UID FROM users";
         Connection j = null;
         PreparedStatement ps = null;
         Stack<User> tmp = new Stack();

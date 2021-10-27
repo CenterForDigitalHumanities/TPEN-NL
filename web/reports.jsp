@@ -365,7 +365,7 @@
                 <th>E&#8209;mail</th>
                 <th>Last&nbsp;Active</th>
                 <th>Total&nbsp;Projects</th>
-                <th>Lines&nbsp;of&nbsp;Transcription <span style="font-weight:bold; color:red;" tooltip="The lines in RERUM.  Not supported at this time.">*</span></th>
+                <th style="color:red;" title="Line counts from RERUM.  Not supported at this time.">Lines&nbsp;of&nbsp;Transcription</th>
             </tr>
         </thead>
 <%
