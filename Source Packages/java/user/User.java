@@ -477,27 +477,23 @@ DatabaseWrapper.closePreparedStatement(ps);
      * @return
      * @throws SQLException
      */
-    public static int signup(String uname, String lname, String fname) throws SQLException
+    public static int signup(String uname, String lname, String fname, String email) throws SQLException
         {
-        User newUser = new User(uname, lname, fname, "");
+        User newUser = new User(uname, lname, fname, email, "");
         if (newUser.getUID() > 0)
             {
-            textdisplay.mailer m = new textdisplay.mailer();
-            String body = newUser.getFname() + " " + newUser.getLname() + " (" + newUser.getUname() + ") has created a new account, which needs your approval.\n";
-            body += "Proceed to http://t-pen.org/TPEN/admin.jsp to approve their account";
             try
                 {
-                    // TODO: Just approve the user
-                    TokenManager man = new TokenManager();
-                    m.sendMail(man.getProperties().getProperty("EMAILSERVER"), "renaissance@newberry.org", man.getProperties().getProperty("NOTIFICATIONEMAIL"), "new user request", body);
+                    newUser.activateUser();
                 } 
             catch (Exception e)
                 {
-                    return 2; //created user, but email issue occured
+                    return 3; //created user, but activation issue occured
                 }
             return 0; //total success
             } else
             {
+                System.err.println("Did not create User at signup: "+uname);
             return 1; //failed to create
             }
         }
@@ -525,6 +521,7 @@ PreparedStatement qry=null;
                 this.Uname = Uname;
                 lname = rs.getString("lname");
                 fname = rs.getString("fname");
+                email = rs.getString("email");
                 this.openID = rs.getString("openID");
 
                 }
@@ -540,15 +537,17 @@ PreparedStatement qry=null;
      * @param Uname username(email)
      * @param lname last name
      * @param fname first name
+     * @param email email address
      * @param password hashed password
      * @throws SQLException
      */
-    public User(String Uname, String lname, String fname, String password) throws SQLException
+    public User(String Uname, String lname, String fname, String email, String password) throws SQLException
         {
 
         this.Uname = Uname;
         this.lname = lname;
         this.fname = fname;
+        this.email = email;
 
         if (!this.exists())
             {
@@ -915,10 +914,17 @@ PreparedStatement qry=null;
                 {
                 return true;
                 }
+            qry = j.prepareStatement("select * from users where email=?");
+            qry.setString(1, email);
+            rs = qry.executeQuery();
+            if (rs.next())
+                {
+                return true;
+                }
             qry = j.prepareStatement("select * from users where UID=?");
             qry.setInt(1, UID);
             rs = qry.executeQuery();
-            if (rs.next())
+            if (!rs.next())
                 {
                 return true;
                 }
