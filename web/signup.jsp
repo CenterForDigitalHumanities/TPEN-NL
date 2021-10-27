@@ -25,30 +25,6 @@
                 left:175px;
             }
         </style>
-        <script type="text/javascript">
-            $(function(){
-                //            $( ".returnButton" )
-                //                .addClass("ui-state-default ui-corner-bl ui-corner-br")
-                //                .css("display","inline-block")
-                //                .prepend("<span class='ui-icon ui-icon-arrowreturnthick-1-w right'></span>")
-                //                .hover(function(){$(this).addClass("ui-state-highlight");},
-                //                    function(){$(this).removeClass("ui-state-highlight");}
-                //            );
-                //            $("input:submit").hover(function(){$(this).toggleClass("ui-state-hover")});
-            });
-
-            function checkEmail () {
-                var field3=document.forms["signup"]["uname"].value;
-                var atpos=field3.indexOf("@");
-                var dotpos=field3.lastIndexOf(".");
-                if (atpos<1 || dotpos<atpos+2 || dotpos+2>=field3.length)
-                {
-                    alert("Not a valid e-mail address");
-                    return false;
-                }
-            }    
-        </script>
-
     </head>
 
     <body>
@@ -83,7 +59,7 @@
                                 out.println("<div class=\"error\"><p style=\"font-size:2em;\">There was an error with your submission. Please check the form and try again.</p></div>");
                             }
                     %>                       
-                    <form action="signup.jsp" name="signup" onsubmit="return simpleFormValidation();">
+                    <form action="signup.jsp" name="signup">
                         Username<input class="reginput" type="text" name="uname" <%if (request.getParameter("uname") != null) {
                                out.print("value=\"" + request.getParameter("uname") + "\"");
                            }%>/><br/><br/>
@@ -100,7 +76,7 @@
                     </form>
                     <%}%>
                 </div>
-                <a class="returnButton" href="index.jsp">Return to T&#8209;PEN Home</a>
+                <a class="returnButton" href="index.jsp">Return to Paleography Home</a>
             </div>
         </div>
     </body>
