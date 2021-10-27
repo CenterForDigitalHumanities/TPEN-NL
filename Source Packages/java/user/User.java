@@ -774,7 +774,7 @@ PreparedStatement qry=null;
         RandomString r = new RandomString(10);
         newPass = r.nextString();
         
-        //store the hashed version in pass, that goes to the DB and the unhased version is returned
+        //store the hashed version in pass, that goes to the DB and the unhashed version is returned
         String pass = newPass;
         String query = "update users set pass=SHA1(?) where UID=?";
         Connection j = null;
