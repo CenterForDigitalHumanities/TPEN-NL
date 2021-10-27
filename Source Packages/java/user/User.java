@@ -261,12 +261,13 @@ PreparedStatement qry=null;
         }
 
     /**
-     * Populate the object based on the openid response
-     * @param openID The unique URL returned by the user's openid provider
+     * Populate the object based on the email
+     * @param email the user's email
      * @param smt A dummy param added because a single String constructor already exists.
      * @throws SQLException
+     * @replaces openID lookup in previous version
      */
-    public User(String openID, Boolean smt) throws SQLException
+    public User(String email, Boolean smt) throws SQLException
         {
         Connection j = null;
 PreparedStatement qry=null;
@@ -275,8 +276,8 @@ PreparedStatement qry=null;
             {
             j = DatabaseWrapper.getConnection();
             
-            qry = j.prepareStatement("select * from users where openID=?");
-            qry.setString(1, openID);
+            qry = j.prepareStatement("select * from users where email=?");
+            qry.setString(1, email);
             ResultSet rs = qry.executeQuery();
             if (rs.next())
                 {
@@ -284,7 +285,7 @@ PreparedStatement qry=null;
                 Uname = rs.getString("Uname");
                 lname = rs.getString("lname");
                 fname = rs.getString("fname");
-                this.openID = rs.getString("openID");
+                this.email = rs.getString("email");
                 }
             } finally
             {
@@ -499,8 +500,8 @@ DatabaseWrapper.closePreparedStatement(ps);
         }
 
     /**
-     * Populate a user object based on their username(email). The idea is that if a user needs to be invited to a group it may be done via their email
-     * @param Uname username (email address)
+     * Populate a user object based on their username.
+     * @param Uname username
      * @throws SQLException
      */
     public User(String Uname) throws SQLException
@@ -557,37 +558,6 @@ PreparedStatement qry=null;
             {
             this.UID = -1;
             }
-
-        }
-
-    /**Create a new user account that authenticates via openid
-
-     * @param Uname email address
-     * @param openID the unique url assigned to the user by their openid provider
-     * @param fname first name
-     * @param lname last name
-     * @param password md5 hashed password
-     * @throws SQLException
-     *
-     */
-    public User(String Uname, String lname, String fname, String password, String openID) throws SQLException
-        {
-
-        this.Uname = Uname;
-        this.lname = lname;
-        this.fname = fname;
-        this.openID = openID;
-        if (!this.exists())
-            {
-            //System.out.println("User being invited does NOT exist.  Create a new user.");
-            this.commit(password);
-            this.UID = new User(Uname).UID;
-            } 
-        else
-        {
-            //System.out.println("User being invited does exist.");
-            this.UID = -1;
-        }
 
         }
 
@@ -830,6 +800,7 @@ DatabaseWrapper.closePreparedStatement(ps);
             }
         return newPass;
         }
+
     /**Send the welcome message and set the user's password.*/
     public String activateUser() throws SQLException, NoSuchAlgorithmException, MessagingException, Exception
         {
@@ -837,7 +808,7 @@ DatabaseWrapper.closePreparedStatement(ps);
         textdisplay.mailer m = new textdisplay.mailer();
 //        System.out.print("new pass is "+pass+"\n");
         String pass=resetPassword(false);
-        m.sendMail(man.getProperties().getProperty("EMAILSERVER"), man.getProperties().getProperty("NOTIFICATIONEMAIL"), this.Uname, "Welcome to TPEN", new WelcomeMessage().getMessage(this.fname+" "+this.lname,pass) );
+        m.sendMail(man.getProperties().getProperty("EMAILSERVER"), man.getProperties().getProperty("NOTIFICATIONEMAIL"), this.email, "Welcome to Newberry Paleography", new WelcomeMessage().getMessage(this.fname+" "+this.lname,pass) );
         return this.resetPassword();
         }
     /**This sets the last time the user was active to the current time. Used for determining who is online, and keeping track of active vs inactive users*/
@@ -1116,11 +1087,12 @@ DatabaseWrapper.closePreparedStatement(qry);
 
     /**Inivte a new user to join TPEN. Returns 0 on successful user creation, 1 on user creation failure, and 2 if user creation succeeded
     but email failed, which is common on test systems and should produce a warning*/
-    public int invite(String uname, String fname, String lname) throws SQLException, IOException
+    public int invite(String email) throws SQLException, IOException
         {
         TokenManager man = new TokenManager();
         Boolean emailFailure = false;
-        User newUser = new User(uname, lname, fname, "");
+        String userName = email.split("@", 2)[0];
+        User newUser = new User(userName, email, "user", "new", "");
         //System.out.println("Defined user to continue on.  Can we?");
         if (newUser.getUID() > 0)
             {
@@ -1128,19 +1100,12 @@ DatabaseWrapper.closePreparedStatement(qry);
                 //System.out.println(this.getFname() + " " + this.getLname() + " (" + this.getUname() + ") has invited  " + newUser.getFname() + " " + newUser.getLname() + " (" + newUser.getUname() + ") to join TPEN.");
 
             textdisplay.mailer m = new textdisplay.mailer();
-            String body = this.getFname() + " " + this.getLname() + " (" + this.getUname() + ") has invited  " + newUser.getFname() + " " + newUser.getLname() + " (" + newUser.getUname() + ") to join TPEN, which needs your approval.\n";
-            try
-                {
-                m.sendMail(man.getProperties().getProperty("EMAILSERVER"), "TPEN@t-pen.org", man.getProperties().getProperty("NOTIFICATIONEMAIL"), "new user request", body);
-                } catch (Exception e)
-                {
-                emailFailure = true;
-                }
             //send a notification email to the invitee
-            body = this.getFname() + " " + this.getLname() + " (" + this.getUname() + ") has invited you to join their transcription project on TPEN.  Your initial password is blank, please log in and set a password.  \nThe TPEN team";
+            String body = this.getFname() + " " + this.getLname() + " (" + this.getEmail() + ") has invited you to join their transcription project on Newberry Paleography. Look for an activation message shortly.";
             try
-                {
-                m.sendMail(man.getProperties().getProperty("EMAILSERVER"), "TPEN@t-pen.org", newUser.getUname(), "An invitation to transcribe on TPEN", body);
+            {
+                m.sendMail(man.getProperties().getProperty("EMAILSERVER"), "renaissance@newberry.org", newUser.getEmail(), "An invitation to transcribe on Newberry Paleography", body);
+                newUser.activateUser();
                 } catch (Exception e)
                 {
                 emailFailure = true;
@@ -1155,7 +1120,7 @@ DatabaseWrapper.closePreparedStatement(qry);
                 }
             }
         else{
-            //This is where invite did not have to make a new user.  The user being invited is already a part of T-PEN.  Send an email still?  Right now, no.  
+            //This is where invite did not have to make a new user.  The user being invited is already a part of Newberry Paleography.  Send an email still?  Right now, no.  
             //System.out.println("No.  We did not make a new user, do not send an email.");
         }
 

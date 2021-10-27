@@ -60,15 +60,14 @@
                 <div id="main" class="ui-widget ui-widget-content ui-corner-all ui-tabs ui-helper-reset ui-helper-clearfix">
                     <%
                         if (request.getParameter("uname") != null
-                                && request.getParameter("uname").contains("@") 
-                                && request.getParameter("uname").contains(".")
                                 && request.getParameter("fname") != null
+                                && request.getParameter("email") != null
                                 && request.getParameter("lname") != null) {
                             //create a user with a blank password. Their password will be set when they are approved by an admin
-                            int result = user.User.signup(request.getParameter("uname"), request.getParameter("lname"), request.getParameter("fname"));
+                            int result = user.User.signup(request.getParameter("uname"), request.getParameter("lname"), request.getParameter("fname"), request.getParameter("email"));
                             //total success
                             if (result == 0) {
-                                out.println("<div class=\"success\"><p style=\"font-size:2em;\">Your account was created. You will recieve an email from TPEN@t-pen.org when an administrator has activated your account. If your e-mail does not arrive, please verify that it has not been caught by a spam filter.</p></div>");
+                                out.println("<div class=\"success\"><p style=\"font-size:2em;\">Your account was created. You should recieve an email from renaissance@newberry.org activating your account. If your e-mail does not arrive, please verify that it has not been caught by a spam filter.</p></div>");
                                 return;
                             }
                             //failed to create user
@@ -77,7 +76,7 @@
                             }
                             //created user but email failed, typical on test systems
                             if (result == 2) {
-                                out.println("<div class=\"error\"><p style=\"font-size:2em;\">Account created but the emails could not be sent! Contact the TPEN team.</p></div>");
+                                out.println("<div class=\"error\"><p style=\"font-size:2em;\">Account created but the emails could not be sent! Contact our team at renaissance@newberry.org.</p></div>");
                             }
                         } else {
                             if (request.getParameter("uname") != null){
@@ -85,8 +84,11 @@
                             }
                     %>                       
                     <form action="signup.jsp" name="signup" onsubmit="return simpleFormValidation();">
-                        Email<input class="reginput" type="text" name="uname" <%if (request.getParameter("uname") != null) {
+                        Username<input class="reginput" type="text" name="uname" <%if (request.getParameter("uname") != null) {
                                out.print("value=\"" + request.getParameter("uname") + "\"");
+                           }%>/><br/><br/>
+                        Email<input class="reginput" type="text" name="email" <%if (request.getParameter("email") != null) {
+                               out.print("value=\"" + request.getParameter("email") + "\"");
                            }%>/><br/><br/>
                         first name<input class="reginput" type="text" name="fname" <%if (request.getParameter("fname") != null) {
                                out.print("value=\"" + request.getParameter("fname") + "\"");
