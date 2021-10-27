@@ -375,7 +375,11 @@
             int numOfProjs = userProjects.length;
 %>
             <tr> 
-                <td><a href="reports.jsp?u=<% out.print(theUser.getUID()+"\">"+theUser.getFname() + "&nbsp;" + theUser.getLname()); %></a></td>
+                <td>
+                    <a href="reports.jsp?u=<%out.print(theUser.getUID());%>"> 
+                       <% out.print(theUser.getFname() + "&nbsp;" + theUser.getLname()); %>
+                    </a>
+                </td>
                 <td><%out.print(theUser.getUname());%></td>
                 <td><%out.print(theUser.getLastActiveDate().toString());%></td>
                 <td><%out.print(numOfProjs);%></label>
@@ -384,6 +388,70 @@
         <%}%>
     </table>
 </div>
+<%
+        } else {
+            // non-Admin attempt to access complete reports
+            String errorMessage = "This report is limited to administrators.";
+%><%@
+            include file="WEB-INF/includes/errorBang.jspf" %>
+<%
+            return;
+        }
+    }
+
+
+if (request.getParameter("projects") != null) {
+        if (isAdmin) {
+            Project[] allProjects = Project.getAllProjects(); //This includes master projects...
+            int cntProjects = allProjects.length;
+%>
+    <div id="recentProjects" class="reportSection">
+            <h2>Recent Projects</h2>
+                <table style="width:auto;position: relative;">
+                    <col width="30%"/>
+                    <col width="20%"/>
+                    <col width="20%"/>
+                    <col width="30%"/>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Group&nbsp;Leader</th>
+                            <th>Last&nbsp;Modified&nbsp;Folio</th>
+                            <th>Latest&nbsp;Log&nbsp;Entry</th>
+                        </tr>
+                    </thead>
+        <%
+                    for (int i=0;i<cntProjects;i++) {
+                        String lastLogEntry = allProjects[i].getProjectLog(1);
+                        if (lastLogEntry.length() == 0) lastLogEntry = "none recorded";
+                        int lastFolioID = allProjects[i].getLastModifiedFolio();
+                        textdisplay.Folio lastFolio = new Folio(lastFolioID);
+                        String lastFolioImg = "";
+                        String lastFolioName = "";
+                        try {
+                            lastFolioName = lastFolio.getImageName();
+                            lastFolioImg = lastFolio.getImageURLResize(200);
+                        } catch (Error e) {
+                        }
+                        StringBuilder theseLeaders = new StringBuilder();
+                        user.User[] leaders = new user.Group(allProjects[i].getGroupID()).getLeader();
+                        for(int j=0;j<leaders.length;j++){
+                            if(j>0) theseLeaders.append(", ");
+                            theseLeaders.append(leaders[j].getFname()).append(" ").append(leaders[j].getLname());
+                        }
+        %>
+                        <tr>
+                            <td><div class="constrain"><%out.print(allProjects[i].getProjectName());%></div></td>
+                            <td><%out.print(theseLeaders.toString());%></td>
+                            <td class="img"><div class="constrain"><%out.print(lastFolioName);%></div>
+                                <span class="value"><img alt="thumb" src="<%out.print(lastFolioImg);%>" /></span></td>
+                            <td><%out.print(lastLogEntry);%></td>
+                        </tr>
+        <%                
+                }
+        %>
+                </table>
+    </div>
 <%
         } else {
             // non-Admin attempt to access complete reports
