@@ -29,11 +29,7 @@
         <script type="text/javascript" src="js/tpen.js"></script>  
         <script type="text/javascript" src="js/manuscriptFilters.js"></script>  
         <style type="text/css">
-            #userAccount, #ms, #manageUsers, #options, #about, #reportsTab { margin: 0; padding: 0;}
-            #updateManagement li, #reportsTab li,#userAccount li, #manageUsers li, #ms li, #options li, #about li { margin: 0 4px 3px 3px; padding: 0.4em; padding-left: 1.5em; height: 100%;overflow: hidden; float:left; width:29%; position: relative;}
-            #updateManagement li{
-                width: 87%;
-            }
+            
             #updateManagement input[type="text"]{
                 width: 50%;
                 margin: 3px 0px;
@@ -50,7 +46,6 @@
                 color: blue;
             }
             #manageUsers li {max-height: 350px;overflow: auto;}
-            #tabs-3 {padding-bottom: 120px;}
             #ms li {width:98% !important; height:auto !important;}
             #ms textarea {width:600px;height:8em;}
             #userAccount li ul,#ms li ul,#manageUsers li ul, #options li ul, #about li ul {padding: 0;margin: 0;}
@@ -132,6 +127,18 @@
                 width:96% !important;
                 height:auto !important;
                 bottom:0;
+            }
+            #userAccount, #ms, #manageUsers, #options, #about, #reportsTab { margin: 0; padding: 0;}
+            #updateManagement li, #reportsTab li,#userAccount li, #manageUsers li, #ms li, #options li, #about li { margin: 0 4px 3px 3px; padding: 0.4em; padding-left: 1.5em; height: 100%;overflow: hidden; float:left; width:29%; position: relative;}
+            #updateManagement li{
+                width: 87%;
+            }
+            #tabs-3 {padding-bottom: 120px;}
+            #tabs-2{
+                display:none;
+            }
+            #aboutTab{
+                display:none;
             }
         </style>
         <script>
@@ -256,13 +263,12 @@
                     %>
                     <ul>
                         <li><a title="Reset or change your password; view account privileges" href="#tabs-1">User Account</a></li>
-                        <li><a title="Alter IPR statements, restrict access, update global metadata" href="#tabs-2">Manuscripts</a></li>
+                        <!--<li><a title="Alter IPR statements, restrict access, update global metadata" href="#tabs-2">Manuscripts</a></li>-->
                         <%if (thisUser.isAdmin()) { //hiding non-Admin tab%>
                         <li><a title="Manage Users" href="#tabs-3">Manage Users</a><div id="userAlert" class='ui-icon-alert ui-icon right' style="display:none;margin: 8px 8px 0 0;"></div></li>
                         <li><a title="Reports" href="#reportsTab">Reports</a></li>
                         <%}%>
-                        
-                        <li><a title="About the T&#8209;PEN project" href="#aboutTab">About T&#8209;PEN</a></li>
+                        <!--<li><a title="About the T&#8209;PEN project" href="#aboutTab">About T&#8209;PEN</a></li>-->
                     </ul>
                     <div id="tabs-1">
                         <% } else {%>
@@ -763,7 +769,7 @@
                                         <%
                                             }
                                         %>
-                                    <script>userList = '<%out.print(userEmails.toString().substring(2));%>';</script>
+                                    <script>userList = "<%out.print(userEmails.toString().substring(2));%>";</script>
                                 </div></li>
                                 <%
                                 textdisplay.WelcomeMessage welcome = new WelcomeMessage();
