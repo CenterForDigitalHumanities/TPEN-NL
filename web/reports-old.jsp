@@ -341,23 +341,69 @@
             }
         }
     }
-    if (request.getParameter("paleographers") != null) {
+    if (request.getParameter("active") != null) {
+        // Show report for active projects and active users
         if (isAdmin) {
-            User[] paleographers = User.getAllUsers(); //This includes admins...
-            Project[] allProjects = Project.getAllProjects(); //This includes master projects...
-            int cntUsers = paleographers.length;
-            int cntProjects = allProjects.length;
-        %>
-            <div id="recentSummary" class="reportSection">
-                <h2>Paleographers Summary</h2>
-                <p>Counts regarding total paleographers and paleographer projects.</p>
-                <label>Total Paleographer Projects: <span class="value"><%out.print(cntProjects);%></span></label>
-                <label>Total Paleographers: <span class="value"><%out.print(cntUsers);%></span></label>
-            </div>
-        <%      
+            textdisplay.Project [] activeProjects = Project.getAllActiveProjects();
+            user.User [] activeUsers = User.getRecentUsers();
+            int cntActiveProjects = activeProjects.length;
+            int cntActiveUsers = activeUsers.length;
+            %>
+<div id="recentSummary" class="reportSection">
+    <h2>Summary</h2>
+    <p>Count of unique contributions in the last 2 months.</p>
+    <label>Recent&nbsp;Projects: <span class="value"><%out.print(cntActiveProjects);%></span></label>
+    <label>Recent&nbsp;Users: <span class="value"><%out.print(cntActiveUsers);%></span></label>
+</div>
+<div id="recentProjects" class="reportSection">
+    <h2>Recent Projects</h2>
+        <table style="width:auto;position: relative;">
+            <col width="30%"/>
+            <col width="20%"/>
+            <col width="20%"/>
+            <col width="30%"/>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Group&nbsp;Leader</th>
+                    <th>Last&nbsp;Modified&nbsp;Folio</th>
+                    <th>Latest&nbsp;Log&nbsp;Entry</th>
+                </tr>
+            </thead>
+<%
+            for (int i=0;i<cntActiveProjects;i++) {
+                String lastLogEntry = activeProjects[i].getProjectLog(1);
+                if (lastLogEntry.length() == 0) lastLogEntry = "none recorded";
+                int lastFolioID = activeProjects[i].getLastModifiedFolio();
+                textdisplay.Folio lastFolio = new Folio(lastFolioID);
+                String lastFolioImg = "";
+                String lastFolioName = "";
+                try {
+                    lastFolioName = lastFolio.getImageName();
+                    lastFolioImg = lastFolio.getImageURLResize(200);
+                } catch (Error e) {
+                }
+                StringBuilder theseLeaders = new StringBuilder();
+                user.User[] leaders = new user.Group(activeProjects[i].getGroupID()).getLeader();
+                for(int j=0;j<leaders.length;j++){
+                    if(j>0) theseLeaders.append(", ");
+                    theseLeaders.append(leaders[j].getFname()).append(" ").append(leaders[j].getLname());
+                }
 %>
+    <tr>
+        <td><div class="constrain"><%out.print(activeProjects[i].getProjectName());%></div></td>
+        <td><%out.print(theseLeaders.toString());%></td>
+        <td class="img"><div class="constrain"><%out.print(lastFolioName);%></div>
+            <span class="value"><img alt="thumb" src="<%out.print(lastFolioImg);%>" /></span></td>
+        <td><%out.print(lastLogEntry);%></td>
+    </tr>
+<%                
+            }
+%>
+        </table>
+</div>
 <div id="recentUsers" class="reportSection">
-    <h2>All Paleographers & Administrators</h2>
+    <h2>Recent Users</h2>
     <table style="width:auto;">
         <thead>
             <tr>
@@ -365,23 +411,24 @@
                 <th>E&#8209;mail</th>
                 <th>Last&nbsp;Active</th>
                 <th>Total&nbsp;Projects</th>
-                <th>Lines&nbsp;of&nbsp;Transcription <span style="font-weight:bold; color:red;" tooltip="The lines in RERUM.  Not supported at this time.">*</span></th>
+                <th>Lines&nbsp;of&nbsp;Transcription</th>
             </tr>
         </thead>
-<%
-        for (int r=0;r<paleographers.length;r++) {
-            user.User theUser = paleographers[r];
-            textdisplay.Project [] userProjects = theUser.getUserProjects();
-            int numOfProjs = userProjects.length;
+    <%
+            for (int r=0;r<cntActiveUsers;r++) {
+                user.User theUser = activeUsers[r];
+                textdisplay.Project [] userProjects = theUser.getUserProjects();
+                int numOfProjs = userProjects.length;
 %>
-            <tr> 
-                <td><a href="reports.jsp?u=<% out.print(theUser.getUID()+"\">"+theUser.getFname() + "&nbsp;" + theUser.getLname()); %></a></td>
-                <td><%out.print(theUser.getUname());%></td>
-                <td><%out.print(theUser.getLastActiveDate().toString());%></td>
-                <td><%out.print(numOfProjs);%></label>
-                <td><%out.print(theUser.getUserTranscriptionCount());%></td>
-            </tr>
-        <%}%>
+<tr> 
+    <td><a href="reports.jsp?u=<%out.print(theUser.getUID()+"\">"+theUser.getFname() + "&nbsp;" + theUser.getLname());%></a></td>
+    <td><%out.print(theUser.getUname());%></td>
+    <td><%out.print(theUser.getLastActiveDate().toString());%></td>
+    <td><%out.print(numOfProjs);%></label>
+    <td><%out.print(theUser.getUserTranscriptionCount());%></td>
+</tr>
+
+<%}%>
     </table>
 </div>
 <%
@@ -392,10 +439,6 @@
             return;
         }
     }
-
-
-
-
         %>
         <script type="text/javascript">
             $(function(){

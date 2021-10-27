@@ -802,12 +802,16 @@
                                 </form>
                             </li>
                             <li class="gui-tab-section">
-                                <h3>Active Users and Projects</h3>
-                                <a class="tpenButton ui-button" target="_blank" href="reports.jsp?active=true">Run Report</a>
+                                <h3>Paleographer Totals</h3>
+                                <a class="tpenButton ui-button" target="_blank" href="reports.jsp?paleographers=true">Run Report</a>
                             </li>
                             <li class="gui-tab-section">
                                 <h3>T&#8209;PEN Totals</h3>
                                 <a class="tpenButton ui-button" target="_blank" href="reports.jsp?totals=true">Run Report</a>
+                            </li>
+                            <li class="gui-tab-section">
+                                <h3>Project Totals</h3>
+                                <a class="tpenButton ui-button" target="_blank" href="reports.jsp?projects=true">Run Report</a>
                             </li>
                         </ul>
                     </div>

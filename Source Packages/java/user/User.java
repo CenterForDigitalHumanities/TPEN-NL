@@ -641,7 +641,7 @@ DatabaseWrapper.closePreparedStatement(ps);
         return toret;
         }
 
-        /**Returns all users active in the last 2 months, or null if none*/
+    /**Returns all users active in the last 2 months, or null if none*/
     public static User[] getRecentUsers() throws SQLException {
         User[] active;
         String query = "SELECT DISTINCT creator FROM transcription WHERE DATE > ( NOW( ) + INTERVAL -2 MONTH )";
@@ -665,6 +665,33 @@ DatabaseWrapper.closePreparedStatement(ps);
             active[tmp.size() - 1] = tmp.pop();
         }
         return active;
+    }
+    
+    /**Returns all users active in the last 2 months, or null if none*/
+    public static User[] getAllUsers() throws SQLException {
+        User[] allUsers;
+        //Note we might when some sanity checks here, like WHERE Uname!="" or something.
+        String query = "SELECT * FROM users";
+        Connection j = null;
+        PreparedStatement ps = null;
+        Stack<User> tmp = new Stack();
+        try {
+            j = DatabaseWrapper.getConnection();
+            ps = j.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                tmp.push(new User(rs.getInt(1)));
+            }
+        } finally {
+            DatabaseWrapper.closeDBConnection(j);
+            DatabaseWrapper.closePreparedStatement(ps);
+        }
+        allUsers = new User[tmp.size()];
+        //odd looking way of doing this copy, I know, but it was convenient
+        while (!tmp.empty()) {
+            allUsers[tmp.size() - 1] = tmp.pop();
+        }
+        return allUsers;
     }
 
     /**
