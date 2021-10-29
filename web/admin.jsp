@@ -482,12 +482,11 @@
                             </td>
                             <td class="gui-tab-section">
                                 <h3>Change your email</h3>
+                                
                                 <div>
                                     <form action="admin.jsp" method="POST">
                                         <label>New Email</label>
-                                            <input type="email" name="newEmail" />
-                                            <label>Confirm Email</label>
-                                            <input type="email" name="confirmEmail" /></br>
+                                        <input type="email" name="newEmail" /></br>
                                         <input class="tpenButton right" type="submit">
                                     </form></div>
                             </td>
@@ -496,11 +495,10 @@
                                 <div>
                                     <form action="admin.jsp" method="POST">
                                         <label>New Username</label>
-                                            <input type="text" name="newUsername" />
-                                        <label>Confirm Username</label>
-                                            <input type="text" name="confirmUsername" /></br>
+                                        <input type="text" name="newUsername" /></br>
                                         <input class="tpenButton right" type="submit">
-                                    </form></div>
+                                    </form>
+                                </div>
                             </td>
                             </tr>
                             <tr>
@@ -509,9 +507,9 @@
                                 <div>
                                     <form action="admin.jsp" method="POST">
                                         <label>New First Name</label>
-                                            <input type="text" name="newUsername" />
+                                        <input type="text" name="newFName" />
                                         <label>New Last Name</label>
-                                            <input type="text" name="confirmUsername" /></br>
+                                        <input type="text" name="newLName" /></br>
                                         <input class="tpenButton right" type="submit">
                                     </form></div>
                             </td>
@@ -523,12 +521,17 @@
                                 <h3>Account Information</h3>
                                 <span class='accountInfoLine'>Name: <%out.print(thisUser.getFname() + " " + thisUser.getLname());%></span>
                                 <span class='accountInfoLine'>E-mail Login: <%out.print(thisUser.getUname());%></span>
-                                <span class='accountInfoLine'>Status:<%if (thisUser.isAdmin()) {
+                                <span class='accountInfoLine'>Status:
+                                    
+                                    <%if (thisUser.isAdmin()) {
                                         out.print("Administrator, ");
-                                    }%>Contributor<%if (thisUser.requiresApproval()) {
-                                                out.print(" (pending approval)");
-                                            }%><br />
-                                <%
+                                    }%>
+                                    Contributor
+                                    <%if (thisUser.requiresApproval()) {
+                                        out.print(" (pending approval)");
+                                    }%><br />
+                                
+                                    <%
                                     Project[] userProjects = thisUser.getUserProjects();
                                     if (userProjects.length > 0) {
                                         out.print("You are a member of " + userProjects.length + " projects");
@@ -806,27 +809,6 @@
                             //if this is an administrator, allow them to approve new users
                             if (thisUser.isAdmin()) {
                             %>
-                            <li class="gui-tab-section clear-left">
-                                <div id="newUserApproval">
-                                    <h3>Activations</h3>
-                                    <%
-                                        for (int i = 0; i < unapprovedUsers.length; i++) {
-                                    %><label for="approve<%out.print(i);%>"><input type="checkbox" name="approve<%out.print(i);%>" id="approve<%out.print(i);%>" value="<%out.print(unapprovedUsers[i].getUID());%>" /><%out.print(unapprovedUsers[i].getFname() + " " + unapprovedUsers[i].getLname() + " (" + unapprovedUsers[i].getUname() + ")");%></label>
-                                        <%
-                                            }
-                                        %>
-                                </div></li>
-                            <li class="gui-tab-section">
-                                <div id="denyUsers">
-                                    <h3>Deny Requests</h3>
-                                    <%
-                                        for (int i = 0; i < unapprovedUsers.length; i++) {
-                                    %><label for="eliminate<%out.print(i);%>"><input type="checkbox" name="eliminate<%out.print(i);%>" id="eliminate<%out.print(i);%>" value="<%out.print(unapprovedUsers[i].getUID());%>" /><%out.print(unapprovedUsers[i].getFname() + " " + unapprovedUsers[i].getLname() + " (" + unapprovedUsers[i].getUname() + ")");%></label>
-                                        <%
-                                            }
-                                        %>
-                                </div>
-                            </li>
                             <li class="gui-tab-section">
                                 <div id="userDeactivation">
                                     <h3>Deactivate User</h3>
