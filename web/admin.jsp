@@ -346,7 +346,7 @@
                                 if (request.getParameter("newPassword") != null) {
                                     String pass = request.getParameter("newPassword");
                                     String conf = request.getParameter("confirmPassword");
-                                    if (pass.compareTo(conf) == 0) {
+                                    if (pass.equals(conf)) {
                                         thisUser.updatePassword(pass);
                                         out.print("<br><br><h3>Password updated!</h3><br><br>");
                                     } else {
@@ -380,16 +380,16 @@
                                     int result =  thisUser.changeEmail(email);
                                     switch(result){
                                         case -1:
-                                            out.print("<br><br><h3>An error has occurred.  Try again or contact the admins.</h3><br><br>");
+                                            out.print("<br><br><h3>An error has occurred trying to change the username.  Try again or contact the admins.</h3><br><br>");
                                         break;
                                         case 0:
-                                            out.print("<br><br><h3>Please provide a NEW email.</h3><br><br>");
+                                            out.print("<br><br><h3>Please provide a NEW username.</h3><br><br>");
                                         break;
                                         case 1:
-                                            out.print("<br><br><ul><h3>A user with this E-mail already exists.  Try a different E-mail.</h3></ul><br><br>");
+                                            out.print("<br><br><ul><h3>A user with this E-username already exists.  Try a different Username.</h3></ul><br><br>");
                                         break;
                                         case 2:
-                                            out.print("<br><br><h3>Email updated!</h3><br><br>");
+                                            out.print("<br><br><h3>Username updated!</h3><br><br>");
                                         break;
                                     }
                                 }
@@ -408,19 +408,19 @@
                                     }
                                     switch(fnameResult){
                                         case -1:
-                                            out.print("<br><br><h3>An error has occurred.  Try again or contact the admins.</h3><br><br>");
+                                            out.print("<br><br><h3>An error has occurred trying to change the First Name.  Try again or contact the admins.</h3><br><br>");
                                         break;
                                         case 1:
-                                            out.print("<br><br><h3>Email updated!</h3><br><br>");
+                                            out.print("<br><br><h3>First Name updated!</h3><br><br>");
                                         break;
                                         default:
                                     }
                                     switch(lnameResult){
                                         case -1:
-                                            out.print("<br><br><h3>An error has occurred.  Try again or contact the admins.</h3><br><br>");
+                                            out.print("<br><br><h3>An error has occurred trying to change the Last Name.  Try again or contact the admins.</h3><br><br>");
                                         break;
                                         case 1:
-                                            out.print("<br><br><h3>Email updated!</h3><br><br>");
+                                            out.print("<br><br><h3>Last Name updated!</h3><br><br>");
                                         break;
                                         default:
                                     }
@@ -542,7 +542,7 @@
                                 <h3>Change your name</h3>
                                 <div>
                                     <form action="admin.jsp" method="POST">
-                                        <input type="hideen" name="newName" value="true" />
+                                        <input type="hidden" name="newName" value="true" />
                                         <label>New First Name</label>
                                         <input type="text" name="newFName" />
                                         <label>New Last Name</label>
