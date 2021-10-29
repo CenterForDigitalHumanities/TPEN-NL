@@ -221,7 +221,7 @@
                 });
                 function manageUsers(){
                     $("#manageUsersBtn").children("span").switchClass("ui-icon-alert","ui-icon-check");
-                    var saveChangesURL = ["admin.jsp?selecTab=2"];
+                    var saveChangesURL = ["admin.jsp?selecTab=1"];
                     var $changes = $("input:checked");
                     var approve = new Array();
                     var deactivate = new Array();
@@ -289,7 +289,7 @@
                         <%                        }
                             //process any submitted requests
                             user.User[] unapprovedUsers = user.User.getUnapprovedUsers();
-                            user.User[] allUsers = user.User.getAllActiveUsers();
+                            User[] allUsers = User.getAllUsers();
                             if (thisUser != null) {
                                 //String to return completion information to user on Tabs-3
                                 StringBuilder manageUserFeedback = new StringBuilder("");
@@ -376,8 +376,8 @@
 
                                 //an username update request
                                 if (request.getParameter("newUsername") != null) {
-                                    String email = request.getParameter("newUsername");
-                                    int result =  thisUser.changeEmail(email);
+                                    String username = request.getParameter("newUsername");
+                                    int result =  thisUser.changeUsername(username);
                                     switch(result){
                                         case -1:
                                             out.print("<br><br><h3>An error has occurred trying to change the username.  Try again or contact the admins.</h3><br><br>");
@@ -458,7 +458,7 @@
                             }
                             //reinitiate the user lists for use on the rest of the page
                             unapprovedUsers = user.User.getUnapprovedUsers();
-                            allUsers = user.User.getAllActiveUsers();
+                            allUsers = User.getAllUsers();
                             //if the person isnt logged in, only show them the 'reset my password via email' div
                             if (thisUser == null) { //reset a user's password based on their email address
                                 if (request.getParameter("emailSubmitted") != null) {
@@ -837,17 +837,12 @@
                             <li class="left">
                                 <a id="manageUsersBtn" class="tpenButton" href="#" onclick="manageUsers();return false;" style="display:none;">Save Changes</a>
                             </li>
-                            <%if (thisUser.isAdmin()) {%>
-                            <li class="left">
-                                <a id="emailAlert" class="tpenButton" href="#" onclick="overlay(userList);return false;">User Emails</a><br />
-                            </li>
-                            <%}%>
-                            <li id="manageUserFeedback" class="gui-tab-section" style="display:none;"></li>
                             <%
                             //if this is an administrator, allow them to approve new users
                             if (thisUser.isAdmin()) {
                             %>
-                            <li class="gui-tab-section">
+                            <li class="gui-tab-section" style="overflow-y:scroll;">
+                                <div id="manageUserFeedback" class="gui-tab-section" style="display:none;"></div>
                                 <div id="userDeactivation">
                                     <h3>Deactivate User</h3>
                                     <%
@@ -869,28 +864,36 @@
                                                 ago = (lastActive < 2880) ? "Active yesterday" : "Active " + Math.floor(lastActive / 1440) + " days ago";
                                             }
                                             String email = allUsers[i].getEmail();
-                                            if(!email.equals("")){
+                                            if(null!=email && !email.equals("")){
                                                 userEmails.append(", " + email);
                                             }
                                             
-                                    %><label for="deactivate<%out.print(i);%>" title="<%out.print(ago);%>"><input type="checkbox" name="deactivate<%out.print(i);%>" id="deactivate<%out.print(i);%>" data-lastactive="<%out.print(lastActive);%>" value="<%out.print(allUsers[i].getUID());%>" /><%out.print(allUsers[i].getFname() + " " + allUsers[i].getLname() + " (" + allUsers[i].getUname() + ")");%></label>
+                                    %><label for="deactivate<%out.print(i);%>" title="<%out.print(ago);%>"><input type="checkbox" name="deactivate<%out.print(i);%>" id="deactivate<%out.print(i);%>" data-lastactive="<%out.print(lastActive);%>" value="<%out.print(allUsers[i].getUID());%>" />
+                                        <%out.print(allUsers[i].getUname() + " (" + allUsers[i].getEmail() + ")");%>
+                                    </label>
                                         <%
                                             }
                                         %>
                                     <script>userList = "<%out.print(userEmails.toString().substring(2));%>";</script>
-                                </div></li>
-                                <%
-                                textdisplay.WelcomeMessage welcome = new WelcomeMessage();
-                                String wMsg = welcome.getMessagePlain();
-                                %>
-                                <li class="gui-tab-section" id="welcomeForm">
-                                    <h3>Update Welcome Message </h3>
-                                    <form id="welcomeMsg" class="ui-corner-all" action="admin.jsp" method="post">
-                                        <textarea name="welcome" cols="78" rows="6"><%out.print(wMsg);%></textarea>
-                                        <input type="hidden" name="selecTab" value="2">
-                                        <input type="submit" name="submitted" style="display:block;" value="Update Welcome">
-                                    </form>
-                                </li>
+                                </div>
+                            </li>
+                            <%if (thisUser.isAdmin()) {%>
+                            <li class="left">
+                                <a id="emailAlert" class="tpenButton" href="#" onclick="overlay(userList);return false;">User Emails</a><br />
+                            </li>
+                            <%
+                            }
+                            textdisplay.WelcomeMessage welcome = new WelcomeMessage();
+                            String wMsg = welcome.getMessagePlain();
+                            %>
+                            <li class="gui-tab-section" id="welcomeForm">
+                                <h3>Update Welcome Message </h3>
+                                <form id="welcomeMsg" class="ui-corner-all" action="admin.jsp" method="post">
+                                    <textarea name="welcome" cols="78" rows="6"><%out.print(wMsg);%></textarea>
+                                    <input type="hidden" name="selecTab" value="1">
+                                    <input type="submit" name="submitted" style="display:block;" value="Update Welcome">
+                                </form>
+                            </li>
                         </ul>
                     </div>
                     <div id="reportsTab">
