@@ -285,7 +285,7 @@
             textdisplay.Project thisProject = new textdisplay.Project(projectID);
             //have they invited a new user?
             if (request.getParameter("invite") != null) {
-                int result = thisUser.invite(request.getParameter("uname"), request.getParameter("fname"), request.getParameter("lname"));
+                int result = thisUser.invite(request.getParameter("email"));
                 if (result == 0) {
                     user.Group g = new user.Group(thisProject.getGroupID());
                     if (isAdmin) {
@@ -293,14 +293,14 @@
                         user.User newUser = new user.User(request.getParameter("uname"));
                         g.addMember(newUser.getUID());
         %><script>
-            $(function() {$('#inviteFeedback').html('<span class=\"ui-state-highlight ui-corner-all\"><%out.print(request.getParameter("fname"));%> has been invited to the project. A notification has been sent to an administrator for activation.<span>');
+            $(function() {$('#inviteFeedback').html('<span class=\"ui-state-highlight ui-corner-all\"><%out.print(request.getParameter("email"));%> has been invited to the project.<span>');
             });
             //alert('User has been invited, but must be activated by an administrator. The administrator has been notified');
         </script>
         <%
         } else {
         %><script>
-            $(function() {$('#inviteFeedback').html('<span class=\"ui-state-error ui-corner-all\"><%out.print(request.getParameter("fname"));%> has been invited to TPEN, but only the project leader may add someone to a project. A notification has been sent to an administrator for activation.<span>');
+            $(function() {$('#inviteFeedback').html('<span class=\"ui-state-error ui-corner-all\"><%out.print(request.getParameter("email"));%> has been invited to join, but only the project leader may add someone to a project.<span>');
                 $('#inviteFeedback').effect('pulsate',500);
             });
             //alert('User has been invited to use TPEN, but the project leader must invite them to join the project. Also, the account must be activated by an administrator. The administrator has been notified');
@@ -313,10 +313,10 @@
                 //failed to create new user account! Likely because it already exists
 %>
         <script>
-            $(function() {$('#inviteFeedback').html('<span class=\"ui-state-error ui-corner-all\"><%out.print(request.getParameter("fname"));%> seems to have an account already, please use the "Add to Project" option to include them on your team. If you have any further trouble, please contact TPEN.<span>');
+            $(function() {$('#inviteFeedback').html('<span class=\"ui-state-error ui-corner-all\">An account with that email address exists already. Please use the "Add to Project" option to include them on your team. If you have any further trouble, please contact us.<span>');
                 $('#inviteFeedback').effect('pulsate',500);
             });
-            //alert('Failed to invite new user, likely because they are already using TPEN!');
+            //alert('Failed to invite new user, likely because they already have an account!');
         </script>
         <%
             }
@@ -365,7 +365,7 @@
                     function simpleFormValidation (){
                         var field1=document.forms["invite"]["fname"].value;
                         var field2=document.forms["invite"]["lname"].value;
-                        var field3=document.forms["invite"]["uname"].value;
+                        var field3=document.forms["invite"]["email"].value;
                         if (field1==null || field1=="")
                         {
                             alert("First name must be filled out");
