@@ -30,8 +30,8 @@
         <style type="text/css">
             label, .reportSection {
                 position: relative;
-                float:left;
-                clear:left;
+                float: none;
+                clear: none;
                 width:auto;
                 text-shadow: 0px 1px rgba(255, 255, 255, .4);
             }
@@ -68,7 +68,6 @@
             }
             .individualReport {display:none;}
             .individualReport:first-child {display: block;}
-            .reportContainer {position: relative;width:400px;}
             .ui-button {
                 -webkit-touch-callout: none;
                 -webkit-user-select: none;
@@ -83,6 +82,20 @@
                 overflow: auto;
                 white-space: nowrap;
             }
+            #recentUsers, #totalSummary, #recentProjects, #userSummary{
+                text-align: center;
+            }
+            #recentUsers table, #recentProjects table{
+                width: auto;
+                left: 0;
+                right: 0;
+                margin: 0 auto;
+            }
+            .reportNavContainer{
+                position: relative;
+                display: inline-block;
+            }
+            .reportContainer {position: relative;}
         </style>
     </head>
     <body>
@@ -115,8 +128,11 @@
 %>
 <div id="manuscriptReport" class="reportSection right">
     <h2>Manuscripts</h2>
+    <div class="reportNavContainer">
         <a id="prevReport" class="left listBegin ui-button ui-state-default">Previous</a>
-        <a id="nextReport" class="left listEnd ui-button ui-state-default">Next</a>
+        <a id="nextReport" class="left listEnd ui-button ui-state-default">Next</a> 
+    </div>
+        
         <div class="reportContainer">
 <%
             int RepoProjects = 0;
@@ -245,11 +261,12 @@
     <label>Last&nbsp;Active:<span class="value"><%out.print(theUser.getLastActiveDate().toString());%></span></label>
     <label>Total Projects: <span class="value"><%out.print(numOfProjs);%></span></label>
     <label>Lines of Transcription: <span class="value"><%out.print(theUser.getUserTranscriptionCount());%></span></label>
-</div>
-<div id="userProjects" class="reportSection">
-    <h2>User Projects</h2>
-        <a id="prevReport" class="left listBegin ui-button ui-state-default">Previous</a>
-        <a id="nextReport" class="left listEnd ui-button ui-state-default">Next</a>
+    
+        <h2>User Projects</h2>
+        <div class="reportNavContainer">
+            <a id="prevReport" class="left listBegin ui-button ui-state-default">Previous</a>
+            <a id="nextReport" class="left listEnd ui-button ui-state-default">Next</a> 
+        </div>
         <div class="reportContainer">
 <%
             for (int i=0;i<numOfProjs;i++) {
@@ -348,15 +365,12 @@
             int cntUsers = paleographers.length;
             int cntProjects = allProjects.length;
         %>
-            <div id="recentSummary" class="reportSection">
-                <h2>Paleographers Summary</h2>
-                <p>Counts regarding total paleographers and paleographer projects.</p>
-                <label>Total Paleographer Projects: <span class="value"><%out.print(cntProjects);%></span></label>
-                <label>Total Paleographers: <span class="value"><%out.print(cntUsers);%></span></label>
-            </div>
-        <%      
-%>
+        
 <div id="recentUsers" class="reportSection">
+
+    <label>Total Paleographer Projects: <span class="value"><%out.print(cntProjects);%></span></label>
+    <label>Total Paleographers: <span class="value"><%out.print(cntUsers);%></span></label>
+    
     <h2>All Paleographers & Administrators</h2>
     <table style="width:auto;">
         <thead>
