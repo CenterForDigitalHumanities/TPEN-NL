@@ -191,43 +191,7 @@ DatabaseWrapper.closePreparedStatement(ps);
             }
         }
 
-    /**Get the username (part of email address before @) of the owner of this comment
-     * @return
-     */
-    public String getUname()
-        {
-        try
-            {
-
-            return openID.substring(0, openID.indexOf('@'));
-            } catch (Exception e)
-            {
-            return Uname;
-            }
-        }
-
-    /**Get the first name of the owner of this comment
-     * @return
-     */
-    public String getFname()
-        {
-        return fname;
-        }
-
-    /**Get the first name of the owner of this comment
-     * @return
-     */
-    public String getLname()
-        {
-        return lname;
-        }
-    /**Get the email of the owner of this comment
-     * @return
-     */
-    public String getEmail()
-        {
-        return email;
-        }
+    
 
     /** Populate the user's info from the database
      * @param id user's unique id
@@ -620,7 +584,7 @@ DatabaseWrapper.closePreparedStatement(ps);
         return toret;
         }
 
-        /**Returns all users active in the last 2 months, or null if none*/
+    /**Returns all users active in the last 2 months, or null if none*/
     public static User[] getRecentUsers() throws SQLException {
         User[] active;
         String query = "SELECT DISTINCT creator FROM transcription WHERE DATE > ( NOW( ) + INTERVAL -2 MONTH )";
@@ -644,6 +608,33 @@ DatabaseWrapper.closePreparedStatement(ps);
             active[tmp.size() - 1] = tmp.pop();
         }
         return active;
+    }
+    
+    /**Returns all users active in the last 2 months, or null if none*/
+    public static User[] getAllUsers() throws SQLException {
+        User[] allUsers;
+        //Note we might when some sanity checks here, like WHERE Uname!="" or something.
+        String query = "SELECT UID FROM users";
+        Connection j = null;
+        PreparedStatement ps = null;
+        Stack<User> tmp = new Stack();
+        try {
+            j = DatabaseWrapper.getConnection();
+            ps = j.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                tmp.push(new User(rs.getInt(1)));
+            }
+        } finally {
+            DatabaseWrapper.closeDBConnection(j);
+            DatabaseWrapper.closePreparedStatement(ps);
+        }
+        allUsers = new User[tmp.size()];
+        //odd looking way of doing this copy, I know, but it was convenient
+        while (!tmp.empty()) {
+            allUsers[tmp.size() - 1] = tmp.pop();
+        }
+        return allUsers;
     }
 
     /**
@@ -1354,6 +1345,163 @@ PreparedStatement qry=null;
         }
     }
     
+    /**Get the username (part of email address before @) of the owner of this comment
+     * @return
+     */
+    public String getUname()
+        {
+        try
+            {
+
+            return openID.substring(0, openID.indexOf('@'));
+            } catch (Exception e)
+            {
+            return Uname;
+            }
+        }
+
+    /**Get the first name of the owner of this comment
+     * @return
+     */
+    public String getFname()
+        {
+        return fname;
+        }
+
+    /**Get the first name of the owner of this comment
+     * @return
+     */
+    public String getLname()
+        {
+        return lname;
+        }
+    /**Get the email of the owner of this comment
+     * @return
+     */
+    public String getEmail()
+        {
+        return email;
+        }
+    
+    /**
+     * Change the username for this user in the db.
+     */
+    public int changeUsername(String username){
+        Connection j = null;
+        PreparedStatement ps=null;
+        try{
+            if(username.equals(this.Uname)){
+                //username is not new
+                return 0;
+            }
+            User existingUser = new User(username);
+            if (existingUser.getUID() > 0){
+                //This username is taken
+                return 1;
+            }
+            else{
+                //Update the username in the db
+                this.Uname = username;
+                String query = "update users set Uname=\'"+username+"\' where UID=?";
+                j = DatabaseWrapper.getConnection();
+                ps = j.prepareStatement(query);
+                ps.setInt(1, this.UID);
+                ps.execute();
+                return 2;
+            }
+        }
+        catch(SQLException e){
+            return -1;
+        }
+        finally{
+            DatabaseWrapper.closeDBConnection(j);
+            DatabaseWrapper.closePreparedStatement(ps);
+        }        
+    }
+    
+    /**
+     * Change the username for this user in the db.
+     */
+    public int changeEmail(String email){
+        Connection j = null;
+        PreparedStatement ps=null;
+        try{
+            if(email == this.email){
+                //username is not new
+                return 0;
+            }
+            User existingUser = new User(email, true);
+            if (existingUser.getUID() > 0){
+                //This username is taken
+                return 1;
+            }
+            else{
+                //Update the username in the db
+                this.email = email;
+                String query = "update users set email=\'"+email+"\' where UID=?";
+                j = DatabaseWrapper.getConnection();
+                ps = j.prepareStatement(query);
+                ps.setInt(1, this.UID);
+                ps.execute();
+                return 2;
+            }
+        }
+        catch(SQLException e){
+            return -1;
+        }
+        finally{
+            DatabaseWrapper.closeDBConnection(j);
+            DatabaseWrapper.closePreparedStatement(ps);
+        }        
+    }
+    
+    /**
+     * Change the username for this user in the db.
+     */
+    public int changeFirstName(String fname){
+        Connection j = null;
+        PreparedStatement ps=null;
+        try{
+            //Update the username in the db
+            this.fname = fname;
+            String query = "update users set fname=\'"+fname+"\' where UID=?";
+            j = DatabaseWrapper.getConnection();
+            ps = j.prepareStatement(query);
+            ps.setInt(1, this.UID);
+            ps.execute();
+            return 1;
+        }
+        catch(SQLException e){
+            return -1;
+        }
+        finally{
+            DatabaseWrapper.closeDBConnection(j);
+            DatabaseWrapper.closePreparedStatement(ps);
+        }        
+    }
+    
+    /**
+     * Change the username for this user in the db.
+     */
+    public int changeLastName(String lname){
+        Connection j = null;
+        PreparedStatement ps=null;
+        try{
+            //Update the username in the db
+            this.lname = lname;
+            String query = "update users set lname=\'"+lname+"\' where UID=?";
+            j = DatabaseWrapper.getConnection();
+            ps = j.prepareStatement(query);
+            ps.setInt(1, this.UID);
+            ps.execute();
+            return 1;
+        }
+        catch(SQLException e){
+            return -1;
+        }
+        finally{
+            DatabaseWrapper.closeDBConnection(j);
+            DatabaseWrapper.closePreparedStatement(ps);
+        }        
+    }  
 }
-    
-    
