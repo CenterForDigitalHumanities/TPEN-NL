@@ -559,7 +559,7 @@
                                 <h3>Account Information</h3>
                                 <span class='accountInfoLine'>Name: <%out.print(thisUser.getFname() + " " + thisUser.getLname());%></span>
                                 <span class='accountInfoLine'>Username: <%out.print(thisUser.getUname());%></span>
-                                <span class='accountInfoLine'>E-mail <%out.print(thisUser.getEmail());%></span>
+                                <span class='accountInfoLine'>E-mail: <%out.print(thisUser.getEmail());%></span>
                                 <span class='accountInfoLine'>Status:
                                     
                                     <%if (thisUser.isAdmin()) {

@@ -332,7 +332,6 @@
 <div id="totalSummary" class="reportSection">
     <h2>Summary</h2>
     <p>T&#8209;PEN totals, including all active and dormant projects and users.</p>
-    <label>Total&nbsp;Manuscripts: <span class="value"><%out.print(manuscriptCount);%></span></label>
     <label>Total&nbsp;Projects: <span class="value"><%out.print(projectCount);%></span></label>
     <label>Total&nbsp;Users: <span class="value"><%out.print(userCount);%></span></label>
     <label>Total&nbsp;Lines: <span class="value"><%out.print(transcriptionCount);%></span></label>
