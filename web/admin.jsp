@@ -518,13 +518,13 @@
                             </td>
                             <td class="gui-tab-section">
                                 <h3>Change your email</h3>
-                                
                                 <div>
                                     <form action="admin.jsp" method="POST">
                                         <label>New Email</label>
                                         <input type="email" name="newEmail" /></br>
                                         <input class="tpenButton right" type="submit">
-                                    </form></div>
+                                    </form>
+                                </div>
                             </td>
                             <td class="gui-tab-section">
                                 <h3>Change your username</h3>
@@ -548,7 +548,8 @@
                                         <label>New Last Name</label>
                                         <input type="text" name="newLName" /></br>
                                         <input class="tpenButton right" type="submit">
-                                    </form></div>
+                                    </form>
+                                </div>
                             </td>
                             <td class="gui-tab-section" style="display:none;">
                                 <h3>Task List</h3>
@@ -557,13 +558,13 @@
                             <td class="gui-tab-section" id="userSummary">
                                 <h3>Account Information</h3>
                                 <span class='accountInfoLine'>Name: <%out.print(thisUser.getFname() + " " + thisUser.getLname());%></span>
-                                <span class='accountInfoLine'>E-mail Login: <%out.print(thisUser.getUname());%></span>
+                                <span class='accountInfoLine'>Username: <%out.print(thisUser.getUname());%></span>
+                                <span class='accountInfoLine'>E-mail <%out.print(thisUser.getEmail());%></span>
                                 <span class='accountInfoLine'>Status:
                                     
                                     <%if (thisUser.isAdmin()) {
-                                        out.print("Administrator, ");
+                                        out.print("Administrator");
                                     }%>
-                                    Contributor
                                     <%if (thisUser.requiresApproval()) {
                                         out.print(" (pending approval)");
                                     }%><br />
