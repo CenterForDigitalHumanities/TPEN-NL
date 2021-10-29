@@ -4191,9 +4191,9 @@ function updateLine(line, cleanup, loadingLine) {
         return false;
     }
     lineUpdateWorking = true;
-    lineUpdateTimer = setTimeout(function () {
+    var lineUpdateTimer = setTimeout(function () {
         $("#lineUpdateNotice").fadeIn(1000);
-    }, 2300);
+    }, 0);
     clearTimeout(typingTimer);
     var onCanvas = $("#transcriptionCanvas").attr("canvasid");
     currentFolio = parseInt(currentFolio);
@@ -4215,10 +4215,7 @@ function updateLine(line, cleanup, loadingLine) {
     //line.css("width", line.attr("linewidth") + "%");
     var lineString = lineLeft + "," + lineTop + "," + lineWidth + "," + lineHeight;
     var currentLineServerID = line.attr('lineserverid');
-    var currentLineText = $(".transcriptlet[lineserverid='" + currentLineServerID + "']").find("textarea").val();
-    if (currentLineText === undefined) {
-        currentLineText = "";
-    }
+    var currentLineText = $(".transcriptlet[lineserverid='" + currentLineServerID + "']").find("textarea").val() ?? "";
     var dbLine =
     {
         "@id": currentLineServerID,
@@ -4272,7 +4269,15 @@ function updateLine(line, cleanup, loadingLine) {
                         //The text has changed
                         //transcriptionFolios[currentFolio-1].otherContent[0].resources[z] = dbLine;
                         updateOnServer(dbLine)
-                            .then(function (responseData, status, jqXHR) {
+                            .then( (responseData, status, jqXHR) => {
+                                if (loadingLine) {
+                                    // Then we updated something because of next/prev line, 
+                                    // so move to that line once the current line is saved.
+                                    // Additional errors saving will throw a trexhead.
+                                    updatePresentation(loadingLine);
+                                    clearTimeout(lineUpdateTimer);
+                                    $("#lineUpdateNotice").hide();
+                                }
                                 var updatedLine = responseData["new_obj_state"];
                                 var originalID = responseData["original_object_id"];
                                 if (!updatedLine) {
@@ -4289,7 +4294,7 @@ function updateLine(line, cleanup, loadingLine) {
                                 }
                                 transcriptionFolios[currentFolio - 1].otherContent[0].resources[z] = updatedLine;
                                 updateOnServer(transcriptionFolios[currentFolio - 1].otherContent[0])
-                                    .then(function (responseData, status, jqXHR) {
+                                    .then( (responseData, status, jqXHR) => {
                                         var updatedList = responseData["new_obj_state"];
                                         var updatedID = jqXHR.getResponseHeader("Location") || updatedList["@id"];
                                         if (!updatedID) {
@@ -4307,16 +4312,11 @@ function updateLine(line, cleanup, loadingLine) {
                                         $("#nextCanvas").attr("onclick", "nextFolio();");
                                         $("#pageJump").removeAttr("disabled");
                                         $("#commitParsing").attr("disabled", "disabled");
-                                        if (loadingLine) {
-                                            //Then we updated something because of next/prev line, so move to that line once the  action is complete.
-                                            updatePresentation(loadingLine);
-                                        }
                                         var colLetter = line.attr("col");
                                         var lineNum = line.attr("collinenum");
                                         var together = colLetter + lineNum;
                                         updateTranscriptionPreviewLine(together, currentLineText);
                                         lineUpdateWorking = false;
-                                        clearTimeout(lineUpdateTimer);
                                         $("#lineUpdateNotice").hide();
                                     })
                                     .fail(function (responseData, status, jqXHR) {
@@ -6003,8 +6003,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!(window['NL'] instanceof Map)) {
             const params = new URLSearchParams(location.search)
 
-            // French will be the generic, but if it matters, we'll add this in.
-            const src = `https://centerfordigitalhumanities.github.io/Newberry-${params.get("language") ?? "French"}-paleography/www/script/templates.js`
+            // No generic set, but if it matters, we'll add this in.
+            const src = `https://centerfordigitalhumanities.github.io/Newberry-${params.get("language") ?? ""}-paleography/www/script/templates.js`
 
             let templates = document.createElement("script")
             templates.setAttribute("src", src)
