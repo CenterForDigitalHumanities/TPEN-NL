@@ -357,24 +357,40 @@
                                 //an email update request
                                 if (request.getParameter("newEmail") != null) {
                                     String email = request.getParameter("newEmail");
-                                    String conf = request.getParameter("confirmEmail");
-                                    if (email.compareTo(conf) == 0) {
-                                        //thisUser.updateEmail(email);
-                                        out.print("<br><br><h3>Email updated!</h3><br><br>");
-                                    } else {
-                                        out.print("<br><br><ul><h3>Emails did not match; no change has been made.</h3></ul><br><br>");
+                                    int result =  thisUser.changeEmail(email);
+                                    switch(result){
+                                        case -1:
+                                            out.print("<br><br><h3>An error has occurred.  Try again or contact the admins.</h3><br><br>");
+                                        break;
+                                        case 0:
+                                            out.print("<br><br><h3>Please provide a NEW email.</h3><br><br>");
+                                        break;
+                                        case 1:
+                                            out.print("<br><br><ul><h3>A user with this E-mail already exists.  Try a different E-mail.</h3></ul><br><br>");
+                                        break;
+                                        case 2:
+                                            out.print("<br><br><h3>Email updated!</h3><br><br>");
+                                        break;
                                     }
                                 }
 
                                 //an username update request
                                 if (request.getParameter("newUsername") != null) {
-                                    String uname = request.getParameter("newUsername");
-                                    String conf = request.getParameter("confirmUsername");
-                                    if (uname.compareTo(conf) == 0) {
-                                        //thisUser.updateUsername(uname);
-                                        out.print("<br><br><h3>Email updated!</h3><br><br>");
-                                    } else {
-                                        out.print("<br><br><ul><h3>Emails did not match; no change has been made.</h3></ul><br><br>");
+                                    String email = request.getParameter("newUsername");
+                                    int result =  thisUser.changeEmail(email);
+                                    switch(result){
+                                        case -1:
+                                            out.print("<br><br><h3>An error has occurred.  Try again or contact the admins.</h3><br><br>");
+                                        break;
+                                        case 0:
+                                            out.print("<br><br><h3>Please provide a NEW email.</h3><br><br>");
+                                        break;
+                                        case 1:
+                                            out.print("<br><br><ul><h3>A user with this E-mail already exists.  Try a different E-mail.</h3></ul><br><br>");
+                                        break;
+                                        case 2:
+                                            out.print("<br><br><h3>Email updated!</h3><br><br>");
+                                        break;
                                     }
                                 }
 
@@ -382,11 +398,31 @@
                                 if (request.getParameter("newName") != null) {
                                     String fname = request.getParameter("newFName");
                                     String lname = request.getParameter("newLName");
-                                    if(fname.compareTo("") == 0){
-                                        //thisUser.updateFirstName(fname);
+                                    int fnameResult = 0;
+                                    int lnameResult = 0;
+                                    if(!fname.equals("")){
+                                        fnameResult = thisUser.changeFirstName(fname);
                                     }
-                                    if(lname.compareTo("") == 0){
-                                        //thisUser.updateLastName(lname);
+                                    if(!lname.equals("")){
+                                        lnameResult = thisUser.changeLastName(lname);
+                                    }
+                                    switch(fnameResult){
+                                        case -1:
+                                            out.print("<br><br><h3>An error has occurred.  Try again or contact the admins.</h3><br><br>");
+                                        break;
+                                        case 1:
+                                            out.print("<br><br><h3>Email updated!</h3><br><br>");
+                                        break;
+                                        default:
+                                    }
+                                    switch(lnameResult){
+                                        case -1:
+                                            out.print("<br><br><h3>An error has occurred.  Try again or contact the admins.</h3><br><br>");
+                                        break;
+                                        case 1:
+                                            out.print("<br><br><h3>Email updated!</h3><br><br>");
+                                        break;
+                                        default:
                                     }
                                 }
                                 
@@ -506,6 +542,7 @@
                                 <h3>Change your name</h3>
                                 <div>
                                     <form action="admin.jsp" method="POST">
+                                        <input type="hideen" name="newName" value="true" />
                                         <label>New First Name</label>
                                         <input type="text" name="newFName" />
                                         <label>New Last Name</label>
