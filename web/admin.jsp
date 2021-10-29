@@ -868,7 +868,11 @@
                                                 //days
                                                 ago = (lastActive < 2880) ? "Active yesterday" : "Active " + Math.floor(lastActive / 1440) + " days ago";
                                             }
-                                            userEmails.append(", " + allUsers[i].getUname());
+                                            String email = allUsers[i].getEmail();
+                                            if(!email.equals("")){
+                                                userEmails.append(", " + email);
+                                            }
+                                            
                                     %><label for="deactivate<%out.print(i);%>" title="<%out.print(ago);%>"><input type="checkbox" name="deactivate<%out.print(i);%>" id="deactivate<%out.print(i);%>" data-lastactive="<%out.print(lastActive);%>" value="<%out.print(allUsers[i].getUID());%>" /><%out.print(allUsers[i].getFname() + " " + allUsers[i].getLname() + " (" + allUsers[i].getUname() + ")");%></label>
                                         <%
                                             }
