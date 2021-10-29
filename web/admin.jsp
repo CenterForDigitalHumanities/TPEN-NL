@@ -904,7 +904,7 @@
                                     <select name="u" class="combobox">
                                         <%
                                             for (int i = 0; i < allUsers.length; i++) {
-                                                out.print("<option value=" + allUsers[i].getUID() + ">" + allUsers[i].getFname() + " " + allUsers[i].getLname() + " (" + allUsers[i].getUname() + ")" + "</option>");
+                                                out.print("<option value=" + allUsers[i].getUID() + ">" + allUsers[i].getUname() + " (" + allUsers[i].getEmail() + ")" + "</option>");
                                             }
 
                                         %>
