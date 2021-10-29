@@ -140,6 +140,9 @@
             #aboutTab{
                 display:none;
             }
+            td{
+                margin: .5em;
+            }
         </style>
         <script>
             var selecTab<%if (request.getParameter("selecTab") != null) {
@@ -350,6 +353,43 @@
                                         out.print("<br><br><ul><h3>Passwords did not match; no change has been made.</h3></ul><br><br>");
                                     }
                                 }
+
+                                //an email update request
+                                if (request.getParameter("newEmail") != null) {
+                                    String email = request.getParameter("newEmail");
+                                    String conf = request.getParameter("confirmEmail");
+                                    if (email.compareTo(conf) == 0) {
+                                        //thisUser.updateEmail(email);
+                                        out.print("<br><br><h3>Email updated!</h3><br><br>");
+                                    } else {
+                                        out.print("<br><br><ul><h3>Emails did not match; no change has been made.</h3></ul><br><br>");
+                                    }
+                                }
+
+                                //an username update request
+                                if (request.getParameter("newUsername") != null) {
+                                    String uname = request.getParameter("newUsername");
+                                    String conf = request.getParameter("confirmUsername");
+                                    if (uname.compareTo(conf) == 0) {
+                                        //thisUser.updateUsername(uname);
+                                        out.print("<br><br><h3>Email updated!</h3><br><br>");
+                                    } else {
+                                        out.print("<br><br><ul><h3>Emails did not match; no change has been made.</h3></ul><br><br>");
+                                    }
+                                }
+
+                                //an fname/lname update request
+                                if (request.getParameter("newName") != null) {
+                                    String fname = request.getParameter("newFName");
+                                    String lname = request.getParameter("newLName");
+                                    if(fname.compareTo("") == 0){
+                                        //thisUser.updateFirstName(fname);
+                                    }
+                                    if(lname.compareTo("") == 0){
+                                        //thisUser.updateLastName(lname);
+                                    }
+                                }
+                                
                                 if (request.getParameter("welcome") != null) {
                                     if (!thisUser.isAdmin()) {
                 String errorMessage = thisUser.getFname() + ", you have attempted something limited to administrators.";
@@ -422,8 +462,9 @@
                                 return;
                             }
                         %>
-                        <ul id="userAccount" class="ui-helper-reset"> 
-                            <li class="gui-tab-section">
+                        <table id="userAccount" class="ui-helper-reset"> 
+                            <tr>
+                            <td class="gui-tab-section">
                                 <%if (request.getParameter("pleaseReset") != null) {
                                         System.out.print("<h3>Due to a server migration, we ask you to change your password below:<br></h3>");
                                     }
@@ -431,25 +472,58 @@
                                 <h3>Change your password</h3>
                                 <div>
                                     <form action="admin.jsp" method="POST">
-                                        <label>New Password
-                                            <input type="password" name="newPassword" /></label>
-                                        <label>Confirm Password
-                                            <input type="password" name="confirmPassword" /></label>
+                                        <label>New Password</label>
+                                            <input type="password" name="newPassword" />
+                                        <label>Confirm Password</label>
+                                            <input type="password" name="confirmPassword" /></br>
+                                        <input class="tpenButton right" type="submit">
+                                    </form>
+                                </div>
+                            </td>
+                            <td class="gui-tab-section">
+                                <h3>Change your email</h3>
+                                <div>
+                                    <form action="admin.jsp" method="POST">
+                                        <label>New Email</label>
+                                            <input type="email" name="newEmail" />
+                                            <label>Confirm Email</label>
+                                            <input type="email" name="confirmEmail" /></br>
                                         <input class="tpenButton right" type="submit">
                                     </form></div>
-                            </li>
-                            <li class="gui-tab-section">
-                                <a class="tpenButton" href="index.jsp"><span class="ui-icon ui-icon-home right"></span>TPEN Homepage</a>
-                            </li>
-                            <li class="gui-tab-section" style="display:none;">
+                            </td>
+                            <td class="gui-tab-section">
+                                <h3>Change your username</h3>
+                                <div>
+                                    <form action="admin.jsp" method="POST">
+                                        <label>New Username</label>
+                                            <input type="text" name="newUsername" />
+                                        <label>Confirm Username</label>
+                                            <input type="text" name="confirmUsername" /></br>
+                                        <input class="tpenButton right" type="submit">
+                                    </form></div>
+                            </td>
+                            </tr>
+                            <tr>
+                            <td class="gui-tab-section">
+                                <h3>Change your name</h3>
+                                <div>
+                                    <form action="admin.jsp" method="POST">
+                                        <label>New First Name</label>
+                                            <input type="text" name="newUsername" />
+                                        <label>New Last Name</label>
+                                            <input type="text" name="confirmUsername" /></br>
+                                        <input class="tpenButton right" type="submit">
+                                    </form></div>
+                            </td>
+                            <td class="gui-tab-section" style="display:none;">
                                 <h3>Task List</h3>
                                 <div id="taskList"></div>
-                            </li>
-                            <li class="gui-tab-section" id="userSummary">
+                            </td>
+                            <td class="gui-tab-section" id="userSummary">
                                 <h3>Account Information</h3>
-                                Name: <%out.print(thisUser.getFname() + " " + thisUser.getLname());%> <br />
-                                E-mail Login: <%out.print(thisUser.getUname());%> <br />
-                                Status:<%if (thisUser.isAdmin()) {
+                                <span class='accountInfoLine'>Name: <%out.print(thisUser.getFname() + " " + thisUser.getLname());%></span>
+                                <span class='accountInfoLine'>E-mail Login: <%out.print(thisUser.getUname());%></span>
+                                <span class='accountInfoLine'>Status:<%if (thisUser.isAdmin()) {
                                         out.print("Administrator, ");
                                     }%>Contributor<%if (thisUser.requiresApproval()) {
                                                 out.print(" (pending approval)");
@@ -457,20 +531,28 @@
                                 <%
                                     Project[] userProjects = thisUser.getUserProjects();
                                     if (userProjects.length > 0) {
-                                        out.print("You are a member of " + userProjects.length + " project");
+                                        out.print("You are a member of " + userProjects.length + " projects");
+                                        /*
                                         if (userProjects.length == 1) {
                                             out.print(", " + userProjects[0].getProjectName() + ".");
-                                        } else {
+                                        } 
+                                        else {
                                             out.print("s:");
                                             for (int i = 0; i < userProjects.length; i++) {
-                                                out.println("<span>" + (i + 1) + ". " + userProjects[i].getProjectName() + "</span>");
+                                                out.println("<span class='accountInfoLine'>" + (i + 1) + ". " + userProjects[i].getProjectName() + "</span>");
+                                                if(i==4){
+                                                    break;
+                                                }
                                             }
                                         }
-                                     }
+                                        */
+                                    }
+                                //}
                                 %>
-
-                            </li>
-                        </ul>
+                                </span>
+                            </td>
+                            </tr>
+                        </table>
                     </div>
                     <!--                end of tab-1, user accounts-->
 
@@ -713,10 +795,12 @@
                         <ul id="manageUsers" class="ui-helper-reset"> 
                             <li class="left">
                                 <a id="manageUsersBtn" class="tpenButton" href="#" onclick="manageUsers();return false;" style="display:none;">Save Changes</a>
-                            </li>               
+                            </li>
+                            <%if (thisUser.isAdmin()) {%>
                             <li class="left">
                                 <a id="emailAlert" class="tpenButton" href="#" onclick="overlay(userList);return false;">User Emails</a><br />
                             </li>
+                            <%}%>
                             <li id="manageUserFeedback" class="gui-tab-section" style="display:none;"></li>
                             <%
                             //if this is an administrator, allow them to approve new users
