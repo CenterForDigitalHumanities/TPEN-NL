@@ -6003,8 +6003,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!(window['NL'] instanceof Map)) {
             const params = new URLSearchParams(location.search)
 
-            // French will be the generic, but if it matters, we'll add this in.
-            const src = `https://centerfordigitalhumanities.github.io/Newberry-${params.get("language") ?? "French"}-paleography/www/script/templates.js`
+            // No generic set, but if it matters, we'll add this in.
+            const src = `https://centerfordigitalhumanities.github.io/Newberry-${params.get("language") ?? ""}-paleography/www/script/templates.js`
 
             let templates = document.createElement("script")
             templates.setAttribute("src", src)
