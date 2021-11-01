@@ -150,7 +150,7 @@ session.setAttribute("ref",request.getParameter("referrer"));
             <form id="login" action="login.jsp" method="POST" >
                             <fieldset>
                                 <legend>Login Here:</legend>
-                                <label for="uname">Email</label><input class="text" type="text" name="uname"/><br/>
+                                <label for="uname">Username</label><input class="text" type="text" name="uname"/><br/>
                                 <label for="password">Password</label><input  class="text" type="password" name="password"/><br/>
                             <input type="hidden" name="ref" value="<%out.print(session.getAttribute("ref"));%>"/>
                             <input class="ui-button ui-state-default ui-corner-all right" type="submit" title="Log In" value="Log In">
@@ -162,15 +162,16 @@ session.setAttribute("ref",request.getParameter("referrer"));
                <form action="signup.jsp" method="POST">
                <fieldset>
                                 <legend>or Register as a New User:</legend>
-                                Note: You will receive your password via email after your account is activated by an administrator
-                                <label for="uname">Email</label><input class="text" type="text" name="uname"/><br/>
+                                Note: You will receive your password via email after your account is activated
+                                <label for="uname">Username</label><input class="text" type="text" name="uname"/><br/>
+                                <label for="email">Email</label><input class="text" type="text" name="email"/><br/>
                                 <label for="fname">First Name</label><input class="text" type="text" name="fname"/><br/>
                                 <label for="lname">Last Name</label><input class="text" type="text" name="lname"/><br/>
                <input type="submit" value="Register" class="ui-button ui-state-default ui-corner-all right"/>
                </fieldset></form>
                 </div>
             </div>
-        <a class="returnButton" href="index.jsp">Return to T&#8209;PEN Home</a>
+        <a class="returnButton" href="index.jsp">Return to Paleography Home</a>
         </div>
         </div>
     </body>

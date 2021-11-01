@@ -29,11 +29,7 @@
         <script type="text/javascript" src="js/tpen.js"></script>  
         <script type="text/javascript" src="js/manuscriptFilters.js"></script>  
         <style type="text/css">
-            #userAccount, #ms, #manageUsers, #options, #about, #reportsTab { margin: 0; padding: 0;}
-            #updateManagement li, #reportsTab li,#userAccount li, #manageUsers li, #ms li, #options li, #about li { margin: 0 4px 3px 3px; padding: 0.4em; padding-left: 1.5em; height: 100%;overflow: hidden; float:left; width:29%; position: relative;}
-            #updateManagement li{
-                width: 87%;
-            }
+            
             #updateManagement input[type="text"]{
                 width: 50%;
                 margin: 3px 0px;
@@ -50,7 +46,6 @@
                 color: blue;
             }
             #manageUsers li {max-height: 350px;overflow: auto;}
-            #tabs-3 {padding-bottom: 120px;}
             #ms li {width:98% !important; height:auto !important;}
             #ms textarea {width:600px;height:8em;}
             #userAccount li ul,#ms li ul,#manageUsers li ul, #options li ul, #about li ul {padding: 0;margin: 0;}
@@ -133,6 +128,21 @@
                 height:auto !important;
                 bottom:0;
             }
+            #userAccount, #ms, #manageUsers, #options, #about, #reportsTab { margin: 0; padding: 0;}
+            #updateManagement li, #reportsTab li,#userAccount li, #manageUsers li, #ms li, #options li, #about li { margin: 0 4px 3px 3px; padding: 0.4em; padding-left: 1.5em; height: 100%;overflow: hidden; float:left; width:29%; position: relative;}
+            #updateManagement li{
+                width: 87%;
+            }
+            #tabs-3 {padding-bottom: 120px;}
+            #tabs-2{
+                display:none;
+            }
+            #aboutTab{
+                display:none;
+            }
+            td{
+                margin: .5em;
+            }
         </style>
         <script>
             var selecTab<%if (request.getParameter("selecTab") != null) {
@@ -211,7 +221,7 @@
                 });
                 function manageUsers(){
                     $("#manageUsersBtn").children("span").switchClass("ui-icon-alert","ui-icon-check");
-                    var saveChangesURL = ["admin.jsp?selecTab=2"];
+                    var saveChangesURL = ["admin.jsp?selecTab=1"];
                     var $changes = $("input:checked");
                     var approve = new Array();
                     var deactivate = new Array();
@@ -256,13 +266,12 @@
                     %>
                     <ul>
                         <li><a title="Reset or change your password; view account privileges" href="#tabs-1">User Account</a></li>
-                        <li><a title="Alter IPR statements, restrict access, update global metadata" href="#tabs-2">Manuscripts</a></li>
+                        <!--<li><a title="Alter IPR statements, restrict access, update global metadata" href="#tabs-2">Manuscripts</a></li>-->
                         <%if (thisUser.isAdmin()) { //hiding non-Admin tab%>
                         <li><a title="Manage Users" href="#tabs-3">Manage Users</a><div id="userAlert" class='ui-icon-alert ui-icon right' style="display:none;margin: 8px 8px 0 0;"></div></li>
                         <li><a title="Reports" href="#reportsTab">Reports</a></li>
                         <%}%>
-                        
-                        <li><a title="About the T&#8209;PEN project" href="#aboutTab">About T&#8209;PEN</a></li>
+                        <!--<li><a title="About the T&#8209;PEN project" href="#aboutTab">About T&#8209;PEN</a></li>-->
                     </ul>
                     <div id="tabs-1">
                         <% } else {%>
@@ -280,7 +289,7 @@
                         <%                        }
                             //process any submitted requests
                             user.User[] unapprovedUsers = user.User.getUnapprovedUsers();
-                            user.User[] allUsers = user.User.getAllActiveUsers();
+                            User[] allUsers = User.getAllUsers();
                             if (thisUser != null) {
                                 //String to return completion information to user on Tabs-3
                                 StringBuilder manageUserFeedback = new StringBuilder("");
@@ -337,13 +346,86 @@
                                 if (request.getParameter("newPassword") != null) {
                                     String pass = request.getParameter("newPassword");
                                     String conf = request.getParameter("confirmPassword");
-                                    if (pass.compareTo(conf) == 0) {
+                                    if (pass.equals(conf)) {
                                         thisUser.updatePassword(pass);
                                         out.print("<br><br><h3>Password updated!</h3><br><br>");
                                     } else {
                                         out.print("<br><br><ul><h3>Passwords did not match; no change has been made.</h3></ul><br><br>");
                                     }
                                 }
+
+                                //an email update request
+                                if (request.getParameter("newEmail") != null) {
+                                    String email = request.getParameter("newEmail");
+                                    int result =  thisUser.changeEmail(email);
+                                    switch(result){
+                                        case -1:
+                                            out.print("<br><br><h3>An error has occurred.  Try again or contact the admins.</h3><br><br>");
+                                        break;
+                                        case 0:
+                                            out.print("<br><br><h3>Please provide a NEW email.</h3><br><br>");
+                                        break;
+                                        case 1:
+                                            out.print("<br><br><ul><h3>A user with this E-mail already exists.  Try a different E-mail.</h3></ul><br><br>");
+                                        break;
+                                        case 2:
+                                            out.print("<br><br><h3>Email updated!</h3><br><br>");
+                                        break;
+                                    }
+                                }
+
+                                //an username update request
+                                if (request.getParameter("newUsername") != null) {
+                                    String username = request.getParameter("newUsername");
+                                    int result =  thisUser.changeUsername(username);
+                                    switch(result){
+                                        case -1:
+                                            out.print("<br><br><h3>An error has occurred trying to change the username.  Try again or contact the admins.</h3><br><br>");
+                                        break;
+                                        case 0:
+                                            out.print("<br><br><h3>Please provide a NEW username.</h3><br><br>");
+                                        break;
+                                        case 1:
+                                            out.print("<br><br><ul><h3>A user with this E-username already exists.  Try a different Username.</h3></ul><br><br>");
+                                        break;
+                                        case 2:
+                                            out.print("<br><br><h3>Username updated!</h3><br><br>");
+                                        break;
+                                    }
+                                }
+
+                                //an fname/lname update request
+                                if (request.getParameter("newName") != null) {
+                                    String fname = request.getParameter("newFName");
+                                    String lname = request.getParameter("newLName");
+                                    int fnameResult = 0;
+                                    int lnameResult = 0;
+                                    if(!fname.equals("")){
+                                        fnameResult = thisUser.changeFirstName(fname);
+                                    }
+                                    if(!lname.equals("")){
+                                        lnameResult = thisUser.changeLastName(lname);
+                                    }
+                                    switch(fnameResult){
+                                        case -1:
+                                            out.print("<br><br><h3>An error has occurred trying to change the First Name.  Try again or contact the admins.</h3><br><br>");
+                                        break;
+                                        case 1:
+                                            out.print("<br><br><h3>First Name updated!</h3><br><br>");
+                                        break;
+                                        default:
+                                    }
+                                    switch(lnameResult){
+                                        case -1:
+                                            out.print("<br><br><h3>An error has occurred trying to change the Last Name.  Try again or contact the admins.</h3><br><br>");
+                                        break;
+                                        case 1:
+                                            out.print("<br><br><h3>Last Name updated!</h3><br><br>");
+                                        break;
+                                        default:
+                                    }
+                                }
+                                
                                 if (request.getParameter("welcome") != null) {
                                     if (!thisUser.isAdmin()) {
                 String errorMessage = thisUser.getFname() + ", you have attempted something limited to administrators.";
@@ -376,7 +458,7 @@
                             }
                             //reinitiate the user lists for use on the rest of the page
                             unapprovedUsers = user.User.getUnapprovedUsers();
-                            allUsers = user.User.getAllActiveUsers();
+                            allUsers = User.getAllUsers();
                             //if the person isnt logged in, only show them the 'reset my password via email' div
                             if (thisUser == null) { //reset a user's password based on their email address
                                 if (request.getParameter("emailSubmitted") != null) {
@@ -416,8 +498,9 @@
                                 return;
                             }
                         %>
-                        <ul id="userAccount" class="ui-helper-reset"> 
-                            <li class="gui-tab-section">
+                        <table id="userAccount" class="ui-helper-reset"> 
+                            <tr>
+                            <td class="gui-tab-section">
                                 <%if (request.getParameter("pleaseReset") != null) {
                                         System.out.print("<h3>Due to a server migration, we ask you to change your password below:<br></h3>");
                                     }
@@ -425,46 +508,92 @@
                                 <h3>Change your password</h3>
                                 <div>
                                     <form action="admin.jsp" method="POST">
-                                        <label>New Password
-                                            <input type="password" name="newPassword" /></label>
-                                        <label>Confirm Password
-                                            <input type="password" name="confirmPassword" /></label>
+                                        <label>New Password</label>
+                                            <input type="password" name="newPassword" />
+                                        <label>Confirm Password</label>
+                                            <input type="password" name="confirmPassword" /></br>
                                         <input class="tpenButton right" type="submit">
-                                    </form></div>
-                            </li>
-                            <li class="gui-tab-section">
-                                <a class="tpenButton" href="index.jsp"><span class="ui-icon ui-icon-home right"></span>TPEN Homepage</a>
-                            </li>
-                            <li class="gui-tab-section" style="display:none;">
+                                    </form>
+                                </div>
+                            </td>
+                            <td class="gui-tab-section">
+                                <h3>Change your email</h3>
+                                <div>
+                                    <form action="admin.jsp" method="POST">
+                                        <label>New Email</label>
+                                        <input type="email" name="newEmail" /></br>
+                                        <input class="tpenButton right" type="submit">
+                                    </form>
+                                </div>
+                            </td>
+                            <td class="gui-tab-section">
+                                <h3>Change your username</h3>
+                                <div>
+                                    <form action="admin.jsp" method="POST">
+                                        <label>New Username</label>
+                                        <input type="text" name="newUsername" /></br>
+                                        <input class="tpenButton right" type="submit">
+                                    </form>
+                                </div>
+                            </td>
+                            </tr>
+                            <tr>
+                            <td class="gui-tab-section">
+                                <h3>Change your name</h3>
+                                <div>
+                                    <form action="admin.jsp" method="POST">
+                                        <input type="hidden" name="newName" value="true" />
+                                        <label>New First Name</label>
+                                        <input type="text" name="newFName" />
+                                        <label>New Last Name</label>
+                                        <input type="text" name="newLName" /></br>
+                                        <input class="tpenButton right" type="submit">
+                                    </form>
+                                </div>
+                            </td>
+                            <td class="gui-tab-section" style="display:none;">
                                 <h3>Task List</h3>
                                 <div id="taskList"></div>
-                            </li>
-                            <li class="gui-tab-section" id="userSummary">
+                            </td>
+                            <td class="gui-tab-section" id="userSummary">
                                 <h3>Account Information</h3>
-                                Name: <%out.print(thisUser.getFname() + " " + thisUser.getLname());%> <br />
-                                E-mail Login: <%out.print(thisUser.getUname());%> <br />
-                                Status:<%if (thisUser.isAdmin()) {
-                                        out.print("Administrator, ");
-                                    }%>Contributor<%if (thisUser.requiresApproval()) {
-                                                out.print(" (pending approval)");
-                                            }%><br />
-                                <%
+                                <span class='accountInfoLine'>Name: <%out.print(thisUser.getFname() + " " + thisUser.getLname());%></span>
+                                <span class='accountInfoLine'>Username: <%out.print(thisUser.getUname());%></span>
+                                <span class='accountInfoLine'>E-mail <%out.print(thisUser.getEmail());%></span>
+                                <span class='accountInfoLine'>Status:
+                                    
+                                    <%if (thisUser.isAdmin()) {
+                                        out.print("Administrator");
+                                    }%>
+                                    <%if (thisUser.requiresApproval()) {
+                                        out.print(" (pending approval)");
+                                    }%><br />
+                                
+                                    <%
                                     Project[] userProjects = thisUser.getUserProjects();
                                     if (userProjects.length > 0) {
-                                        out.print("You are a member of " + userProjects.length + " project");
+                                        out.print("You are a member of " + userProjects.length + " projects");
+                                        /*
                                         if (userProjects.length == 1) {
                                             out.print(", " + userProjects[0].getProjectName() + ".");
-                                        } else {
+                                        } 
+                                        else {
                                             out.print("s:");
                                             for (int i = 0; i < userProjects.length; i++) {
-                                                out.println("<span>" + (i + 1) + ". " + userProjects[i].getProjectName() + "</span>");
+                                                out.println("<span class='accountInfoLine'>" + (i + 1) + ". " + userProjects[i].getProjectName() + "</span>");
+                                                if(i==4){
+                                                    break;
+                                                }
                                             }
                                         }
-                                     }
+                                        */
+                                    }
+                                //}
                                 %>
-
-                            </li>
-                        </ul>
+                                </span>
+                            </td>
+                            </tr>
+                        </table>
                     </div>
                     <!--                end of tab-1, user accounts-->
 
@@ -707,37 +836,13 @@
                         <ul id="manageUsers" class="ui-helper-reset"> 
                             <li class="left">
                                 <a id="manageUsersBtn" class="tpenButton" href="#" onclick="manageUsers();return false;" style="display:none;">Save Changes</a>
-                            </li>               
-                            <li class="left">
-                                <a id="emailAlert" class="tpenButton" href="#" onclick="overlay(userList);return false;">User Emails</a><br />
                             </li>
-                            <li id="manageUserFeedback" class="gui-tab-section" style="display:none;"></li>
                             <%
                             //if this is an administrator, allow them to approve new users
                             if (thisUser.isAdmin()) {
                             %>
-                            <li class="gui-tab-section clear-left">
-                                <div id="newUserApproval">
-                                    <h3>Activations</h3>
-                                    <%
-                                        for (int i = 0; i < unapprovedUsers.length; i++) {
-                                    %><label for="approve<%out.print(i);%>"><input type="checkbox" name="approve<%out.print(i);%>" id="approve<%out.print(i);%>" value="<%out.print(unapprovedUsers[i].getUID());%>" /><%out.print(unapprovedUsers[i].getFname() + " " + unapprovedUsers[i].getLname() + " (" + unapprovedUsers[i].getUname() + ")");%></label>
-                                        <%
-                                            }
-                                        %>
-                                </div></li>
-                            <li class="gui-tab-section">
-                                <div id="denyUsers">
-                                    <h3>Deny Requests</h3>
-                                    <%
-                                        for (int i = 0; i < unapprovedUsers.length; i++) {
-                                    %><label for="eliminate<%out.print(i);%>"><input type="checkbox" name="eliminate<%out.print(i);%>" id="eliminate<%out.print(i);%>" value="<%out.print(unapprovedUsers[i].getUID());%>" /><%out.print(unapprovedUsers[i].getFname() + " " + unapprovedUsers[i].getLname() + " (" + unapprovedUsers[i].getUname() + ")");%></label>
-                                        <%
-                                            }
-                                        %>
-                                </div>
-                            </li>
-                            <li class="gui-tab-section">
+                            <li class="gui-tab-section" style="overflow-y:scroll;">
+                                <div id="manageUserFeedback" class="gui-tab-section" style="display:none;"></div>
                                 <div id="userDeactivation">
                                     <h3>Deactivate User</h3>
                                     <%
@@ -758,25 +863,37 @@
                                                 //days
                                                 ago = (lastActive < 2880) ? "Active yesterday" : "Active " + Math.floor(lastActive / 1440) + " days ago";
                                             }
-                                            userEmails.append(", " + allUsers[i].getUname());
-                                    %><label for="deactivate<%out.print(i);%>" title="<%out.print(ago);%>"><input type="checkbox" name="deactivate<%out.print(i);%>" id="deactivate<%out.print(i);%>" data-lastactive="<%out.print(lastActive);%>" value="<%out.print(allUsers[i].getUID());%>" /><%out.print(allUsers[i].getFname() + " " + allUsers[i].getLname() + " (" + allUsers[i].getUname() + ")");%></label>
+                                            String email = allUsers[i].getEmail();
+                                            if(null!=email && !email.equals("")){
+                                                userEmails.append(", " + email);
+                                            }
+                                            
+                                    %><label for="deactivate<%out.print(i);%>" title="<%out.print(ago);%>"><input type="checkbox" name="deactivate<%out.print(i);%>" id="deactivate<%out.print(i);%>" data-lastactive="<%out.print(lastActive);%>" value="<%out.print(allUsers[i].getUID());%>" />
+                                        <%out.print(allUsers[i].getUname() + " (" + allUsers[i].getEmail() + ")");%>
+                                    </label>
                                         <%
                                             }
                                         %>
-                                    <script>userList = '<%out.print(userEmails.toString().substring(2));%>';</script>
-                                </div></li>
-                                <%
-                                textdisplay.WelcomeMessage welcome = new WelcomeMessage();
-                                String wMsg = welcome.getMessagePlain();
-                                %>
-                                <li class="gui-tab-section" id="welcomeForm">
-                                    <h3>Update Welcome Message </h3>
-                                    <form id="welcomeMsg" class="ui-corner-all" action="admin.jsp" method="post">
-                                        <textarea name="welcome" cols="78" rows="6"><%out.print(wMsg);%></textarea>
-                                        <input type="hidden" name="selecTab" value="2">
-                                        <input type="submit" name="submitted" style="display:block;" value="Update Welcome">
-                                    </form>
-                                </li>
+                                    <script>userList = "<%out.print(userEmails.toString().substring(2));%>";</script>
+                                </div>
+                            </li>
+                            <%if (thisUser.isAdmin()) {%>
+                            <li class="left">
+                                <a id="emailAlert" class="tpenButton" href="#" onclick="overlay(userList);return false;">User Emails</a><br />
+                            </li>
+                            <%
+                            }
+                            textdisplay.WelcomeMessage welcome = new WelcomeMessage();
+                            String wMsg = welcome.getMessagePlain();
+                            %>
+                            <li class="gui-tab-section" id="welcomeForm">
+                                <h3>Update Welcome Message </h3>
+                                <form id="welcomeMsg" class="ui-corner-all" action="admin.jsp" method="post">
+                                    <textarea name="welcome" cols="78" rows="6"><%out.print(wMsg);%></textarea>
+                                    <input type="hidden" name="selecTab" value="1">
+                                    <input type="submit" name="submitted" style="display:block;" value="Update Welcome">
+                                </form>
+                            </li>
                         </ul>
                     </div>
                     <div id="reportsTab">
@@ -787,7 +904,7 @@
                                     <select name="u" class="combobox">
                                         <%
                                             for (int i = 0; i < allUsers.length; i++) {
-                                                out.print("<option value=" + allUsers[i].getUID() + ">" + allUsers[i].getFname() + " " + allUsers[i].getLname() + " (" + allUsers[i].getUname() + ")" + "</option>");
+                                                out.print("<option value=" + allUsers[i].getUID() + ">" + allUsers[i].getUname() + " (" + allUsers[i].getEmail() + ")" + "</option>");
                                             }
 
                                         %>
@@ -796,12 +913,16 @@
                                 </form>
                             </li>
                             <li class="gui-tab-section">
-                                <h3>Active Users and Projects</h3>
-                                <a class="tpenButton ui-button" target="_blank" href="reports.jsp?active=true">Run Report</a>
+                                <h3>Paleographer Totals</h3>
+                                <a class="tpenButton ui-button" target="_blank" href="reports.jsp?paleographers=true">Run Report</a>
                             </li>
                             <li class="gui-tab-section">
                                 <h3>T&#8209;PEN Totals</h3>
                                 <a class="tpenButton ui-button" target="_blank" href="reports.jsp?totals=true">Run Report</a>
+                            </li>
+                            <li class="gui-tab-section">
+                                <h3>Project Totals</h3>
+                                <a class="tpenButton ui-button" target="_blank" href="reports.jsp?projects=true">Run Report</a>
                             </li>
                         </ul>
                     </div>

@@ -37,6 +37,7 @@ public class User
     private String Uname;
     private String fname;
     private String lname;
+    private String email;
     private String openID;
 
     private String getOpenID()
@@ -190,36 +191,7 @@ DatabaseWrapper.closePreparedStatement(ps);
             }
         }
 
-    /**Get the username (part of email address before @) of the owner of this comment
-     * @return
-     */
-    public String getUname()
-        {
-        try
-            {
-
-            return openID.substring(0, openID.indexOf('@'));
-            } catch (Exception e)
-            {
-            return Uname;
-            }
-        }
-
-    /**Get the first name of the owner of this comment
-     * @return
-     */
-    public String getFname()
-        {
-        return fname;
-        }
-
-    /**Get the first name of the owner of this comment
-     * @return
-     */
-    public String getLname()
-        {
-        return lname;
-        }
+    
 
     /** Populate the user's info from the database
      * @param id user's unique id
@@ -242,6 +214,7 @@ PreparedStatement qry=null;
                 Uname = rs.getString("Uname");
                 lname = rs.getString("lname");
                 fname = rs.getString("fname");
+                email = rs.getString("email");
                 this.openID = rs.getString("openID");
                 }
             } finally
@@ -252,12 +225,13 @@ PreparedStatement qry=null;
         }
 
     /**
-     * Populate the object based on the openid response
-     * @param openID The unique URL returned by the user's openid provider
+     * Populate the object based on the email
+     * @param email the user's email
      * @param smt A dummy param added because a single String constructor already exists.
      * @throws SQLException
+     * @replaces openID lookup in previous version
      */
-    public User(String openID, Boolean smt) throws SQLException
+    public User(String email, Boolean smt) throws SQLException
         {
         Connection j = null;
 PreparedStatement qry=null;
@@ -266,8 +240,8 @@ PreparedStatement qry=null;
             {
             j = DatabaseWrapper.getConnection();
             
-            qry = j.prepareStatement("select * from users where openID=?");
-            qry.setString(1, openID);
+            qry = j.prepareStatement("select * from users where email=?");
+            qry.setString(1, email);
             ResultSet rs = qry.executeQuery();
             if (rs.next())
                 {
@@ -275,7 +249,7 @@ PreparedStatement qry=null;
                 Uname = rs.getString("Uname");
                 lname = rs.getString("lname");
                 fname = rs.getString("fname");
-                this.openID = rs.getString("openID");
+                this.email = rs.getString("email");
                 }
             } finally
             {
@@ -446,7 +420,7 @@ DatabaseWrapper.closePreparedStatement(ps);
             try
             {
                 TokenManager man = new TokenManager();
-                m.sendMail(man.getProperties().getProperty("EMAILSERVER"), "TPEN@t-pen.org", man.getProperties().getProperty("NOTIFICATIONEMAIL"), "TPEN contact", body);
+                m.sendMail(man.getProperties().getProperty("EMAILSERVER"), "renaissance@newberry.org", man.getProperties().getProperty("NOTIFICATIONEMAIL"), "Newberry Paleography contact", body);
             } 
             catch (Exception e)
             {
@@ -468,33 +442,30 @@ DatabaseWrapper.closePreparedStatement(ps);
      * @return
      * @throws SQLException
      */
-    public static int signup(String uname, String lname, String fname) throws SQLException
+    public static int signup(String uname, String lname, String fname, String email) throws SQLException
         {
-        User newUser = new User(uname, lname, fname, "");
+        User newUser = new User(uname, lname, fname, email, "");
         if (newUser.getUID() > 0)
             {
-            textdisplay.mailer m = new textdisplay.mailer();
-            String body = newUser.getFname() + " " + newUser.getLname() + " (" + newUser.getUname() + ") has created a new account, which needs your approval.\n";
-            body += "Proceed to http://t-pen.org/TPEN/admin.jsp to approve their account";
             try
                 {
-                    TokenManager man = new TokenManager();
-                    m.sendMail(man.getProperties().getProperty("EMAILSERVER"), "TPEN@t-pen.org", man.getProperties().getProperty("NOTIFICATIONEMAIL"), "new user request", body);
+                    newUser.activateUser();
                 } 
             catch (Exception e)
                 {
-                    return 2; //created user, but email issue occured
+                    return 3; //created user, but activation issue occured
                 }
             return 0; //total success
             } else
             {
+                System.err.println("Did not create User at signup: "+uname);
             return 1; //failed to create
             }
         }
 
     /**
-     * Populate a user object based on their username(email). The idea is that if a user needs to be invited to a group it may be done via their email
-     * @param Uname username (email address)
+     * Populate a user object based on their username.
+     * @param Uname username
      * @throws SQLException
      */
     public User(String Uname) throws SQLException
@@ -515,6 +486,7 @@ PreparedStatement qry=null;
                 this.Uname = Uname;
                 lname = rs.getString("lname");
                 fname = rs.getString("fname");
+                email = rs.getString("email");
                 this.openID = rs.getString("openID");
 
                 }
@@ -530,15 +502,17 @@ PreparedStatement qry=null;
      * @param Uname username(email)
      * @param lname last name
      * @param fname first name
+     * @param email email address
      * @param password hashed password
      * @throws SQLException
      */
-    public User(String Uname, String lname, String fname, String password) throws SQLException
+    public User(String Uname, String lname, String fname, String email, String password) throws SQLException
         {
 
         this.Uname = Uname;
         this.lname = lname;
         this.fname = fname;
+        this.email = email;
 
         if (!this.exists())
             {
@@ -548,37 +522,6 @@ PreparedStatement qry=null;
             {
             this.UID = -1;
             }
-
-        }
-
-    /**Create a new user account that authenticates via openid
-
-     * @param Uname email address
-     * @param openID the unique url assigned to the user by their openid provider
-     * @param fname first name
-     * @param lname last name
-     * @param password md5 hashed password
-     * @throws SQLException
-     *
-     */
-    public User(String Uname, String lname, String fname, String password, String openID) throws SQLException
-        {
-
-        this.Uname = Uname;
-        this.lname = lname;
-        this.fname = fname;
-        this.openID = openID;
-        if (!this.exists())
-            {
-            //System.out.println("User being invited does NOT exist.  Create a new user.");
-            this.commit(password);
-            this.UID = new User(Uname).UID;
-            } 
-        else
-        {
-            //System.out.println("User being invited does exist.");
-            this.UID = -1;
-        }
 
         }
 
@@ -641,7 +584,7 @@ DatabaseWrapper.closePreparedStatement(ps);
         return toret;
         }
 
-        /**Returns all users active in the last 2 months, or null if none*/
+    /**Returns all users active in the last 2 months, or null if none*/
     public static User[] getRecentUsers() throws SQLException {
         User[] active;
         String query = "SELECT DISTINCT creator FROM transcription WHERE DATE > ( NOW( ) + INTERVAL -2 MONTH )";
@@ -665,6 +608,33 @@ DatabaseWrapper.closePreparedStatement(ps);
             active[tmp.size() - 1] = tmp.pop();
         }
         return active;
+    }
+    
+    /**Returns all users active in the last 2 months, or null if none*/
+    public static User[] getAllUsers() throws SQLException {
+        User[] allUsers;
+        //Note we might when some sanity checks here, like WHERE Uname!="" or something.
+        String query = "SELECT UID FROM users";
+        Connection j = null;
+        PreparedStatement ps = null;
+        Stack<User> tmp = new Stack();
+        try {
+            j = DatabaseWrapper.getConnection();
+            ps = j.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                tmp.push(new User(rs.getInt(1)));
+            }
+        } finally {
+            DatabaseWrapper.closeDBConnection(j);
+            DatabaseWrapper.closePreparedStatement(ps);
+        }
+        allUsers = new User[tmp.size()];
+        //odd looking way of doing this copy, I know, but it was convenient
+        while (!tmp.empty()) {
+            allUsers[tmp.size() - 1] = tmp.pop();
+        }
+        return allUsers;
     }
 
     /**
@@ -764,7 +734,7 @@ PreparedStatement qry=null;
         RandomString r = new RandomString(10);
         newPass = r.nextString();
         
-        //store the hashed version in pass, that goes to the DB and the unhased version is returned
+        //store the hashed version in pass, that goes to the DB and the unhashed version is returned
         String pass = newPass;
         String query = "update users set pass=SHA1(?) where UID=?";
         Connection j = null;
@@ -782,11 +752,11 @@ DatabaseWrapper.closeDBConnection(j);
 DatabaseWrapper.closePreparedStatement(ps);
             }
         textdisplay.mailer m = new textdisplay.mailer();
-        String body = "Your TPEN password has been set to " + newPass + "\n" + "You should head to http://t-pen.org and change it.";
+        String body = "Your Newberry Paleography password has been set to " + newPass + "\n" + "You should head to http://newberry.rerum.io/paleography/ and change it.";
 //        System.out.print("new pass is "+pass+"\n");
         try{
             TokenManager man = new TokenManager();
-            m.sendMail(man.getProperties().getProperty("EMAILSERVER"), "TPEN@t-pen.org", this.Uname, "TPEN Password Reset", body);
+            m.sendMail(man.getProperties().getProperty("EMAILSERVER"), "renaissance@newberry.org", this.email, "Newberry Paleography Password Reset", body);
         }
         catch (IOException e){
             //Had trouble mailing...return new password anyway
@@ -821,6 +791,7 @@ DatabaseWrapper.closePreparedStatement(ps);
             }
         return newPass;
         }
+
     /**Send the welcome message and set the user's password.*/
     public String activateUser() throws SQLException, NoSuchAlgorithmException, MessagingException, Exception
         {
@@ -828,7 +799,7 @@ DatabaseWrapper.closePreparedStatement(ps);
         textdisplay.mailer m = new textdisplay.mailer();
 //        System.out.print("new pass is "+pass+"\n");
         String pass=resetPassword(false);
-        m.sendMail(man.getProperties().getProperty("EMAILSERVER"), man.getProperties().getProperty("NOTIFICATIONEMAIL"), this.Uname, "Welcome to TPEN", new WelcomeMessage().getMessage(this.fname+" "+this.lname,pass) );
+        m.sendMail(man.getProperties().getProperty("EMAILSERVER"), man.getProperties().getProperty("NOTIFICATIONEMAIL"), this.email, "Welcome to Newberry Paleography", new WelcomeMessage().getMessage(this.fname+" "+this.lname,pass) );
         return this.resetPassword();
         }
     /**This sets the last time the user was active to the current time. Used for determining who is online, and keeping track of active vs inactive users*/
@@ -905,10 +876,17 @@ PreparedStatement qry=null;
                 {
                 return true;
                 }
+            qry = j.prepareStatement("select * from users where email=?");
+            qry.setString(1, email);
+            rs = qry.executeQuery();
+            if (rs.next())
+                {
+                return true;
+                }
             qry = j.prepareStatement("select * from users where UID=?");
             qry.setInt(1, UID);
             rs = qry.executeQuery();
-            if (rs.next())
+            if (!rs.next())
                 {
                 return true;
                 }
@@ -1100,11 +1078,12 @@ DatabaseWrapper.closePreparedStatement(qry);
 
     /**Inivte a new user to join TPEN. Returns 0 on successful user creation, 1 on user creation failure, and 2 if user creation succeeded
     but email failed, which is common on test systems and should produce a warning*/
-    public int invite(String uname, String fname, String lname) throws SQLException, IOException
+    public int invite(String email) throws SQLException, IOException
         {
         TokenManager man = new TokenManager();
         Boolean emailFailure = false;
-        User newUser = new User(uname, lname, fname, "");
+        String userName = email.split("@", 2)[0];
+        User newUser = new User(userName, email, "user", "new", "");
         //System.out.println("Defined user to continue on.  Can we?");
         if (newUser.getUID() > 0)
             {
@@ -1112,19 +1091,12 @@ DatabaseWrapper.closePreparedStatement(qry);
                 //System.out.println(this.getFname() + " " + this.getLname() + " (" + this.getUname() + ") has invited  " + newUser.getFname() + " " + newUser.getLname() + " (" + newUser.getUname() + ") to join TPEN.");
 
             textdisplay.mailer m = new textdisplay.mailer();
-            String body = this.getFname() + " " + this.getLname() + " (" + this.getUname() + ") has invited  " + newUser.getFname() + " " + newUser.getLname() + " (" + newUser.getUname() + ") to join TPEN, which needs your approval.\n";
-            try
-                {
-                m.sendMail(man.getProperties().getProperty("EMAILSERVER"), "TPEN@t-pen.org", man.getProperties().getProperty("NOTIFICATIONEMAIL"), "new user request", body);
-                } catch (Exception e)
-                {
-                emailFailure = true;
-                }
             //send a notification email to the invitee
-            body = this.getFname() + " " + this.getLname() + " (" + this.getUname() + ") has invited you to join their transcription project on TPEN.  Your initial password is blank, please log in and set a password.  \nThe TPEN team";
+            String body = this.getFname() + " " + this.getLname() + " (" + this.getEmail() + ") has invited you to join their transcription project on Newberry Paleography. Look for an activation message shortly.";
             try
-                {
-                m.sendMail(man.getProperties().getProperty("EMAILSERVER"), "TPEN@t-pen.org", newUser.getUname(), "An invitation to transcribe on TPEN", body);
+            {
+                m.sendMail(man.getProperties().getProperty("EMAILSERVER"), "renaissance@newberry.org", newUser.getEmail(), "An invitation to transcribe on Newberry Paleography", body);
+                newUser.activateUser();
                 } catch (Exception e)
                 {
                 emailFailure = true;
@@ -1139,7 +1111,7 @@ DatabaseWrapper.closePreparedStatement(qry);
                 }
             }
         else{
-            //This is where invite did not have to make a new user.  The user being invited is already a part of T-PEN.  Send an email still?  Right now, no.  
+            //This is where invite did not have to make a new user.  The user being invited is already a part of Newberry Paleography.  Send an email still?  Right now, no.  
             //System.out.println("No.  We did not make a new user, do not send an email.");
         }
 
@@ -1373,6 +1345,163 @@ PreparedStatement qry=null;
         }
     }
     
+    /**Get the username (part of email address before @) of the owner of this comment
+     * @return
+     */
+    public String getUname()
+        {
+        try
+            {
+
+            return openID.substring(0, openID.indexOf('@'));
+            } catch (Exception e)
+            {
+            return Uname;
+            }
+        }
+
+    /**Get the first name of the owner of this comment
+     * @return
+     */
+    public String getFname()
+        {
+        return fname;
+        }
+
+    /**Get the first name of the owner of this comment
+     * @return
+     */
+    public String getLname()
+        {
+        return lname;
+        }
+    /**Get the email of the owner of this comment
+     * @return
+     */
+    public String getEmail()
+        {
+        return email;
+        }
+    
+    /**
+     * Change the username for this user in the db.
+     */
+    public int changeUsername(String username){
+        Connection j = null;
+        PreparedStatement ps=null;
+        try{
+            if(username.equals(this.Uname)){
+                //username is not new
+                return 0;
+            }
+            User existingUser = new User(username);
+            if (existingUser.getUID() > 0){
+                //This username is taken
+                return 1;
+            }
+            else{
+                //Update the username in the db
+                this.Uname = username;
+                String query = "update users set Uname=\'"+username+"\' where UID=?";
+                j = DatabaseWrapper.getConnection();
+                ps = j.prepareStatement(query);
+                ps.setInt(1, this.UID);
+                ps.execute();
+                return 2;
+            }
+        }
+        catch(SQLException e){
+            return -1;
+        }
+        finally{
+            DatabaseWrapper.closeDBConnection(j);
+            DatabaseWrapper.closePreparedStatement(ps);
+        }        
+    }
+    
+    /**
+     * Change the username for this user in the db.
+     */
+    public int changeEmail(String email){
+        Connection j = null;
+        PreparedStatement ps=null;
+        try{
+            if(email == this.email){
+                //username is not new
+                return 0;
+            }
+            User existingUser = new User(email, true);
+            if (existingUser.getUID() > 0){
+                //This username is taken
+                return 1;
+            }
+            else{
+                //Update the username in the db
+                this.email = email;
+                String query = "update users set email=\'"+email+"\' where UID=?";
+                j = DatabaseWrapper.getConnection();
+                ps = j.prepareStatement(query);
+                ps.setInt(1, this.UID);
+                ps.execute();
+                return 2;
+            }
+        }
+        catch(SQLException e){
+            return -1;
+        }
+        finally{
+            DatabaseWrapper.closeDBConnection(j);
+            DatabaseWrapper.closePreparedStatement(ps);
+        }        
+    }
+    
+    /**
+     * Change the username for this user in the db.
+     */
+    public int changeFirstName(String fname){
+        Connection j = null;
+        PreparedStatement ps=null;
+        try{
+            //Update the username in the db
+            this.fname = fname;
+            String query = "update users set fname=\'"+fname+"\' where UID=?";
+            j = DatabaseWrapper.getConnection();
+            ps = j.prepareStatement(query);
+            ps.setInt(1, this.UID);
+            ps.execute();
+            return 1;
+        }
+        catch(SQLException e){
+            return -1;
+        }
+        finally{
+            DatabaseWrapper.closeDBConnection(j);
+            DatabaseWrapper.closePreparedStatement(ps);
+        }        
+    }
+    
+    /**
+     * Change the username for this user in the db.
+     */
+    public int changeLastName(String lname){
+        Connection j = null;
+        PreparedStatement ps=null;
+        try{
+            //Update the username in the db
+            this.lname = lname;
+            String query = "update users set lname=\'"+lname+"\' where UID=?";
+            j = DatabaseWrapper.getConnection();
+            ps = j.prepareStatement(query);
+            ps.setInt(1, this.UID);
+            ps.execute();
+            return 1;
+        }
+        catch(SQLException e){
+            return -1;
+        }
+        finally{
+            DatabaseWrapper.closeDBConnection(j);
+            DatabaseWrapper.closePreparedStatement(ps);
+        }        
+    }  
 }
-    
-    
