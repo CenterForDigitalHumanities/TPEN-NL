@@ -272,7 +272,7 @@
             for (int i=0;i<numOfProjs;i++) {
                 String lastLogEntry = userProjects[i].getProjectLog(1);
                 if (lastLogEntry.length() == 0) lastLogEntry = "none recorded";
-                int lastFolioID = userProjects[i].getLastModifiedFolio();
+                int lastFolioID = userProjects[i].getLastModifiedFolio(true);
                 textdisplay.Folio lastFolio = new Folio(lastFolioID);
                 String lastFolioImg = "";
                 String lastFolioName = "";
@@ -437,7 +437,7 @@ if (request.getParameter("projects") != null) {
                     for (int i=0;i<cntProjects;i++) {
                         String lastLogEntry = allProjects[i].getProjectLog(1);
                         if (lastLogEntry.length() == 0) lastLogEntry = "none recorded";
-                        int lastFolioID = allProjects[i].getLastModifiedFolio();
+                        int lastFolioID = allProjects[i].getLastModifiedFolio(true);
                         textdisplay.Folio lastFolio = new Folio(lastFolioID);
                         String lastFolioImg = "";
                         String lastFolioName = "";

@@ -4226,7 +4226,9 @@ function updateLine(line, cleanup, loadingLine) {
             "cnt:chars": currentLineText
         },
         "on": onCanvas + "#xywh=" + lineString,
-        "otherContent": []
+        "otherContent": [],
+        "currentFolio" : tpenFolios[currentFolio - 1].folioNumber,
+        "currentProject" : theProjectID
         //            "forProject": "TPEN_NL"
     };
     //cleanup is only true if parsing.  This means transcribing, but the text is the same.  no need to update.  
