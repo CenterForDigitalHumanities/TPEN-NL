@@ -61,8 +61,6 @@ public class UpdateAnnoListServlet extends HttpServlet {
             JSONObject updateObject = new JSONObject();
             String content = request.getParameter("content");
             updateObject = JSONObject.fromObject(content);
-            System.out.println("Here is the update object");
-            System.out.println(updateObject);
             updateObject.element("TPEN_NL_TESTING", man.getProperties().getProperty("TESTING"));
             /**
              * This is to support reports.jsp
