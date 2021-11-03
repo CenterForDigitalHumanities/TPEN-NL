@@ -21,6 +21,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import net.sf.json.JSONObject;
+import textdisplay.Folio;
+import textdisplay.Project;
 import tokens.TokenManager;
 
 /**
@@ -60,6 +62,25 @@ public class UpdateAnnoListServlet extends HttpServlet {
             String content = request.getParameter("content");
             updateObject = JSONObject.fromObject(content);
             updateObject.element("TPEN_NL_TESTING", man.getProperties().getProperty("TESTING"));
+            /**
+             * This is to support reports.jsp
+             * When a user transcribes, their update line calls will contain the current folio and project.
+             * Update the folio's lastModfiedTime with Date.now (Folio.paleography)
+             * Update the project's lastModifiedFolio with the known Folio pageNumber (Project.lastModifiedFolio)
+             * Note that reports.jsp does not expose Folio.paleography.  It was already being tracked, 
+             * so I made sure to support while I was in this code.  They used it for something, not sure what. 
+             */
+            
+            if(updateObject.containsKey("currentFolio")){
+                int folioNum = Integer.parseInt(updateObject.getString("currentFolio"));
+                Folio.setPaleographyDate(folioNum); //Track the last modified date for this folio
+                if(updateObject.containsKey("currentProject")){
+                    int projectID = Integer.parseInt(updateObject.getString("currentProject"));
+                    Project.setLastModifiedFolio(projectID, folioNum); //Track the last modified folio for this project
+                }
+            }
+            updateObject.remove("currentFolio");
+            updateObject.remove("currentProject");
             connection.connect();
             DataOutputStream out = new DataOutputStream(connection.getOutputStream());
             //value to save

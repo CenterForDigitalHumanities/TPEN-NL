@@ -979,6 +979,49 @@ public class Project {
          }
       }
    }
+   
+   public static void setLastModifiedFolio(int projectID, int folioNum) throws SQLException {
+      String query = "update project set lastModifiedFolio=? where id=?";
+      Connection j = null;
+      PreparedStatement ps = null;
+      try {
+         j = DatabaseWrapper.getConnection();
+         ps = j.prepareStatement(query);
+         ps.setInt(1, folioNum);
+         ps.setInt(2, projectID);
+         ps.execute();
+      } finally {
+         if (j != null) {
+            DatabaseWrapper.closeDBConnection(j);
+            DatabaseWrapper.closePreparedStatement(ps);
+         }
+      }
+   }
+   
+   /**
+    * Returns the Folio number of the most recently modified Folio, -1 if non exists
+    */
+   public int getLastModifiedFolio(boolean t) throws SQLException {
+      String query = "select lastModifiedFolio from project where id=?";
+      Connection j = null;
+      PreparedStatement ps = null;
+      try {
+         j = DatabaseWrapper.getConnection();
+         ps = j.prepareStatement(query);
+         ps.setInt(1, projectID);
+         ResultSet rs = ps.executeQuery();
+         if (rs.next()) {
+            return rs.getInt(1);
+         } else {
+            return -1;
+         }
+      } finally {
+         if (j != null) {
+            DatabaseWrapper.closeDBConnection(j);
+            DatabaseWrapper.closePreparedStatement(ps);
+         }
+      }
+   }
 
    /**
     * Get the parsed lines for this Folio that are specific to this Project

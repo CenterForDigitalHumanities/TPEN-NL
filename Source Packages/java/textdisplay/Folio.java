@@ -98,6 +98,7 @@ public class Folio {
    public int[] colWidths;
    public int folioNumber;
    private String archive;
+   private Date paleography;
 
    /**
     * Create a blank Folio, used internally or for creating a bean
@@ -129,6 +130,13 @@ public class Folio {
                }
             }
          }
+         try (PreparedStatement stmt2 = j.prepareStatement("select * from folios where pageNumber=?")) {
+               stmt2.setInt(1, folioNumber);
+               ResultSet rs = stmt2.executeQuery();
+               if (rs.next()) {
+                  paleography = rs.getDate("paleography");
+               }
+            }
       }
    }
 
@@ -150,6 +158,7 @@ public class Folio {
                rs = stmt2.executeQuery();
                if (rs.next()) {
                   archive = rs.getString("archive");
+                  paleography = rs.getDate("paleography");
                }
                /*
                if (linePositions.length == 0 && folioNumber > 0) {
@@ -818,6 +827,27 @@ public class Folio {
          DatabaseWrapper.closePreparedStatement(ps);
       }
       return false;
+   }
+   
+   public static void setPaleographyDate(int folioNum) throws SQLException {
+      String query = "update folios set paleography=now() where pageNumber=?";
+      Connection j = null;
+      PreparedStatement ps = null;
+      PreparedStatement del = null;
+      try {
+         j = DatabaseWrapper.getConnection();
+         ps = j.prepareStatement(query);
+         ps.setInt(1, folioNum);
+         ps.execute();
+      } finally {
+         DatabaseWrapper.closeDBConnection(j);
+         DatabaseWrapper.closePreparedStatement(ps);
+         DatabaseWrapper.closePreparedStatement(del);
+      }
+   }
+   
+   public Date getLastModifiedTime() throws SQLException {
+      return this.paleography;
    }
 
    /**
