@@ -4,76 +4,103 @@
     Author     : jdeerin1
 --%>
 
-<%@page import="java.util.Arrays"%>
-<%@page import="java.util.List"%>
-<%@page import="edu.slu.util.ServletUtils"%>
-<%@page import="user.User" import="user.Group"  contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    <%@page import="java.util.Arrays"%>
+        <%@page import="java.util.List"%>
+            <%@page import="edu.slu.util.ServletUtils"%>
+                <%@page import="user.User" import="user.Group"  contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
+                    <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
-<%
+                    <%
 if (session.getAttribute("UID") == null) {
-     %><%@ include file="loginCheck.jsp" %><%        
+     %>
+                        <%@ include file="loginCheck.jsp" %>
+                            <%        
  } 
 else {
 %>
-<html>
-   <head>
-      <title>Group Management</title>
-      <link rel="stylesheet" href="css/tpen.css" type="text/css" media="screen, projection">
-      <link rel="stylesheet" href="css/print.css" type="text/css" media="print">
-      <!--[if lt IE 8]><link rel="stylesheet" href="css/ie.css" type="text/css" media="screen, projection"><![endif]-->
-      <link type="text/css" href="css/custom-theme/jQuery.css" rel="Stylesheet" />
-      <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
-      <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script> 
-      <script type="text/javascript" src="js/tpen.js"></script>
-      <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
-      <style type="text/css">
-         #footer { width: 1010px; position: fixed;left:0;right:0; bottom:0;margin: 0 auto;}
-         #foot { background: url(images/footer.png) top left no-repeat;position:relative;padding:50px 125px; }
-         #button { text-decoration: none; }
-         a.ui-icon-closethick:hover {background-image: url(css/custom-theme/images/ui-icons_cd0a0a_256x240.png);}
-      </style>
-      <script type="text/javascript">
-         $(function() {
-            $('.delete').hover(function()
-            {
-               $(this).parent().addClass("strikeout");
-            },
-                    function() {
-                       $(this).parent().removeClass("strikeout");
-                    }
-            );
-            $('.promoteUser').click(function() {
-               var name = $(this).parent('li').text();
-               var nIn = name.indexOf('Remove');
-               if (nIn > 3)
-                  name = name.substring(0, nIn - 1);
-               var cfrm = confirm('This action will grant ' + name +
-                       ' complete access as a Group Leader .\n\nAre you sure?');
-               return cfrm;
-            });
-            $('.demoteUser').click(function() {
-               var name = $(this).parent('li').text();
-               var nIn = name.indexOf('Remove');
-               if (nIn > 3)
-                  name = name.substring(0, nIn - 1);
-               var cfrm = confirm('This action will restrict ' + name +
-                       ' to access as a Contributor. \n\nAre you sure?');
-               return cfrm;
-            });
-         });
-      </script>
-   </head>
-   <body>
-      <div id="wrapper">
-         <div id="header"><p align="center" class="tagline">transcription for paleographical and editorial notation</p></div>
-         <div id="content">
-            <h1><script type="text/javascript">document.write(document.title);</script></h1>
-            <div class="ui-tabs ui-widget ui-widget-content ui-corner-all" id="main">
+                                <html>
 
-               <%@ include file="loginCheck.jsp" %>
+                                <head>
+                                    <title>Group Management</title>
+                                    <link rel="stylesheet" href="css/tpen.css" type="text/css" media="screen, projection">
+                                    <link rel="stylesheet" href="css/print.css" type="text/css" media="print">
+                                    <!--[if lt IE 8]><link rel="stylesheet" href="css/ie.css" type="text/css" media="screen, projection"><![endif]-->
+                                    <link type="text/css" href="css/custom-theme/jQuery.css" rel="Stylesheet" />
+                                    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+                                    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
+                                    <script type="text/javascript" src="js/tpen.js"></script>
+                                    <link rel="shortcut icon" type="image/x-icon" href="https://newberry.org/sites/all/themes/newberry2015/favicon.ico">
+                                    <style type="text/css">
+                                        #footer {
+                                            width: 1010px;
+                                            position: fixed;
+                                            left: 0;
+                                            right: 0;
+                                            bottom: 0;
+                                            margin: 0 auto;
+                                        }
+                                        
+                                        #foot {
+                                            background: url(images/footer.png) top left no-repeat;
+                                            position: relative;
+                                            padding: 50px 125px;
+                                        }
+                                        
+                                        #button {
+                                            text-decoration: none;
+                                        }
+                                        
+                                        a.ui-icon-closethick:hover {
+                                            background-image: url(css/custom-theme/images/ui-icons_cd0a0a_256x240.png);
+                                        }
+                                    </style>
+                                    <script type="text/javascript">
+                                        $(function() {
+                                            $('.delete').hover(function() {
+                                                    $(this).parent().addClass("strikeout");
+                                                },
+                                                function() {
+                                                    $(this).parent().removeClass("strikeout");
+                                                }
+                                            );
+                                            $('.promoteUser').click(function() {
+                                                var name = $(this).parent('li').text();
+                                                var nIn = name.indexOf('Remove');
+                                                if (nIn > 3)
+                                                    name = name.substring(0, nIn - 1);
+                                                var cfrm = confirm('This action will grant ' + name +
+                                                    ' complete access as a Group Leader .\n\nAre you sure?');
+                                                return cfrm;
+                                            });
+                                            $('.demoteUser').click(function() {
+                                                var name = $(this).parent('li').text();
+                                                var nIn = name.indexOf('Remove');
+                                                if (nIn > 3)
+                                                    name = name.substring(0, nIn - 1);
+                                                var cfrm = confirm('This action will restrict ' + name +
+                                                    ' to access as a Contributor. \n\nAre you sure?');
+                                                return cfrm;
+                                            });
+                                        });
+                                    </script>
+                                </head>
 
-               <%
+                                <body>
+                                    <div id="wrapper">
+                                        <div id="header">
+                                            <p align="center" class="tagline">transcription for paleographical and editorial notation</p>
+                                        </div>
+                                        <div id="content">
+                                            <h1>
+                                                <script type="text/javascript">
+                                                    document.write(document.title);
+                                                </script>
+                                            </h1>
+                                            <div class="ui-tabs ui-widget ui-widget-content ui-corner-all" id="main">
+
+                                                <%@ include file="loginCheck.jsp" %>
+
+                                                    <%
                   uid = 0;
                   try {
                      uid = Integer.parseInt(uname);
@@ -94,7 +121,9 @@ else {
                      try {
                         if (!thisGroup.isMember(UID)) {
                            String errorMessage = thisUser.getFname() + ", you are not a member of this group.";
-               %><%@include file="WEB-INF/includes/errorBang.jspf" %><%
+               %>
+                                                        <%@include file="WEB-INF/includes/errorBang.jspf" %>
+                                                            <%
                                  return;
                               }
                            } catch (NumberFormatException e) {
@@ -180,13 +209,13 @@ else {
                 if (isAdmin) {
                    if (!(thisProject.containsUserUploadedManuscript() && (groupMembers.length > 4))) {
                %>
-               <h4>Add a new group member (must have a T&#8209;PEN account)</h4>
-               <form action="groups.jsp" method="POST">
-                  <label for="uname">Username (e-mail) </label><input id="uname" type="text" name="uname"/>
-                  <input type="hidden" name="projectID" value="<%out.print("" + projectID);%>"/>
-                  <input type="submit"/>
-               </form>
-               <%} else {
+                                                                <h4>Add a new group member (must have a T&#8209;PEN account)</h4>
+                                                                <form action="groups.jsp" method="POST">
+                                                                    <label for="uname">Username (e-mail) </label><input id="uname" type="text" name="uname" />
+                                                                    <input type="hidden" name="projectID" value="<%out.print(" " + projectID);%>"/>
+                                                                    <input type="submit" />
+                                                                </form>
+                                                                <%} else {
                         out.print("<p>This project contains private images and is limited to 5 collaborators.</p>");
                      }
                   } else {
@@ -207,7 +236,7 @@ else {
                      }
                %>
 
-               <%
+                                                                    <%
 
                      //Create a user object for this person
 
@@ -241,20 +270,22 @@ else {
                  //Allow for the creation of a new group
                out.print("Create a new group");
                %>
-               <form action="groups.jsp" method="POST">
-                  <input type="text" name="groupName" value="Group Name"/>
-                  <input type="submit" value="Create Group"/>
-               </form>
-               <%
+                                                                        <form action="groups.jsp" method="POST">
+                                                                            <input type="text" name="groupName" value="Group Name" />
+                                                                            <input type="submit" value="Create Group" />
+                                                                        </form>
+                                                                        <%
                 out.print("</select>");
                 }
             }
         }%>
-            </div>
-            <a class="returnButton" href="project.jsp?selectTab=2<%if (request.getParameter("projectID") != null) {
-              out.print("&projectID=" + request.getParameter("projectID"));
+                                            </div>
+                                            <a class="returnButton" href="project.jsp?selectTab=2<%if (request.getParameter(" projectID ") != null) {
+              out.print("&projectID=" + request.getParameter(" projectID "));
            }%>">Return to Project Management</a>
-         </div>
-         <%@include file="WEB-INF/includes/projectTitle.jspf" %>
-      </div></body>
-</html>
+                                        </div>
+                                        <%@include file="WEB-INF/includes/projectTitle.jspf" %>
+                                    </div>
+                                </body>
+
+                                </html>
