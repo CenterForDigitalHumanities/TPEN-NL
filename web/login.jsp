@@ -38,8 +38,7 @@
                         {
                     %>
                             <script>
-                                document.location = "<%out.print(request.getHeader("
-                                referer "));%>";
+                                document.location = '<%out.print(request.getHeader("referer"));%>';
                             </script>
                             <%//                        response.sendRedirect(request.getHeader("referer"));
                         }
