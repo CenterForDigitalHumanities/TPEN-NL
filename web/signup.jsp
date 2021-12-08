@@ -54,7 +54,12 @@
                             if (result == 2) {
                                 out.println("<div class=\"error\"><p style=\"font-size:2em;\">Account created but the emails could not be sent! Contact our team at renaissance@newberry.org.</p></div>");
                             }
-                        } else {
+                            
+                            if(result == 3){
+                                out.println("<div class=\"error\"><p style=\"font-size:2em;\">Account created but there were issues activating the user and the emails may not be sent! Contact our team at renaissance@newberry.org.</p></div>");
+                            }
+                        } 
+                        else {
                             if (request.getParameter("uname") != null){
                                 out.println("<div class=\"error\"><p style=\"font-size:2em;\">There was an error with your submission. Please check the form and try again.</p></div>");
                             }

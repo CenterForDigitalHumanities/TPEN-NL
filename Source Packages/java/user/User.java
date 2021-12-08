@@ -445,21 +445,25 @@ DatabaseWrapper.closePreparedStatement(ps);
     public static int signup(String uname, String lname, String fname, String email) throws SQLException
         {
         User newUser = new User(uname, lname, fname, email, "");
-        if (newUser.getUID() > 0)
-            {
-            try
-                {
-                    newUser.activateUser();
-                } 
+        if (newUser.getUID() > 0){
+            //Either the use existed or was created...
+            try{
+                //Activate this user, because they exist and I have an ID for them.
+                newUser.activateUser();
+                return 0; //total success
+            } 
             catch (Exception e)
-                {
-                    return 3; //created user, but activation issue occured
-                }
-            return 0; //total success
-            } else
             {
+                //created user, but activation issue occured
+                System.err.println("Did not Activate User: "+uname);
+                return 3; 
+            }
+        } 
+        else
+            {
+                //The username or email was attached to an existing user!
                 System.err.println("Did not create User at signup: "+uname);
-            return 1; //failed to create
+                return 1; //failed to create
             }
         }
 
@@ -514,14 +518,14 @@ PreparedStatement qry=null;
         this.fname = fname;
         this.email = email;
 
-        if (!this.exists())
-            {
+        if (!this.exists()){
             this.commit(password);
             this.UID = new User(Uname).UID;
-            } else
-            {
+        } 
+        else{
+            //The user existed, and is therefore not created.
             this.UID = -1;
-            }
+        }
 
         }
 
@@ -795,11 +799,14 @@ DatabaseWrapper.closePreparedStatement(ps);
     /**Send the welcome message and set the user's password.*/
     public String activateUser() throws SQLException, NoSuchAlgorithmException, MessagingException, Exception
         {
+        System.out.print("Establish mailer for activate");
         TokenManager man = new TokenManager();
         textdisplay.mailer m = new textdisplay.mailer();
-//        System.out.print("new pass is "+pass+"\n");
+        System.out.print("Get random pwd");
         String pass=resetPassword(false);
+        System.out.print("Send Mail");
         m.sendMail(man.getProperties().getProperty("EMAILSERVER"), man.getProperties().getProperty("NOTIFICATIONEMAIL"), this.email, "Welcome to Newberry Paleography", new WelcomeMessage().getMessage(this.fname+" "+this.lname,pass) );
+        System.out.println("return what this.resetPassword() says");
         return this.resetPassword();
         }
     /**This sets the last time the user was active to the current time. Used for determining who is online, and keeping track of active vs inactive users*/
@@ -874,6 +881,7 @@ PreparedStatement qry=null;
             ResultSet rs = qry.executeQuery();
             if (rs.next())
                 {
+                System.out.println("Found existing Uname "+Uname);
                 return true;
                 }
             qry = j.prepareStatement("select * from users where email=?");
@@ -881,13 +889,15 @@ PreparedStatement qry=null;
             rs = qry.executeQuery();
             if (rs.next())
                 {
+                System.out.println("Found existing email "+email);
                 return true;
                 }
             qry = j.prepareStatement("select * from users where UID=?");
             qry.setInt(1, UID);
             rs = qry.executeQuery();
-            if (!rs.next())
+            if (rs.next())
                 {
+                System.out.println("Found existing UID "+UID);
                 return true;
                 }
 
