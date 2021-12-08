@@ -494,7 +494,7 @@
                         </div>
                         <%
                                 //if they arent logged in, dont bother with showing them any of the other stuff
-                                out.print("</div></div>\n<a class='returnButton' href='index.jsp'>Return to TPEN Homepage</a>\n</div>"); //close up the tab                                   
+                                out.print("</div></div>\n<a class='returnButton' href='my-transcriptions.html'>Return to TPEN Homepage</a>\n</div>"); //close up the tab                                   
                                 return;
                             }
                         %>
@@ -1166,7 +1166,7 @@
 
                 </div>
                 <!--                close up tabs panels-->
-                <a class="returnButton" href="index.jsp">Return to TPEN Homepage</a>
+                <a class="returnButton" href="my-transcriptions.html">Return to TPEN Homepage</a>
             </div>
         </div>
         <div id="adminMS" class="popover"> <!-- container for managing unrestricted MSs -->

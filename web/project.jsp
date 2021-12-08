@@ -1116,7 +1116,7 @@
                                                                         </div>
                                                                         <!-- BH note got rid of tabs-5 here, can revive if we want. -->
                                                             </div>
-                                                            <a class="returnButton" href="index.jsp?projectID=<%out.print(" " + projectID);%>">Return to TPEN Homepage</a>
+                                                            <a class="returnButton" href="my-transcriptions.html">Return to TPEN Homepage</a>
                                                         </div>
                                                     </div>
                                                     <!-- BH note got rid of add manuscript to project widget here. -->

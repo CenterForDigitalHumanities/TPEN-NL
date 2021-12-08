@@ -20,7 +20,7 @@
                 if(request.getHeader("referer")==null || request.getHeader("referer").compareTo("")==0 || request.getHeader("referer").contains("login")){
                     %>
                     <script>
-                        document.location = "index.jsp";
+                        document.location = "my-transcriptions.html";
                     </script>
                     <%}
                 //response.sendRedirect("index.jsp");
@@ -30,7 +30,7 @@
                         {
                     %>
                         <script>
-                            document.location = "index.jsp";
+                            document.location = "login.jsp";
                         </script>
                         <%                       // response.sendRedirect("index.jsp");
                         }
@@ -207,7 +207,7 @@ session.setAttribute("ref",request.getParameter("referrer"));
                                                                                 </form>
                                                                             </div>
                                                                         </div>
-                                                                        <a class="returnButton" href="index.jsp">Return to Paleography Home</a>
+                                                                        <a class="returnButton" href="my-transcriptions.html">Return to Paleography Home</a>
                                                                 </div>
                                                             </div>
                                                         </body>

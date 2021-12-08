@@ -201,7 +201,7 @@ $(function() {
 function logout(){
     $.get("logout","",function(data){
         if (data === "Logout complete"){
-            window.location = "index.jsp";
+            window.location = "login.jsp";
             return false;
         }
     });
