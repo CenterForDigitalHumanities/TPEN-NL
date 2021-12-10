@@ -804,14 +804,8 @@ DatabaseWrapper.closePreparedStatement(ps);
         System.out.print("Establish mailer for activate");
         TokenManager man = new TokenManager();
         textdisplay.mailer m = new textdisplay.mailer();
-        System.out.print("Get random pwd");
         String pass=resetPassword(false);
-        System.out.println("Send Mail to "+this.email);
-        System.out.println("Pass is "+pass);
-        System.out.println("Welcome message is...");
-        System.out.println(new WelcomeMessage().getMessage(this.fname+" "+this.lname,pass));
         m.sendMail(man.getProperties().getProperty("EMAILSERVER"), man.getProperties().getProperty("NOTIFICATIONEMAIL"), this.email, "Welcome to Newberry Paleography", new WelcomeMessage().getMessage(this.fname+" "+this.lname,pass) );
-        System.out.println("return what this.resetPassword() says");
         return this.resetPassword();
         }
     /**This sets the last time the user was active to the current time. Used for determining who is online, and keeping track of active vs inactive users*/

@@ -66,13 +66,13 @@ public class WelcomeMessage {
     }    
     public String getMessage(String userName,String pass) throws SQLException, Exception
     {
-    
         Connection j=null;
         PreparedStatement ps=null;
         String query="select msg from welcomemessage";
         
-        if(!this.getMessagePlain().contains(this.PasswordPlaceholder))
+        if(!this.getMessagePlain().contains(this.PasswordPlaceholder)){
             throw new Exception("no password placeholder in welcome message! include "+this.PasswordPlaceholder+" somewhere!");
+        }
             
         try
         {
@@ -82,10 +82,7 @@ public class WelcomeMessage {
             ResultSet rs=ps.executeQuery();
             if(rs.next())
             {
-                System.out.println("Found message text...");
                 String toret=rs.getString(1);
-                System.out.println("Replace placeholder for name with real name "+userName);
-                System.out.println("Replace placeholder for pass with real pass "+pass);
                 toret=toret.replace(this.NamePlaceholder, userName).replace(this.PasswordPlaceholder, pass);
                 return toret;
             }
