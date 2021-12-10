@@ -70,18 +70,24 @@ public class WelcomeMessage {
         Connection j=null;
         PreparedStatement ps=null;
         String query="select msg from welcomemessage";
+        
         if(!this.getMessagePlain().contains(this.PasswordPlaceholder))
             throw new Exception("no password placeholder in welcome message! include "+this.PasswordPlaceholder+" somewhere!");
             
         try
         {
+            System.out.println("Get message...");
             j=DatabaseWrapper.getConnection();
             ps=j.prepareStatement(query);
             ResultSet rs=ps.executeQuery();
             if(rs.next())
-            {String toret=rs.getString(1);
-            toret=toret.replace(this.NamePlaceholder, userName).replace(this.PasswordPlaceholder, pass);
-            return toret;
+            {
+                System.out.println("Found message text...");
+                String toret=rs.getString(1);
+                System.out.println("Replace placeholder for name with real name "+userName);
+                System.out.println("Replace placeholder for pass with real pass "+pass);
+                toret=toret.replace(this.NamePlaceholder, userName).replace(this.PasswordPlaceholder, pass);
+                return toret;
             }
             throw new Exception("no welcome message found!");
             
@@ -94,9 +100,9 @@ public class WelcomeMessage {
     }    
 public static void main(String [] args) throws SQLException, Exception
 {
-    WelcomeMessage w=new WelcomeMessage();
-        String msg=w.getMessage("jdeerin1@slu.edu", "newpass");
-        System.out.println(msg);
+        //WelcomeMessage w=new WelcomeMessage();
+        //String msg=w.getMessage("jdeerin1@slu.edu", "newpass");
+        //System.out.println(msg);
         
 }
 }

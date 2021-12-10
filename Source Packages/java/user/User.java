@@ -703,9 +703,9 @@ PreparedStatement qry=null;
                 qry.execute();*/
                 } else
                 {
-                qry = j.prepareStatement("insert into users (Uname, lname, fname, pass, email, openID) values(?,?,?,?,?)");
+                qry = j.prepareStatement("insert into users (Uname, lname, fname, pass, email, openID) values(?,?,?,?,?,?)");
                 if(pass.compareTo("")==0)
-                    qry = j.prepareStatement("insert into users (Uname, lname, fname, pass, email, openID) values(?,?,?,?,?)");
+                    qry = j.prepareStatement("insert into users (Uname, lname, fname, pass, email, openID) values(?,?,?,?,?,?)");
                 qry.setString(1, Uname);
                 qry.setString(2, lname);
                 qry.setString(3, fname);
@@ -806,7 +806,10 @@ DatabaseWrapper.closePreparedStatement(ps);
         textdisplay.mailer m = new textdisplay.mailer();
         System.out.print("Get random pwd");
         String pass=resetPassword(false);
-        System.out.print("Send Mail");
+        System.out.println("Send Mail to "+this.email);
+        System.out.println("Pass is "+pass);
+        System.out.println("Welcome message is...");
+        System.out.println(new WelcomeMessage().getMessage(this.fname+" "+this.lname,pass));
         m.sendMail(man.getProperties().getProperty("EMAILSERVER"), man.getProperties().getProperty("NOTIFICATIONEMAIL"), this.email, "Welcome to Newberry Paleography", new WelcomeMessage().getMessage(this.fname+" "+this.lname,pass) );
         System.out.println("return what this.resetPassword() says");
         return this.resetPassword();
