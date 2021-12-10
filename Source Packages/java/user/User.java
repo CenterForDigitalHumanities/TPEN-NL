@@ -517,6 +517,7 @@ PreparedStatement qry=null;
         this.lname = lname;
         this.fname = fname;
         this.email = email;
+        this.openID = "";
 
         if (!this.exists()){
             this.commit(password);
@@ -702,18 +703,19 @@ PreparedStatement qry=null;
                 qry.execute();*/
                 } else
                 {
-                qry = j.prepareStatement("insert into users (Uname, lname, fname, pass,openID) values(?,?,?,?,?)");
+                qry = j.prepareStatement("insert into users (Uname, lname, fname, pass, email, openID) values(?,?,?,?,?)");
                 if(pass.compareTo("")==0)
-                    qry = j.prepareStatement("insert into users (Uname, lname, fname, pass,openID) values(?,?,?,?,?)");
+                    qry = j.prepareStatement("insert into users (Uname, lname, fname, pass, email, openID) values(?,?,?,?,?)");
                 qry.setString(1, Uname);
                 qry.setString(2, lname);
                 qry.setString(3, fname);
                 qry.setString(4, pass);
+                qry.setString(5, email);
                 if (this.openID == null)
                     {
                     openID = "";
                     }
-                qry.setString(5, openID);
+                qry.setString(6, openID);
                 qry.execute();
 
 
