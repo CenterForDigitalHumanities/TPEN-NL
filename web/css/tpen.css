@@ -268,14 +268,6 @@ td {
     width: 300px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }
-#forgetFormBtn {
-    position: absolute;
-    z-index: 2;
-    cursor: pointer;
-    margin: 0 0 5px 0;
-    bottom: 0;
-    font-size: 1em;
-}
 #versionFlag {
     position: absolute;
     right: 0;
