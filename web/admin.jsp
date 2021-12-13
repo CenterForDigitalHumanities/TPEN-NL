@@ -13,6 +13,8 @@
 <%@page import="textdisplay.Manuscript" %>
 <%@page import="textdisplay.CityMap" %>
 <%@page import ="user.*"%>
+<%@page import ="tokens.TokenManager"%>
+
 <%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
@@ -464,9 +466,10 @@
                                 if (request.getParameter("resetSubmitted") != null) {
                                     user.User toReset = new user.User(request.getParameter("uname"));
                                     if (toReset.getUID() > 0) {
+                                        TokenManager man = new TokenManager();
                                         if (!toReset.requiresApproval()) {
                                             toReset.resetPassword();
-                                            out.print("<br><br><h3>Password reset!</h3><br>Please check your e-mail from TPEN@T&#8209;PEN.org for a new password.  If your e-mail does not arrive, please verify that it has not been caught by a spam filter.<br>");
+                                            out.print("<br><br><h3>Password reset!</h3><br>Please check your e-mail from "+man.getProperties().getProperty("NOTIFICATIONEMAIL")+" for a new password.  If your e-mail does not arrive, please verify that it has not been caught by a spam filter.<br>");
                                         } else {
                                             out.print("This user does not exist or needs administrator approval before they can log in!");
                                             return;

@@ -877,7 +877,7 @@ public class Manuscript {
             /**
              * @TODO make mail server a config parameter
              */
-            m.sendMail(man.getProperties().getProperty("EMAILSERVER"), "TPEN@t-pen.org", requestor.getUname(), "TPEN manuscript access request", message);
+            m.sendMail(man.getProperties().getProperty("EMAILSERVER"), man.getProperties().getProperty("NOTIFICATIONEMAIL"), requestor.getUname(), "TPEN manuscript access request", message);
          } catch (MessagingException ex) {
             Logger.getLogger(Manuscript.class.getName()).log(Level.SEVERE, null, ex);
          }
@@ -1049,7 +1049,7 @@ public class Manuscript {
          /**
           * @TODO make mail server a config parameter
           */
-         m.sendMail(man.getProperties().getProperty("EMAILSERVER"), "TPEN@t-pen.org", controller.getUname(), "TPEN manuscript access request", message);
+         m.sendMail(man.getProperties().getProperty("EMAILSERVER"), man.getProperties().getProperty("NOTIFICATIONEMAIL"), controller.getUname(), "TPEN manuscript access request", message);
          return true;
       } catch (Exception e) {
          return false;
