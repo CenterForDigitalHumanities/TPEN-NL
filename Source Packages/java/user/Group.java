@@ -393,12 +393,12 @@ public class Group {
    }
    
    /**
-    * True if the requested username is a group member, false otherwise
+    * True if the requested lookup is a group member, false otherwise
     *
-    * @param UID unique id of the user
+    * @param lookup uname or email of the user
     * @return true if they are a member of the group, false if they are not
     */
-   public Boolean isMember(String username) {
+   public Boolean isMember(String lookup) {
       try {
           //System.out.println("sample ============== " + UID);
           //System.out.println("memeber len ===== " + this.getMembers().length);
@@ -409,8 +409,9 @@ public class Group {
          for (int i = 0; i < groupmembers.length; i++) {
             User thisUser = groupmembers[i];
             //System.out.println("mem user ID ====== " + thisUser.getUID());
-            if (thisUser.getUname().equals(username)) {
+            if (thisUser.getUname().equals(lookup) || thisUser.getEmail().equals(lookup)) {
                t = true;
+               break;
             }
          }
          return t;
