@@ -23,6 +23,9 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+
 import textdisplay.DatabaseWrapper;
 
 /**
@@ -263,22 +266,22 @@ public class Group {
    }
 
    /**
-    * @deprecated TPEN no longer uses openID Add a group member using openid
     * @param identifier email address
     * @return
     */
    public Boolean addMember(String identifier) {
       try {
-         User u = new User(identifier, true);
-         if (u != null && u.getUID() > 0) {
+         Boolean isEmail = true;
+         try {
+            InternetAddress emailAddr = new InternetAddress(identifier);
+            emailAddr.validate();
+         } catch (AddressException ex) {
+            isEmail = false;
+         }
+         User u = new User(identifier, isEmail);
+         if (u.getUID() > 0) {
             addMember(u.getUID(), Group.roles.Contributor);
             return true;
-         } else {
-            u = new User(identifier);
-            if (u != null && u.getUID() > 0) {
-               addMember(u.getUID(), Group.roles.Contributor);
-               return true;
-            }
          }
       } catch (SQLException ex) {
          Logger.getLogger(Group.class.getName()).log(Level.SEVERE, null, ex);

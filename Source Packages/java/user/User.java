@@ -227,11 +227,11 @@ PreparedStatement qry=null;
     /**
      * Populate the object based on the email
      * @param email the user's email
-     * @param smt A dummy param added because a single String constructor already exists.
+     * @param useEmail a single String constructor already exists; uName if not
      * @throws SQLException
      * @replaces openID lookup in previous version
      */
-    public User(String email, Boolean smt) throws SQLException
+    public User(String email, Boolean useEmail) throws SQLException
         {
         Connection j = null;
 PreparedStatement qry=null;
@@ -240,7 +240,10 @@ PreparedStatement qry=null;
             {
             j = DatabaseWrapper.getConnection();
             
-            qry = j.prepareStatement("select * from users where email=?");
+            qry = j.prepareStatement("select * from users where Uname=?");
+            if(useEmail) {
+                qry = j.prepareStatement("select * from users where email=?");
+            }
             qry.setString(1, email);
             ResultSet rs = qry.executeQuery();
             if (rs.next())

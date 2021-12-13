@@ -211,7 +211,7 @@ else {
                %>
                                                                 <h4>Add a new group member (must have a T&#8209;PEN account)</h4>
                                                                 <form action="groups.jsp" method="POST">
-                                                                    <label for="uname">Username (e-mail) </label><input id="uname" type="text" name="uname" />
+                                                                    <label for="uname">Username </label><input id="uname" type="text" name="uname" />
                                                                     <input type="hidden" name="projectID" value="<%out.print(" " + projectID);%>"/>
                                                                     <input type="submit" />
                                                                 </form>
