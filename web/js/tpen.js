@@ -79,11 +79,6 @@ $(function() {
             $(this).parent('li').find("a.tpenButton").removeClass   ("ui-state-error strikeout");}
         );     
 /* jQuery Interface Interactions */
-    $("#forgetFormBtn")         // forgot user password form hide and reveal
-        .click(function(){
-            $("#forgetForm").slideToggle(500);
-            $(this).children("span").toggle();
-        });
     $("#main").addClass('ui-widget ui-widget-content ui-corner-all');
 	(function( $ ) {
 		$.widget( "ui.combobox", {
@@ -201,7 +196,7 @@ $(function() {
 function logout(){
     $.get("logout","",function(data){
         if (data === "Logout complete"){
-            window.location = "index.jsp";
+            window.location = "login.jsp";
             return false;
         }
     });

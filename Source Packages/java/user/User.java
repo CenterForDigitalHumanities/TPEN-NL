@@ -227,11 +227,11 @@ PreparedStatement qry=null;
     /**
      * Populate the object based on the email
      * @param email the user's email
-     * @param smt A dummy param added because a single String constructor already exists.
+     * @param useEmail a single String constructor already exists; uName if not
      * @throws SQLException
      * @replaces openID lookup in previous version
      */
-    public User(String email, Boolean smt) throws SQLException
+    public User(String email, Boolean useEmail) throws SQLException
         {
         Connection j = null;
 PreparedStatement qry=null;
@@ -240,7 +240,10 @@ PreparedStatement qry=null;
             {
             j = DatabaseWrapper.getConnection();
             
-            qry = j.prepareStatement("select * from users where email=?");
+            qry = j.prepareStatement("select * from users where Uname=?");
+            if(useEmail) {
+                qry = j.prepareStatement("select * from users where email=?");
+            }
             qry.setString(1, email);
             ResultSet rs = qry.executeQuery();
             if (rs.next())
@@ -420,7 +423,7 @@ DatabaseWrapper.closePreparedStatement(ps);
             try
             {
                 TokenManager man = new TokenManager();
-                m.sendMail(man.getProperties().getProperty("EMAILSERVER"), "renaissance@newberry.org", man.getProperties().getProperty("NOTIFICATIONEMAIL"), "Newberry Paleography contact", body);
+                m.sendMail(man.getProperties().getProperty("EMAILSERVER"), man.getProperties().getProperty("NOTIFICATIONEMAIL"), man.getProperties().getProperty("NOTIFICATIONEMAIL"), "Newberry Paleography contact", body);
             } 
             catch (Exception e)
             {
@@ -445,21 +448,25 @@ DatabaseWrapper.closePreparedStatement(ps);
     public static int signup(String uname, String lname, String fname, String email) throws SQLException
         {
         User newUser = new User(uname, lname, fname, email, "");
-        if (newUser.getUID() > 0)
-            {
-            try
-                {
-                    newUser.activateUser();
-                } 
+        if (newUser.getUID() > 0){
+            //Either the use existed or was created...
+            try{
+                //Activate this user, because they exist and I have an ID for them.
+                newUser.activateUser();
+                return 0; //total success
+            } 
             catch (Exception e)
-                {
-                    return 3; //created user, but activation issue occured
-                }
-            return 0; //total success
-            } else
             {
+                //created user, but activation issue occured
+                System.err.println("Did not Activate User: "+uname);
+                return 3; 
+            }
+        } 
+        else
+            {
+                //The username or email was attached to an existing user!
                 System.err.println("Did not create User at signup: "+uname);
-            return 1; //failed to create
+                return 1; //failed to create
             }
         }
 
@@ -513,15 +520,16 @@ PreparedStatement qry=null;
         this.lname = lname;
         this.fname = fname;
         this.email = email;
+        this.openID = "";
 
-        if (!this.exists())
-            {
+        if (!this.exists()){
             this.commit(password);
             this.UID = new User(Uname).UID;
-            } else
-            {
+        } 
+        else{
+            //The user existed, and is therefore not created.
             this.UID = -1;
-            }
+        }
 
         }
 
@@ -698,18 +706,19 @@ PreparedStatement qry=null;
                 qry.execute();*/
                 } else
                 {
-                qry = j.prepareStatement("insert into users (Uname, lname, fname, pass,openID) values(?,?,?,?,?)");
+                qry = j.prepareStatement("insert into users (Uname, lname, fname, pass, email, openID) values(?,?,?,?,?,?)");
                 if(pass.compareTo("")==0)
-                    qry = j.prepareStatement("insert into users (Uname, lname, fname, pass,openID) values(?,?,?,?,?)");
+                    qry = j.prepareStatement("insert into users (Uname, lname, fname, pass, email, openID) values(?,?,?,?,?,?)");
                 qry.setString(1, Uname);
                 qry.setString(2, lname);
                 qry.setString(3, fname);
                 qry.setString(4, pass);
+                qry.setString(5, email);
                 if (this.openID == null)
                     {
                     openID = "";
                     }
-                qry.setString(5, openID);
+                qry.setString(6, openID);
                 qry.execute();
 
 
@@ -728,46 +737,45 @@ PreparedStatement qry=null;
      * @throws NoSuchAlgorithmException
      * @throws MessagingException
      */
-    public String resetPassword() throws SQLException, NoSuchAlgorithmException, MessagingException
-        {
+    public String resetPassword() throws SQLException, NoSuchAlgorithmException, MessagingException {
         String newPass = "";
         RandomString r = new RandomString(10);
         newPass = r.nextString();
-        
         //store the hashed version in pass, that goes to the DB and the unhashed version is returned
         String pass = newPass;
         String query = "update users set pass=SHA1(?) where UID=?";
         Connection j = null;
-PreparedStatement ps=null;
-        try
-            {
+        PreparedStatement ps=null;
+        try{
             j = DatabaseWrapper.getConnection();
             ps = j.prepareStatement(query);
             ps.setString(1, pass);
             ps.setInt(2, UID);
             ps.execute();
-            } finally
-            {
-DatabaseWrapper.closeDBConnection(j);
-DatabaseWrapper.closePreparedStatement(ps);
-            }
+        } 
+        finally{
+            DatabaseWrapper.closeDBConnection(j);
+            DatabaseWrapper.closePreparedStatement(ps);
+        }
         textdisplay.mailer m = new textdisplay.mailer();
-        String body = "Your Newberry Paleography password has been set to " + newPass + "\n" + "You should head to http://newberry.rerum.io/paleography/ and change it.";
+        String body = "Your Newberry Paleography password has been set to " + newPass + "\n" 
+        + "You should head to Newberry Paleography now to change it.";
 //        System.out.print("new pass is "+pass+"\n");
         try{
             TokenManager man = new TokenManager();
-            m.sendMail(man.getProperties().getProperty("EMAILSERVER"), "renaissance@newberry.org", this.email, "Newberry Paleography Password Reset", body);
+            m.sendMail(man.getProperties().getProperty("EMAILSERVER"), man.getProperties().getProperty("NOTIFICATIONEMAIL"), this.email, "Newberry Paleography Password Reset", body);
         }
         catch (IOException e){
             //Had trouble mailing...return new password anyway
         }
         
         return newPass;
-        }
+    }
+    
     public String resetPassword(Boolean email) throws SQLException, NoSuchAlgorithmException, MessagingException
         {
-            if(email)return(resetPassword());
-            
+        
+        if(email)return(resetPassword());
         String newPass = "";
         RandomString r = new RandomString(10);
         newPass = r.nextString();
@@ -776,7 +784,7 @@ DatabaseWrapper.closePreparedStatement(ps);
         String pass = newPass;
         String query = "update users set pass=SHA1(?) where UID=?";
         Connection j = null;
-PreparedStatement ps=null;
+        PreparedStatement ps=null;
         try
             {
             j = DatabaseWrapper.getConnection();
@@ -784,24 +792,23 @@ PreparedStatement ps=null;
             ps.setString(1, pass);
             ps.setInt(2, UID);
             ps.execute();
-            } finally
-            {
-DatabaseWrapper.closeDBConnection(j);
-DatabaseWrapper.closePreparedStatement(ps);
-            }
-        return newPass;
+        } 
+        finally{
+            DatabaseWrapper.closeDBConnection(j);
+            DatabaseWrapper.closePreparedStatement(ps);
         }
+        return newPass;
+    }
 
     /**Send the welcome message and set the user's password.*/
     public String activateUser() throws SQLException, NoSuchAlgorithmException, MessagingException, Exception
         {
         TokenManager man = new TokenManager();
         textdisplay.mailer m = new textdisplay.mailer();
-//        System.out.print("new pass is "+pass+"\n");
         String pass=resetPassword(false);
         m.sendMail(man.getProperties().getProperty("EMAILSERVER"), man.getProperties().getProperty("NOTIFICATIONEMAIL"), this.email, "Welcome to Newberry Paleography", new WelcomeMessage().getMessage(this.fname+" "+this.lname,pass) );
-        return this.resetPassword();
-        }
+        return pass;
+    }
     /**This sets the last time the user was active to the current time. Used for determining who is online, and keeping track of active vs inactive users*/
     public void updateLastActive() throws SQLException
     {
@@ -859,14 +866,11 @@ DatabaseWrapper.closePreparedStatement(ps);
     public Boolean exists() throws SQLException
         {
         Connection j = null;
-PreparedStatement qry=null;
+        PreparedStatement qry=null;
         qry=null;
         try
             {
-            if (openID != null)
-                {
-                return false;
-                }
+
             j = DatabaseWrapper.getConnection();
             
             qry = j.prepareStatement("select * from users where Uname=?");
@@ -874,6 +878,7 @@ PreparedStatement qry=null;
             ResultSet rs = qry.executeQuery();
             if (rs.next())
                 {
+                System.out.println("Found existing Uname "+Uname);
                 return true;
                 }
             qry = j.prepareStatement("select * from users where email=?");
@@ -881,16 +886,17 @@ PreparedStatement qry=null;
             rs = qry.executeQuery();
             if (rs.next())
                 {
+                System.out.println("Found existing email "+email);
                 return true;
                 }
             qry = j.prepareStatement("select * from users where UID=?");
             qry.setInt(1, UID);
             rs = qry.executeQuery();
-            if (!rs.next())
+            if (rs.next())
                 {
+                System.out.println("Found existing UID "+UID);
                 return true;
                 }
-
             return false;
             } finally
             {
@@ -1095,7 +1101,7 @@ DatabaseWrapper.closePreparedStatement(qry);
             String body = this.getFname() + " " + this.getLname() + " (" + this.getEmail() + ") has invited you to join their transcription project on Newberry Paleography. Look for an activation message shortly.";
             try
             {
-                m.sendMail(man.getProperties().getProperty("EMAILSERVER"), "renaissance@newberry.org", newUser.getEmail(), "An invitation to transcribe on Newberry Paleography", body);
+                m.sendMail(man.getProperties().getProperty("EMAILSERVER"), man.getProperties().getProperty("NOTIFICATIONEMAIL"), newUser.getEmail(), "An invitation to transcribe on Newberry Paleography", body);
                 newUser.activateUser();
                 } catch (Exception e)
                 {

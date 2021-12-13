@@ -7,7 +7,7 @@
 <span class="boom">
     <%
         if(request.getParameter("projectID") != null) {
-            pTitle = new Project(Integer.parseInt(request.getParameter("projectID")));
+            pTitle = new Project(Integer.parseInt(request.getParameter("projectID").trim()));
             textdisplay.Metadata mTitle = pTitle.getMetadata();
             out.print("" + mTitle.getTitle());
         }

@@ -1963,7 +1963,7 @@
                                                                                         </div>
                                                                                         <br />
                                                                                         <p>This image is part of a private user collection and may not be viewed. Users may invite up to 5 collaborators to each project containing private images.</p>
-                                                                                        <a class="returnButton" href="index.jsp">Return Home</a>
+                                                                                        <a class="returnButton" href="my-transcriptions.html">Return Home</a>
                                                                                     </div>
                                                                                     <div id="trexHead"></div>
                                                                                     <%    return;
@@ -1987,7 +1987,7 @@
                                                                                                             <input class="ui-button tpenButton clear right" type="submit" name="submitted" value="Send Request" />
                                                                                                     </p>
                                                                                             </form>
-                                                                                            <a class="returnButton" href="index.jsp">Return Home</a>
+                                                                                            <a class="returnButton" href="my-transcriptions.html">Return Home</a>
                                                                                         </div>
                                                                                         <div id="trexHead"></div>
                                                                                         <%    return;
@@ -2006,7 +2006,7 @@
                                                                                                 <span class="right small"><%out.print(thisUser.getFname()+" "+thisUser.getLname()+" ("+thisUser.getUname()+")");%></span>
                                                                                                 <div class="clear right buttons">
                                                                                                     <button class="ui-button tpenButton" onclick="document.location='transcription.jsp?p=<%out.print(thisFolio.getFolioNumber() + " &projectID=" + projectID + " &acceptIPR=true ");%>'">I Agree</button>
-                                                                                                    <button class="ui-button tpenButton" onclick="document.location='index.jsp'">I do not agree</button>
+                                                                                                    <button class="ui-button tpenButton" onclick="document.location='my-transcriptions.html'">I do not agree</button>
                                                                                                 </div>
                                                                                             </div>
                                                                                             <div id="trexHead"></div>
@@ -2023,7 +2023,7 @@
                                                                                                     <a id="helpContact" href="admin.jsp#aboutTab" target="_blank" class="wBtn">Contact<span class="ui-icon ui-icon-comment right"></span></a>
                                                                                                     </span>
                                                                                                     </span>
-                                                                                                    <a class="exitPage wBtn" title="T&#8209;PEN Home" href="index.jsp"><span class="left ui-icon ui-icon-home"></span>T&#8209;PEN Home</a>
+                                                                                                    <a class="exitPage wBtn" title="T&#8209;PEN Home" href="my-transcriptions.html"><span class="left ui-icon ui-icon-home"></span>T&#8209;PEN Home</a>
                                                                                                     <%if(permitModify || permitButtons || permitCopy || permitExport || permitMetadata || isMember){%>
                                                                                                         <a class="exitPage wBtn" title="My Projects" href="project.jsp?<%out.print(projectAppend);%>">My&nbsp;Projects</a>
                                                                                                         <%}%>

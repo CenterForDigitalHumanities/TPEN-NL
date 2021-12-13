@@ -645,7 +645,7 @@
                                                                                 <form id="forgetForm" action="admin.jsp" method="POST" class="ui-corner-all left clear-left">
                                                                                     <span>Enter the email address associated with your account to have your password reset.</span>
                                                                                     <input id="email" type="text" class="text" style="width:220px;" placeholder="Forgot your password?" name="email">
-                                                                                    <input class="right tpenButton" type="submit" name="emailSubmitted" value="Reset Password" />
+                                                                                    <input class="right tpenButton" type="submit" name="resetSubmitted" value="Reset Password" />
                                                                                 </form>
                                                                             </div>
                                                                             <%}%>
