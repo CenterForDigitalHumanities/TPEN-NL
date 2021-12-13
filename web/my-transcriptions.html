@@ -271,6 +271,7 @@ and open the template in the editor.
                 }
                 else if (resp.status === 401) {
                     projectsList.innerHTML = "You must be logged in to see your project list"
+                    document.location.href="login.jsp?referrer=my-transcriptions.html"
                     return []
                 }
                 else if (resp.status === 403) {

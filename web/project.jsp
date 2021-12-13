@@ -779,8 +779,8 @@
                                                                                                         });
                                                                                                     }
                                                                                                     var selecTab <%if (request.getParameter("selecTab") != null) {
-                    out.print("=" + request.getParameter("selecTab"));
-                }%>;
+                                                                                                    out.print("=" + request.getParameter("selecTab"));
+                                                                                                }%>;
 
                                                                                                     function deleteProject(user, project, title) { //Confirm and delete project when user clicks x icon
                                                                                                         var bDelete = confirm('This action will delete \"' + unescape(title) + '\" for all members. Are you sure?', 'Confirm Project Delete');
@@ -827,11 +827,8 @@
                                                                                                                                 } catch (ArrayIndexOutOfBoundsException e) {
                                                                                                                                     //Good luck
                                                                                                                                 }
-                                                                                                                            } %
-                                                                                                                            > & quality = 30 ') -30px -60px no-repeat"); 
+                                                                                                                            } %> & quality = 30 ') -30px -60px no-repeat"); 
                                                                                                                         });
-
-
                                                                                                                 });
                                                                                                 </script>
                                                 </head>
@@ -1116,7 +1113,7 @@
                                                                         </div>
                                                                         <!-- BH note got rid of tabs-5 here, can revive if we want. -->
                                                             </div>
-                                                            <a class="returnButton" href="index.jsp?projectID=<%out.print(" " + projectID);%>">Return to TPEN Homepage</a>
+                                                            <a class="returnButton" href="my-transcriptions.html">Return to TPEN Homepage</a>
                                                         </div>
                                                     </div>
                                                     <!-- BH note got rid of add manuscript to project widget here. -->

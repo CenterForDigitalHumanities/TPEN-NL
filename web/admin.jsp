@@ -13,6 +13,8 @@
 <%@page import="textdisplay.Manuscript" %>
 <%@page import="textdisplay.CityMap" %>
 <%@page import ="user.*"%>
+<%@page import ="tokens.TokenManager"%>
+
 <%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
@@ -461,12 +463,13 @@
                             allUsers = User.getAllUsers();
                             //if the person isnt logged in, only show them the 'reset my password via email' div
                             if (thisUser == null) { //reset a user's password based on their email address
-                                if (request.getParameter("emailSubmitted") != null) {
-                                    user.User toReset = new user.User(request.getParameter("email"));
+                                if (request.getParameter("resetSubmitted") != null) {
+                                    user.User toReset = new user.User(request.getParameter("uname"));
                                     if (toReset.getUID() > 0) {
+                                        TokenManager man = new TokenManager();
                                         if (!toReset.requiresApproval()) {
                                             toReset.resetPassword();
-                                            out.print("<br><br><h3>Password reset!</h3><br>Please check your e-mail from TPEN@T&#8209;PEN.org for a new password.  If your e-mail does not arrive, please verify that it has not been caught by a spam filter.<br>");
+                                            out.print("<br><br><h3>Password reset!</h3><br>Please check your e-mail from "+man.getProperties().getProperty("NOTIFICATIONEMAIL")+" for a new password.  If your e-mail does not arrive, please verify that it has not been caught by a spam filter.<br>");
                                         } else {
                                             out.print("This user does not exist or needs administrator approval before they can log in!");
                                             return;
@@ -480,21 +483,15 @@
                         %>
                         <div class="right" id="resetPassword" style="width:45%;">
                             <h3>Reset your Password</h3>
-                            To reset your password and have the new password sent to your email address, please enter the email address associated with your account.
+                            To reset your password and have the new password sent to your email address, please enter the username associated with your account.
                             <form action="admin.jsp" method="POST">
-                                <input type="text" name="email">
-                                <input type="submit" name="emailSubmitted" value="Reset Password"/>
-                            </form>
-                            <h3>Accept an Invitation</h3>
-                            Please enter the email address associated with your invitation to receive a temporary password.
-                            <form action="admin.jsp" method="POST">
-                                <input type="text" name="email">
-                                <input type="submit" name="emailSubmitted" value="Redeem Invitation"/>
+                                <input type="text" name="uname">
+                                <input type="submit" name="resetSubmitted" value="Reset Password"/>
                             </form>
                         </div>
                         <%
                                 //if they arent logged in, dont bother with showing them any of the other stuff
-                                out.print("</div></div>\n<a class='returnButton' href='index.jsp'>Return to TPEN Homepage</a>\n</div>"); //close up the tab                                   
+                                out.print("</div></div>\n<a class='returnButton' href='my-transcriptions.html'>Return to TPEN Homepage</a>\n</div>"); //close up the tab                                   
                                 return;
                             }
                         %>
@@ -1166,7 +1163,7 @@
 
                 </div>
                 <!--                close up tabs panels-->
-                <a class="returnButton" href="index.jsp">Return to TPEN Homepage</a>
+                <a class="returnButton" href="my-transcriptions.html">Return to TPEN Homepage</a>
             </div>
         </div>
         <div id="adminMS" class="popover"> <!-- container for managing unrestricted MSs -->

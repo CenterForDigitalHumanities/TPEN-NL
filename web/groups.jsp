@@ -112,7 +112,8 @@ else {
                   boolean isAdmin = thisUser.isAdmin();
                   if (request.getParameter("projectID") != null) {
                      //since we know the group they need, list the group's comments
-                     int projectID = Integer.parseInt(request.getParameter("projectID"));
+                     String projParam = request.getParameter("projectID").trim();
+                     int projectID = Integer.parseInt(projParam);
                      textdisplay.Project thisProject = new textdisplay.Project(projectID);
                      user.Group thisGroup = new user.Group(thisProject.getGroupID());
                      isAdmin = thisGroup.isAdmin(UID) || thisUser.isAdmin();

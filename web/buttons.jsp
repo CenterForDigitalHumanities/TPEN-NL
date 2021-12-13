@@ -719,7 +719,7 @@
         else {%>
                                                             <a class="returnButton" href="project.jsp?<%out.print(projectAppend);%>">Return to Project Management</a>
                                                             <%}%>
-                                                                <a class="returnButton" href="index.jsp">T&#8209;PEN Home</a>
+                                                                <a class="returnButton" href="my-transcriptions.html">T&#8209;PEN Home</a>
                                                 </div>
                                                 <div id="space"></div>
                                                 <%@include file="WEB-INF/includes/projectTitle.jspf" %>

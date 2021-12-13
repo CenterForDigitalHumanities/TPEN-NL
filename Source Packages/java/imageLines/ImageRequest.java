@@ -181,7 +181,7 @@ public class ImageRequest {
             TokenManager man = new TokenManager();
             for (User i : admins) {
                try {
-                  m.sendMail(man.getProperties().getProperty("EMAILSERVER"), "renaissance@newberry.org", i.getEmail(), "Newberry Paleography image issue", body);
+                  m.sendMail(man.getProperties().getProperty("EMAILSERVER"), man.getProperties().getProperty("NOTIFICATIONEMAIL"), i.getEmail(), "Newberry Paleography image issue", body);
                } catch (MessagingException ex) {
                   Logger.getLogger(ImageRequest.class.getName()).log(Level.SEVERE, null, ex);
                }
