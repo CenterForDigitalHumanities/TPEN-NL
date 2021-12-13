@@ -878,7 +878,6 @@ DatabaseWrapper.closePreparedStatement(ps);
             ResultSet rs = qry.executeQuery();
             if (rs.next())
                 {
-                System.out.println("Found existing Uname "+Uname);
                 return true;
                 }
             qry = j.prepareStatement("select * from users where email=?");
@@ -886,7 +885,6 @@ DatabaseWrapper.closePreparedStatement(ps);
             rs = qry.executeQuery();
             if (rs.next())
                 {
-                System.out.println("Found existing email "+email);
                 return true;
                 }
             qry = j.prepareStatement("select * from users where UID=?");
@@ -894,7 +892,6 @@ DatabaseWrapper.closePreparedStatement(ps);
             rs = qry.executeQuery();
             if (rs.next())
                 {
-                System.out.println("Found existing UID "+UID);
                 return true;
                 }
             return false;
