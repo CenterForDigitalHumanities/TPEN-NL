@@ -461,8 +461,8 @@
                             allUsers = User.getAllUsers();
                             //if the person isnt logged in, only show them the 'reset my password via email' div
                             if (thisUser == null) { //reset a user's password based on their email address
-                                if (request.getParameter("emailSubmitted") != null) {
-                                    user.User toReset = new user.User(request.getParameter("email"));
+                                if (request.getParameter("resetSubmitted") != null) {
+                                    user.User toReset = new user.User(request.getParameter("uname"));
                                     if (toReset.getUID() > 0) {
                                         if (!toReset.requiresApproval()) {
                                             toReset.resetPassword();
@@ -480,16 +480,10 @@
                         %>
                         <div class="right" id="resetPassword" style="width:45%;">
                             <h3>Reset your Password</h3>
-                            To reset your password and have the new password sent to your email address, please enter the email address associated with your account.
+                            To reset your password and have the new password sent to your email address, please enter the username associated with your account.
                             <form action="admin.jsp" method="POST">
-                                <input type="text" name="email">
-                                <input type="submit" name="emailSubmitted" value="Reset Password"/>
-                            </form>
-                            <h3>Accept an Invitation</h3>
-                            Please enter the email address associated with your invitation to receive a temporary password.
-                            <form action="admin.jsp" method="POST">
-                                <input type="text" name="email">
-                                <input type="submit" name="emailSubmitted" value="Redeem Invitation"/>
+                                <input type="text" name="uname">
+                                <input type="submit" name="resetSubmitted" value="Reset Password"/>
                             </form>
                         </div>
                         <%

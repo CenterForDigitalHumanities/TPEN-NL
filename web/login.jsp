@@ -51,7 +51,7 @@
                     //If there is a user with this email
                     if(thisOne.isOldDrupalUser()){
                         //They need a password reset!
-                        response.sendRedirect("admin.jsp?emailSubmitted=true&email="+thisOne.getUname());
+                        response.sendRedirect("admin.jsp?resetSubmitted=true&email="+thisOne.getUname());
                         return;
                     }
                     else{
@@ -118,12 +118,6 @@
                                                                     box-shadow: -1px -1px 2px black;
                                                                 }
                                                                 
-                                                                #forgetFormBtn {
-                                                                    position: relative;
-                                                                    z-index: 2;
-                                                                    cursor: pointer;
-                                                                    margin: 0 0 5px 0;
-                                                                }
                                                             </style>
                                                             <script type="text/javascript">
                                                                 $(function() {
@@ -170,46 +164,46 @@
 session.setAttribute("ref",request.getParameter("referrer"));
 
 }%>
-                                                                        <div id="main" class="ui-widget ui-widget-content ui-corner-all ui-tabs ui-helper-reset ui-helper-clearfix">
-                                                                            <div id="login" class="left">
-                                                                                <h3 class="ui-widget-header ui-tabs ui-corner-all ui-state-default">Log In</h3>
-                                                                                <p> You may log into your account to start transcribing or to manage your projects.</p>
-                                                                                <div id="resetPassword">
-                                                                                    <h6 id="forgetFormBtn" class="clear-right">Forgot your Password?<span class="left ui-icon ui-icon-arrowstop-1-s"></span></h6>
-                                                                                    <form id="forgetForm" action="admin.jsp" method="POST" class="ui-corner-all">
-                                                                                        <span>Enter the email address associated with your account to have your password reset.</span>
-                                                                                        <input id="email" type="text" class="text" style="width:220px;" placeholder="Forgot your password?" name="email">
-                                                                                        <input class="right ui-corner-all ui-state-default" type="submit" name="emailSubmitted" value="Reset Password" />
-                                                                                    </form>
-                                                                                </div>
-                                                                                <form id="login" action="login.jsp" method="POST">
-                                                                                    <fieldset>
-                                                                                        <legend>Login Here:</legend>
-                                                                                        <label for="uname">Username</label><input class="text" type="text" name="uname" /><br/>
-                                                                                        <label for="password">Password</label><input class="text" type="password" name="password" /><br/>
-                                                                                        <input type="hidden" name="ref" value="<%out.print(session.getAttribute(" ref "));%>"/>
-                                                                                        <input class="ui-button ui-state-default ui-corner-all right" type="submit" title="Log In" value="Log In">
-                                                                                    </fieldset>
-                                                                                </form>
-                                                                            </div>
-                                                                            <div id="register" class="right">
-                                                                                <h3 class="ui-widget-header ui-tabs ui-corner-all ui-state-default">Register a New Account</h3>
-                                                                                <form action="signup.jsp" method="POST">
-                                                                                    <fieldset>
-                                                                                        <legend>or Register as a New User:</legend>
-                                                                                        Note: You will receive your password via email after your account is activated
-                                                                                        <label for="uname">Username</label><input class="text" type="text" name="uname" /><br/>
-                                                                                        <label for="email">Email</label><input class="text" type="text" name="email" /><br/>
-                                                                                        <label for="fname">First Name</label><input class="text" type="text" name="fname" /><br/>
-                                                                                        <label for="lname">Last Name</label><input class="text" type="text" name="lname" /><br/>
-                                                                                        <input type="submit" value="Register" class="ui-button ui-state-default ui-corner-all right" />
-                                                                                    </fieldset>
-                                                                                </form>
-                                                                            </div>
-                                                                        </div>
-                                                                        <a class="returnButton" href="my-transcriptions.html">Return to Paleography Home</a>
-                                                                </div>
-                                                            </div>
-                                                        </body>
 
-                                                        </html>
+<div id="main" class="ui-widget ui-widget-content ui-corner-all ui-tabs ui-helper-reset ui-helper-clearfix">
+    <div id="login" class="left">
+        <h3 class="ui-widget-header ui-tabs ui-corner-all ui-state-default">Log In</h3>
+        <p> You may log into your account to start transcribing or to manage your projects.</p>
+        <form id="login" action="login.jsp" method="POST">
+            <fieldset>
+                <legend>Login Here:</legend>
+                <label for="uname">Username</label><input class="text" type="text" name="uname" /><br/>
+                <label for="password">Password</label><input class="text" type="password" name="password" /><br/>
+                <input type="hidden" name="ref" value="<%out.print(session.getAttribute(" ref "));%>"/>
+                <input class="ui-button ui-state-default ui-corner-all right" type="submit" title="Log In" value="Log In">
+            </fieldset>
+        </form>
+    </div>
+    <div id="register" class="right">
+        <h3 class="ui-widget-header ui-tabs ui-corner-all ui-state-default">Register a New Account</h3>
+        <form action="signup.jsp" method="POST">
+            <fieldset>
+                <legend>or Register as a New User:</legend>
+                Note: You will receive your password via email after your account is activated
+                <label for="uname">Username</label><input class="text" type="text" name="uname" /><br/>
+                <label for="email">Email</label><input class="text" type="text" name="email" /><br/>
+                <label for="fname">First Name</label><input class="text" type="text" name="fname" /><br/>
+                <label for="lname">Last Name</label><input class="text" type="text" name="lname" /><br/>
+                <input type="submit" value="Register" class="ui-button ui-state-default ui-corner-all right" />
+            </fieldset>
+        </form>
+    </div>
+    <div id="resetPassword" style="padding: 10px;">
+        <form id="forgetForm" action="admin.jsp" method="POST" class="ui-corner-all">
+            <span>Enter the username associated with your account to have your password reset.</span>
+            <input type="text" class="text" placeholder="Forgot your password?" name="uname">
+            <input class="right ui-corner-all ui-state-default" type="submit" name="resetSubmitted" value="Reset Password" />
+        </form>
+    </div>
+</div>
+<a class="returnButton" href="index.jsp">Return to Paleography Home</a>
+</div>
+</div>
+</body>
+
+</html>
