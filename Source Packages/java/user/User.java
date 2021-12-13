@@ -863,14 +863,11 @@ DatabaseWrapper.closePreparedStatement(ps);
     public Boolean exists() throws SQLException
         {
         Connection j = null;
-PreparedStatement qry=null;
+        PreparedStatement qry=null;
         qry=null;
         try
             {
-            if (openID != null)
-                {
-                return false;
-                }
+
             j = DatabaseWrapper.getConnection();
             
             qry = j.prepareStatement("select * from users where Uname=?");
@@ -897,7 +894,6 @@ PreparedStatement qry=null;
                 System.out.println("Found existing UID "+UID);
                 return true;
                 }
-
             return false;
             } finally
             {

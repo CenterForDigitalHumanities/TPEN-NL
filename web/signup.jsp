@@ -51,7 +51,7 @@
                             }
                             //failed to create user
                             if (result == 1) {
-                                out.println("<div class=\"error\"><p style=\"font-size:2em;\">That username seems to be taken!</p></div>");
+                                out.println("<div class=\"error\"><p style=\"font-size:2em;\">That username or E-mail seems to be taken!</p></div>");
                             }
                             //created user but email failed, typical on test systems
                             if (result == 2) {
