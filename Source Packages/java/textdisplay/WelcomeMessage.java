@@ -76,7 +76,6 @@ public class WelcomeMessage {
             
         try
         {
-            System.out.println("Get message...");
             j=DatabaseWrapper.getConnection();
             ps=j.prepareStatement(query);
             ResultSet rs=ps.executeQuery();
