@@ -3,8 +3,10 @@
     Created on : Jun 2, 2009, 10:56:17 AM
     Author     : jdeerin1
 --%>
-<%@page import ="user.User"%>
+<%@page import ="user.User" %>
+<%@page import ="tokens.TokenManager" %>
 <%@page contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -35,6 +37,7 @@
                 <h1><script type="text/javascript">document.write(document.title); </script></h1>
                 <div id="main" class="ui-widget ui-widget-content ui-corner-all ui-tabs ui-helper-reset ui-helper-clearfix">
                     <%
+                        TokenManager man = new TokenManager();
                         if (request.getParameter("uname") != null
                                 && request.getParameter("fname") != null
                                 && request.getParameter("email") != null
@@ -43,7 +46,7 @@
                             int result = user.User.signup(request.getParameter("uname"), request.getParameter("lname"), request.getParameter("fname"), request.getParameter("email"));
                             //total success
                             if (result == 0) {
-                                out.println("<div class=\"success\"><p style=\"font-size:2em;\">Your account was created. You should recieve an email from renaissance@newberry.org activating your account. If your e-mail does not arrive, please verify that it has not been caught by a spam filter.</p></div>");
+                                out.println("<div class=\"success\"><p style=\"font-size:2em;\">Your account was created. You should recieve an email from "+man.getProperties().getProperty("NOTIFICATIONEMAIL")+" activating your account. If your e-mail does not arrive, please verify that it has not been caught by a spam filter.</p></div>");
                                 return;
                             }
                             //failed to create user
@@ -52,11 +55,11 @@
                             }
                             //created user but email failed, typical on test systems
                             if (result == 2) {
-                                out.println("<div class=\"error\"><p style=\"font-size:2em;\">Account created but the emails could not be sent! Contact our team at renaissance@newberry.org.</p></div>");
+                                out.println("<div class=\"error\"><p style=\"font-size:2em;\">Account created but the emails could not be sent! Contact our team at "+man.getProperties().getProperty("NOTIFICATIONEMAIL")+".</p></div>");
                             }
                             
                             if(result == 3){
-                                out.println("<div class=\"error\"><p style=\"font-size:2em;\">Account created but there were issues activating the user and the emails may not be sent! Contact our team at renaissance@newberry.org.</p></div>");
+                                out.println("<div class=\"error\"><p style=\"font-size:2em;\">Account created but there were issues activating the user and the emails may not be sent! Contact our team at "+man.getProperties().getProperty("NOTIFICATIONEMAIL")+".</p></div>");
                             }
                         } 
                         else {

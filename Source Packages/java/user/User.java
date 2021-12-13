@@ -420,7 +420,7 @@ DatabaseWrapper.closePreparedStatement(ps);
             try
             {
                 TokenManager man = new TokenManager();
-                m.sendMail(man.getProperties().getProperty("EMAILSERVER"), "renaissance@newberry.org", man.getProperties().getProperty("NOTIFICATIONEMAIL"), "Newberry Paleography contact", body);
+                m.sendMail(man.getProperties().getProperty("EMAILSERVER"), man.getProperties().getProperty("NOTIFICATIONEMAIL"), man.getProperties().getProperty("NOTIFICATIONEMAIL"), "Newberry Paleography contact", body);
             } 
             catch (Exception e)
             {
@@ -734,46 +734,45 @@ PreparedStatement qry=null;
      * @throws NoSuchAlgorithmException
      * @throws MessagingException
      */
-    public String resetPassword() throws SQLException, NoSuchAlgorithmException, MessagingException
-        {
+    public String resetPassword() throws SQLException, NoSuchAlgorithmException, MessagingException {
         String newPass = "";
         RandomString r = new RandomString(10);
         newPass = r.nextString();
-        
         //store the hashed version in pass, that goes to the DB and the unhashed version is returned
         String pass = newPass;
         String query = "update users set pass=SHA1(?) where UID=?";
         Connection j = null;
-PreparedStatement ps=null;
-        try
-            {
+        PreparedStatement ps=null;
+        try{
             j = DatabaseWrapper.getConnection();
             ps = j.prepareStatement(query);
             ps.setString(1, pass);
             ps.setInt(2, UID);
             ps.execute();
-            } finally
-            {
-DatabaseWrapper.closeDBConnection(j);
-DatabaseWrapper.closePreparedStatement(ps);
-            }
+        } 
+        finally{
+            DatabaseWrapper.closeDBConnection(j);
+            DatabaseWrapper.closePreparedStatement(ps);
+        }
         textdisplay.mailer m = new textdisplay.mailer();
-        String body = "Your Newberry Paleography password has been set to " + newPass + "\n" + "You should head to http://newberry.rerum.io/paleography/ and change it.";
+        String body = "Your Newberry Paleography password has been set to " + newPass + "\n" 
+        + "You should head to Newberry Paleography now to change it.";
 //        System.out.print("new pass is "+pass+"\n");
         try{
             TokenManager man = new TokenManager();
-            m.sendMail(man.getProperties().getProperty("EMAILSERVER"), "renaissance@newberry.org", this.email, "Newberry Paleography Password Reset", body);
+            m.sendMail(man.getProperties().getProperty("EMAILSERVER"), man.getProperties().getProperty("NOTIFICATIONEMAIL"), this.email, "Newberry Paleography Password Reset", body);
         }
         catch (IOException e){
             //Had trouble mailing...return new password anyway
         }
         
         return newPass;
-        }
+    }
+    
     public String resetPassword(Boolean email) throws SQLException, NoSuchAlgorithmException, MessagingException
         {
-            if(email)return(resetPassword());
-            
+        
+        if(email)return(resetPassword());
         String newPass = "";
         RandomString r = new RandomString(10);
         newPass = r.nextString();
@@ -782,7 +781,7 @@ DatabaseWrapper.closePreparedStatement(ps);
         String pass = newPass;
         String query = "update users set pass=SHA1(?) where UID=?";
         Connection j = null;
-PreparedStatement ps=null;
+        PreparedStatement ps=null;
         try
             {
             j = DatabaseWrapper.getConnection();
@@ -790,24 +789,23 @@ PreparedStatement ps=null;
             ps.setString(1, pass);
             ps.setInt(2, UID);
             ps.execute();
-            } finally
-            {
-DatabaseWrapper.closeDBConnection(j);
-DatabaseWrapper.closePreparedStatement(ps);
-            }
-        return newPass;
+        } 
+        finally{
+            DatabaseWrapper.closeDBConnection(j);
+            DatabaseWrapper.closePreparedStatement(ps);
         }
+        return newPass;
+    }
 
     /**Send the welcome message and set the user's password.*/
     public String activateUser() throws SQLException, NoSuchAlgorithmException, MessagingException, Exception
         {
-        System.out.print("Establish mailer for activate");
         TokenManager man = new TokenManager();
         textdisplay.mailer m = new textdisplay.mailer();
         String pass=resetPassword(false);
         m.sendMail(man.getProperties().getProperty("EMAILSERVER"), man.getProperties().getProperty("NOTIFICATIONEMAIL"), this.email, "Welcome to Newberry Paleography", new WelcomeMessage().getMessage(this.fname+" "+this.lname,pass) );
-        return this.resetPassword();
-        }
+        return pass;
+    }
     /**This sets the last time the user was active to the current time. Used for determining who is online, and keeping track of active vs inactive users*/
     public void updateLastActive() throws SQLException
     {
@@ -1104,7 +1102,7 @@ DatabaseWrapper.closePreparedStatement(qry);
             String body = this.getFname() + " " + this.getLname() + " (" + this.getEmail() + ") has invited you to join their transcription project on Newberry Paleography. Look for an activation message shortly.";
             try
             {
-                m.sendMail(man.getProperties().getProperty("EMAILSERVER"), "renaissance@newberry.org", newUser.getEmail(), "An invitation to transcribe on Newberry Paleography", body);
+                m.sendMail(man.getProperties().getProperty("EMAILSERVER"), man.getProperties().getProperty("NOTIFICATIONEMAIL"), newUser.getEmail(), "An invitation to transcribe on Newberry Paleography", body);
                 newUser.activateUser();
                 } catch (Exception e)
                 {
