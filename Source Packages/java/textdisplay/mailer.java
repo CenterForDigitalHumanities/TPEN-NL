@@ -97,7 +97,7 @@ public class mailer {
                          String subject, String messageBody
     ) throws MessagingException, AddressException
     {
-        
+        System.out.println("sendMails says send from mailserver "+mailServer+" to "+to);
         // Setup mail server
         if (mailServer == null) {
             // BOZO:  This will never be used, right?  (Since Java prevents nulls here.)
@@ -137,6 +137,8 @@ public class mailer {
         message.setContent(multipart);
         
         // Send the message
+        System.out.println("Transport the message");
+
         Transport.send(message);
      }
     
