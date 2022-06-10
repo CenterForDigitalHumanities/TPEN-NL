@@ -201,7 +201,7 @@ session.setAttribute("ref",request.getParameter("referrer"));
         </form>
     </div>
 </div>
-<a class="returnButton" href="index.jsp">Return to Paleography Home</a>
+<a class="returnButton" href="./">Return to Paleography Home</a>
 </div>
 </div>
 </body>
