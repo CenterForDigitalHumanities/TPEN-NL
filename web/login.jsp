@@ -89,11 +89,6 @@
                                                             <title>Login or Register a New Account</title>
                                                             <link rel="stylesheet" href="css/style.css" type="text/css" media="screen, projection">
                                                             <link rel="stylesheet" href="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/www/css/style.css">
-                                                            <link type="text/css" href="css/custom-theme/jQuery.css" rel="Stylesheet" />
-                                                            <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
-                                                            <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
-                                                            <script src="js/manuscriptFilters.js" type="text/javascript"></script>
-                                                            <script src="js/tpen.js" type="text/javascript"></script>
                                                             <link rel="shortcut icon" type="image/x-icon" href="https://newberry.org/sites/all/themes/newberry2015/favicon.ico">
                                                             <style>
                                                                 #login,
