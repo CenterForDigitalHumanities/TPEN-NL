@@ -388,7 +388,7 @@
                                             out.print("<br><br><h3>Please provide a NEW username.</h3><br><br>");
                                         break;
                                         case 1:
-                                            out.print("<br><br><ul><h3>A user with this E-username already exists.  Try a different Username.</h3></ul><br><br>");
+                                            out.print("<br><br><ul><h3>A user with this Username already exists.  Try a different Username.</h3></ul><br><br>");
                                         break;
                                         case 2:
                                             out.print("<br><br><h3>Username updated!</h3><br><br>");
