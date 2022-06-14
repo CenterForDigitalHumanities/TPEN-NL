@@ -281,7 +281,7 @@
                             <div class="left inline" style="width:300px;"> <form id="login" action="login.jsp" method="POST" >
                                     <fieldset>
                                         <legend>Login Here:</legend>
-                                        <label for="uname">Email</label><input class="text" type="text" name="uname"/><br/>
+                                        <label for="uname">Username<input class="text" type="text" name="uname"/><br/>
                                         <label for="password">Password</label><input  class="text" type="password" name="password"/><br/>
                                         <input type="hidden" name="ref" value="admin.jsp"/>
                                         <span class='buttons right'><button type="submit" title="Log In" value="log in">Log In</button></span>
@@ -802,9 +802,8 @@
                                     <select name="uid" class="combobox">
                                         <%
                                             for (int i = 0; i < allUsers.length; i++) {
-                                                out.print("<option value=" + allUsers[i].getUID() + ">" + allUsers[i].getFname() + " " + allUsers[i].getLname() + " (" + allUsers[i].getUname() + ")" + "</option>");
+                                                out.print("<option value=" + allUsers[i].getUID() + ">" + allUsers[i].getUname() + " (" + allUsers[i].getEmail() + ")" + "</option>");
                                             }
-
                                         %>
                                     </select>
                                     <input type="submit" name="submitted" value="restrict">
@@ -936,30 +935,6 @@
                             <li id="contactForm" class="gui-tab-section">
                                 <h3>Contact Us</h3>
                                 <div>
-<!--                                    <div class="tpenButton contact">Directed Communication</div>
-                                    <div class="contactDiv" style="display:block;">
-                                        <form id="bugForm" onsubmit="$('#FBextra').change();" method="POST" action="http://165.134.241.72/ScoutSubmit.asp" target="_blank">
-                                            <input type="hidden" value="James Ginther" name="ScoutUserName" />
-                                            <input type="hidden" value="T-PEN" name="ScoutProject" />
-                                            <input type="hidden" value="Use Cases" name="ScoutArea" />
-                                            <input type="hidden" value="Thank you. A new case has been submitted. You can close this tab to resume your work." name="ScoutDefaultMessage" />
-                                            <input type="hidden" value="We are aware of this problem and are working to fix it. Thank you." name="ScoutMessage" />
-                                            <input type="hidden" value="cubap@slu.edu" name="ScoutPersonAssignedTo" />
-                                            <input type="hidden" value="1" name="Priority" />
-                                            <input id="extraSubmit" type="hidden" value="" name="Extra" />
-                                            <input id="FBemail" type="hidden" value="<%out.print(thisUser.getUname());%>" name="Email" />
-                                            <input type="hidden" name="FriendlyResponse" value="1" />
-                                                    Category is not supported in Scout at this time and will be added to the description.
-                                            <select id="FBcategory" name="Category">
-                                                <option value="Inquiry">Ask a Question</option>
-                                                <option value="Feature">Request a Feature</option>
-                                                <option value="Bug">Report a Bug</option>
-                                            </select>
-                                            <input type="text" value="Brief Description" name="Description" />
-                                            <textarea id="FBextra" placeholder="Include any additional information" name="FBExtra"></textarea>
-                                            <input type="submit" value="Submit" />
-                                        </form>
-                                    </div>-->
                                     <div>
                                         <%
                                             if (request.getParameter("contactTPEN") != null) {
