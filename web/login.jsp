@@ -173,7 +173,7 @@
         <form action="signup.jsp" method="POST">
             <fieldset>
                 <legend>or Register as a New User:</legend>
-                Note: You will receive your password via email after your account is activated
+                Note: You will receive your password via email after your account is activated<br/>
                 <label for="uname">Username</label><input class="text" type="text" name="uname" /><br/>
                 <label for="email">Email</label><input class="text" type="text" name="email" /><br/>
                 <label for="fname">First Name</label><input class="text" type="text" name="fname" /><br/>
