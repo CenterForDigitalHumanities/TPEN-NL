@@ -92,24 +92,14 @@
                                                             <link rel="shortcut icon" type="image/x-icon" href="https://newberry.org/sites/all/themes/newberry2015/favicon.ico">
                                                             <style>
                                                                 #login,
-                                                                #register {
+                                                                #register,#forgetForm {
                                                                     width: 45%;
                                                                     padding: 10px;
+                                                                    margin: 0 auto;
                                                                 }
                                                                 
                                                                 #content {
                                                                     max-width: 800px;
-                                                                }
-                                                                
-                                                                #forgetForm {
-                                                                    margin: -4px 5px 2px;
-                                                                    background: url(images/linen.png);
-                                                                    padding: 10px 15px;
-                                                                    display: none;
-                                                                    overflow: hidden;
-                                                                    z-index: 1;
-                                                                    border: 1px solid #A68329;
-                                                                    box-shadow: -1px -1px 2px black;
                                                                 }
                                                                 
                                                             </style>
@@ -170,10 +160,10 @@
     </div>
     <div id="register" class="right">
         <h3 class="ui-widget-header ui-tabs ui-corner-all ui-state-default">Register a New Account</h3>
+        <p>Note: You will receive your password via email after your account is activated</p>
         <form action="signup.jsp" method="POST">
             <fieldset>
                 <legend>or Register as a New User:</legend>
-                Note: You will receive your password via email after your account is activated<br/>
                 <label for="uname">Username</label><input class="text" type="text" name="uname" /><br/>
                 <label for="email">Email</label><input class="text" type="text" name="email" /><br/>
                 <label for="fname">First Name</label><input class="text" type="text" name="fname" /><br/>
@@ -184,9 +174,11 @@
     </div>
     <div id="resetPassword" style="padding: 10px;">
         <form id="forgetForm" action="admin.jsp" method="POST" class="ui-corner-all">
-            <span>Enter the username associated with your account to have your password reset.</span>
-            <input type="text" class="text" placeholder="Forgot your password?" name="uname">
-            <input class="right ui-corner-all ui-state-default" type="submit" name="resetSubmitted" value="Reset Password" />
+            <fieldset>
+                <legend>Request a Password Reset:</legend>
+                <input type="text" class="text" placeholder="Username" name="uname">
+                <input class="right ui-corner-all ui-state-default" type="submit" name="resetSubmitted" value="Reset Password" />
+            </fieldset>
         </form>
     </div>
 <a href="./">Return to Paleography Home</a>
