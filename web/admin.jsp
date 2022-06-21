@@ -281,7 +281,7 @@
                             <div class="left inline" style="width:300px;"> <form id="login" action="login.jsp" method="POST" >
                                     <fieldset>
                                         <legend>Login Here:</legend>
-                                        <label for="uname">Username<input class="text" type="text" name="uname"/><br/>
+                                        <label for="uname">Username</label><input class="text" type="text" name="uname"/><br/>
                                         <label for="password">Password</label><input  class="text" type="password" name="password"/><br/>
                                         <input type="hidden" name="ref" value="admin.jsp"/>
                                         <span class='buttons right'><button type="submit" title="Log In" value="log in">Log In</button></span>
