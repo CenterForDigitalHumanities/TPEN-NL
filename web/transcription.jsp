@@ -2755,7 +2755,7 @@
                                                                                                 </script>
                                                                                                 <%@include file="WEB-INF/includes/noscript.jspf" %>
 
-                                                                                                    <a id="updateRedirect" class="bounce" href="frenchTranscription.html?<%out.print(projectAppend);%>">
+                                                                                                    <a id="updateRedirect" class="bounce" href="french-transcription.html?<%out.print(projectAppend);%>">
     2.8 update
     <img alt="2.8" src="images/28tpen.svg" height="24" >
 </a>

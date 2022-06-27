@@ -712,7 +712,7 @@
                     pPiece = "p="+p;
                 }
             }
-            out.print("<a class=\"returnButton\" href=\"frenchTranscription.html?" + pPiece + appendProject + "\">Return to Transcribing</a>");
+            out.print("<a class=\"returnButton\" href=\"french-transcription.html?" + pPiece + appendProject + "\">Return to Transcribing</a>");
         %><a class="returnButton" href="project.jsp?<%out.print(projectAppend);%>">Project Management</a>
                                                         <%
         }
