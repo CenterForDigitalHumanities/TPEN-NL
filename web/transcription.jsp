@@ -2243,10 +2243,6 @@
                             %>
                                                                                                                                     <a class="wBtn" id="previewBtn" title="Preview transcription" href="#currentPage">Preview</a>
                                                                                                                                     <%}
-                            if(false && Tool.isToolActive(Tool.tools.sciat, UID)){
-                            %>
-                                                                                                                                        <!--                            <a class="wBtn" href="#" target="_blank" id="sciatBtn" title="SharedCanvas annotations viewer and creator">Annotations</a>-->
-                                                                                                                                        <%}
                     for (int i=0;i<projectTools.length;i++){%>
                                                                                                                                             <a class="iframeTools wBtn" href="<%out.print(projectTools[i].getUrl());%>" target="frame<%out.print(i);%>" id="frameBtn<%out.print(i);%>" title="Access the <%out.print(projectTools[i].getName());%> tool">
                                                                                                                                                 <%out.print(projectTools[i].getName());%>
@@ -2695,17 +2691,6 @@
                                                                                                                                     </div>
                                                                                                                                 </div>
                                                                                                                                 <% } %>
-                                                                                                                                    <!--SCIAT tool-->
-                                                                                                                                    <%   if(false && Tool.isToolActive(Tool.tools.sciat, UID)){ %>
-
-                                                                                                                                        <!--            <div id="sciatSplit" class="ui-widget">
-                <div class="toolLinks">
-                    <a href="http://165.134.241.141:80/Annotation/svg-editor.html" target="sciatFrame" title="Reset this tool" class="frameReset">Reset<span class="ui-icon ui-icon-refresh left"></span></a>
-                    <a href="http://165.134.241.141:80/Annotation/svg-editor.html" target="_blank" title="Fill the window" class="frameTab">Full size<span class="ui-icon ui-icon-arrow-4-diag left"></span></a>
-                </div>
-                <%--@include file="WEB-INF/includes/sciat.jspf" --%>
-            </div>-->
-                                                                                                                                        <%}%>
                                                                                                                                             <%
                     // Loading Loop for iframe tools
                     for(int i=0;i<projectTools.length;i++){
@@ -2770,7 +2755,7 @@
                                                                                                 </script>
                                                                                                 <%@include file="WEB-INF/includes/noscript.jspf" %>
 
-                                                                                                    <a id="updateRedirect" class="bounce" href="frenchTranscription.html?<%out.print(projectAppend);%>">
+                                                                                                    <a id="updateRedirect" class="bounce" href="french-transcription.html?<%out.print(projectAppend);%>">
     2.8 update
     <img alt="2.8" src="images/28tpen.svg" height="24" >
 </a>

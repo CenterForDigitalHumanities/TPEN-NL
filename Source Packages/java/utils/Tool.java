@@ -33,7 +33,7 @@ import user.User;
 public class Tool {
 
    public enum tools {
-      preview, compare, parsing, abbreviation, history, linebreak, annotation, paleography, sciat
+      preview, compare, parsing, abbreviation, history, linebreak
    };
 
    public Tool(tools toolName, int UID) throws SQLException {
@@ -90,9 +90,7 @@ public class Tool {
 
    public static void initializeTools(int uid) throws SQLException {
       for (Tool.tools iter : tools.values()) {
-         if (iter != tools.sciat && iter != tools.annotation) {
-            Tool t = new Tool(iter, uid);
-         }
+            new Tool(iter, uid);
       }
    }
 

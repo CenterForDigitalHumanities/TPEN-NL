@@ -100,7 +100,7 @@ public class UserTool {
    }
 
    /**
-    * Get all tools assciated with a project
+    * Get all tools associated with a project
     */
    public static UserTool[] getUserTools(int project) throws SQLException {
       UserTool[] toret = null;
@@ -130,7 +130,7 @@ public class UserTool {
    }
 
    /**
-    * Delete all tools assciated with a project
+    * Delete all tools associated with a project
     */
    public static void removeAll(int projectID) throws SQLException {
       String query = "delete from usertools where projectID=?";
