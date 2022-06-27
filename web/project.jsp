@@ -1079,7 +1079,7 @@
                                                                                         Customize buttons
                                                                                         <!-- BH note got rid of Import project and validate stuff.  Can revive if we want -->
                                                                                         <%if (isAdmin){%>
-                                                                                            <a class="tpenButton" href="buttons.jsp?projectID=<%out.print(" " + projectID);%>"><span class="ui-icon ui-icon-gear right"></span>Button Management</a>
+                                                                                            <a class="tpenButton" href="buttons.jsp?projectID=<%out.print(""+projectID);%>"><span class="ui-icon ui-icon-gear right"></span>Button Management</a>
                                                                                             <p>The <span title="Any unicode character can be attached to one of these buttons for use in your project." class="loud">Special Character</span> and <span title="Multiple custom tags with parameters can be added to this project."
                                                                                                     class="loud">Custom xml Tags</span> you define will remain specific to each project. These buttons are accessible on the transcription pages. Characters assigned
                                                                                                 to the numbered buttons can be inserted simply by holding CTRL and pressing the corresponding number on the keyboard.</p>
