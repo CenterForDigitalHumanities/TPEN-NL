@@ -87,35 +87,19 @@
                                                         <head>
                                                             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
                                                             <title>Login or Register a New Account</title>
-                                                            <link rel="stylesheet" href="css/tpen.css" type="text/css" media="screen, projection">
-                                                            <link rel="stylesheet" href="css/print.css" type="text/css" media="print">
-                                                            <!--[if lt IE 8]><link rel="stylesheet" href="css/ie.css" type="text/css" media="screen, projection"><![endif]-->
-                                                            <link type="text/css" href="css/custom-theme/jQuery.css" rel="Stylesheet" />
-                                                            <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
-                                                            <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
-                                                            <script src="js/manuscriptFilters.js" type="text/javascript"></script>
-                                                            <script src="js/tpen.js" type="text/javascript"></script>
+                                                            <link rel="stylesheet" href="css/style.css" type="text/css" media="screen, projection">
+                                                            <link rel="stylesheet" href="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/www/css/style.css">
                                                             <link rel="shortcut icon" type="image/x-icon" href="https://newberry.org/sites/all/themes/newberry2015/favicon.ico">
                                                             <style>
                                                                 #login,
-                                                                #register {
+                                                                #register,#forgetForm {
                                                                     width: 45%;
                                                                     padding: 10px;
+                                                                    margin: 0 auto;
                                                                 }
                                                                 
                                                                 #content {
                                                                     max-width: 800px;
-                                                                }
-                                                                
-                                                                #forgetForm {
-                                                                    margin: -4px 5px 2px;
-                                                                    background: url(images/linen.png);
-                                                                    padding: 10px 15px;
-                                                                    display: none;
-                                                                    overflow: hidden;
-                                                                    z-index: 1;
-                                                                    border: 1px solid #A68329;
-                                                                    box-shadow: -1px -1px 2px black;
                                                                 }
                                                                 
                                                             </style>
@@ -130,42 +114,37 @@
                                                         <!--    <script type="text/javascript" src="menu.js"></script>-->
 
                                                         <body>
-                                                            <div id="wrapper">
-                                                                <div id="header">
-                                                                    <p align="center" class="tagline">transcription for paleographical and editorial notation</p>
+                                                            <header class="header clearfix">
+                                                                <div id="branding" class="branding-elements clearfix">
+                                                                    <div style="margin: 0px auto;">
+                                                                        <div class="newberry-header hiddem-sm hidden-xs">
+                                                                        </div>
+                                                        
+                                                                        <h1 id="site-name">
+                                                                            <div id="logo" style="display: inline;">
+                                                                                <img aria-hidden="true" role="presentation" alt=""
+                                                                                    src="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/www/images/NewberryLogo_with_tag.png">
+                                                                            </div>
+                                                                        </h1>
+                                                                    </div>
                                                                 </div>
-                                                                <div id="content">
-                                                                    <h1>
-                                                                        <script>
-                                                                            document.write(document.title);
-                                                                        </script>
-                                                                    </h1>
-                                                                    <!--<a href="authenticate?use=yahoo">openID using Yahoo</a><br/>-->
-                                                                    <%if(  request.getParameter("referer")==null ||request.getParameter("referer").contains("authenticate.jsp"))
-        {
-           // out.print("url:"+request.getRequestURL().toString());
-            if(request.getRequestURL().toString().contains("authenticate") || request.getRequestURL().toString().contains("landing") )
-                {
-              //  out.print("setting toc");
-                if(session.getAttribute("ref")==null)
-                 session.setAttribute("ref","ToC.jsp");
-                
-                }
-            else
-                {
-             //   out.print("setting url");
-            session.setAttribute("ref",request.getRequestURL().toString());
-            
-            }
-        }
-   else
-{
-       
-session.setAttribute("ref",request.getParameter("referrer"));
-
-}%>
-
-<div id="main" class="ui-widget ui-widget-content ui-corner-all ui-tabs ui-helper-reset ui-helper-clearfix">
+                                                                <nav class="container">
+                                                                    <ul class="nav nav-bar">
+                                                                        <li class="first leaf">
+                                                                            <a href="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/">French
+                                                                                Renaissance Paleography</a>
+                                                                        </li>
+                                                                        <li class="leaf">
+                                                                            <a href="https://centerfordigitalhumanities.github.io/Newberry-Italian-paleography/">Italian
+                                                                                Paleography</a>
+                                                                        </li>
+                                                                        <li class="last leaf">
+                                                                            <a href="http://newberry.rerum.io/paleography/logout.html" title="">Logout</a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </nav>
+                                                            </header>
+                                                             
     <div id="login" class="left">
         <h3 class="ui-widget-header ui-tabs ui-corner-all ui-state-default">Log In</h3>
         <p> You may log into your account to start transcribing or to manage your projects.</p>
@@ -174,17 +153,17 @@ session.setAttribute("ref",request.getParameter("referrer"));
                 <legend>Login Here:</legend>
                 <label for="uname">Username</label><input class="text" type="text" name="uname" /><br/>
                 <label for="password">Password</label><input class="text" type="password" name="password" /><br/>
-                <input type="hidden" name="ref" value="<%out.print(session.getAttribute(" ref "));%>"/>
+                <input type="hidden" name="ref" value='<%out.print(session.getAttribute(" ref "));%>'/>
                 <input class="ui-button ui-state-default ui-corner-all right" type="submit" title="Log In" value="Log In">
             </fieldset>
         </form>
     </div>
     <div id="register" class="right">
         <h3 class="ui-widget-header ui-tabs ui-corner-all ui-state-default">Register a New Account</h3>
+        <p>Note: You will receive your password via email after your account is activated</p>
         <form action="signup.jsp" method="POST">
             <fieldset>
                 <legend>or Register as a New User:</legend>
-                Note: You will receive your password via email after your account is activated
                 <label for="uname">Username</label><input class="text" type="text" name="uname" /><br/>
                 <label for="email">Email</label><input class="text" type="text" name="email" /><br/>
                 <label for="fname">First Name</label><input class="text" type="text" name="fname" /><br/>
@@ -195,15 +174,37 @@ session.setAttribute("ref",request.getParameter("referrer"));
     </div>
     <div id="resetPassword" style="padding: 10px;">
         <form id="forgetForm" action="admin.jsp" method="POST" class="ui-corner-all">
-            <span>Enter the username associated with your account to have your password reset.</span>
-            <input type="text" class="text" placeholder="Forgot your password?" name="uname">
-            <input class="right ui-corner-all ui-state-default" type="submit" name="resetSubmitted" value="Reset Password" />
+            <fieldset>
+                <legend>Request a Password Reset:</legend>
+                <input type="text" class="text" placeholder="Username" name="uname">
+                <input class="right ui-corner-all ui-state-default" type="submit" name="resetSubmitted" value="Reset Password" />
+            </fieldset>
         </form>
     </div>
-</div>
-<a class="returnButton" href="index.jsp">Return to Paleography Home</a>
-</div>
-</div>
+<a href="./">Return to Paleography Home</a>
+<footer>
+    <link rel="stylesheet" href="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/www/css/style.css">
+    <div class="row container">
+        <div class="col" style="flex-grow:2;">
+            <h2> Partners </h2>
+                <div class="row">
+                    <a class="col" href="http://www.newberry.org/" target="_blank"><img alt="Newberry" src="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/www/images/NewberryLogo_with_tag.png"></a>
+                    <a class="col" href="http://onesearch.library.utoronto.ca" target="_blank"><img alt="University of Toronto Libraries" src="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/www/images/UTL-logo.png"></a>
+                </div>
+                <div class="row">
+                    <a class="col" href="http://lib.slu.edu/" style="line-height: 23.1111px;" target="_blank"><img alt="St. Louis University" src="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/www/images/slu.gif" style="width: 346px;"></a>
+                    <a class="col" href="http://www.itergateway.org/" target="_blank"><img alt="Iter" src="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/www/images/iter-logo-new.png"></a>
+                </div>
+        </div>
+        <div class="col">
+            <slot></slot>
+            <h2 class="pane-title"> Contact </h2>
+            <p><a href="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/contact">Contact</a><br><a href="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/about-team">About the Team</a><br><a href="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/contact">Terms of Use</a></p>
+            <p>Supported by a grant from The Andrew W. Mellon Foundation</p>
+            <p><a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img alt="Creative Commons Licence" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" style="border-width:0"></a><br><a href="https://www.newberry.org/paleography">French Renaissance Paleography</a> is licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.</p>
+        </div>
+    </div>
+</footer>
 </body>
 
 </html>

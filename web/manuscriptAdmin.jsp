@@ -281,7 +281,7 @@ user.User [] activeUsers = user.User.getAllActiveUsers();
         <%}}%>
                 </div>
                              <a class="returnButton" href="admin.jsp?selecTab=1">Return to Administration Page</a>
-                           <a class="returnButton" href="index.jsp">Return to TPEN Homepage</a>
+                           <a class="returnButton" href="./">Return to TPEN Homepage</a>
             </div>
                 </div>
    </body>
