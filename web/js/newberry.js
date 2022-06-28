@@ -5880,8 +5880,8 @@ function closeHelpVideo() {
  */
 function setPaleographyLinks() {
     setIframeLinks();
-    $("#homeBtn").attr("href", homeLink);
-    $("#projectsBtn").attr("href", "my-transcriptions.html");
+    $("#homeBtn").attr("href", "my-transcriptions.html");
+    $("#projectsBtn").attr("href", "groups.jsp?projectID=" + projectID);
     $("#helpContact").attr("href", "contact.html");
 }
 
