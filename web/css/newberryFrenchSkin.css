@@ -1813,11 +1813,11 @@ button,.navigation, #contribution,
     content:"Contact";
 }
 #homeBtn::after {
-    content:"Paleography Home";
+    content:"My Transcriptions";
     white-space: nowrap;
 }
 #projectsBtn::after {
-    content:"Projects";
+    content:"Manage Team";
     white-space: nowrap;
 }
 #trimCurrentUser::before {
