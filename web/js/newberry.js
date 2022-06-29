@@ -5852,7 +5852,6 @@ function bumpLine(direction, activeLine) {
     $(".transcriptlet[lineserverid='" + id + "']").attr("lineleft", currentLineLeftPerc);
     activeLine.css("left", currentLineLeftPX);
     updateLine($(".transcriptlet[lineserverid='" + id + "']"), false, null);
-
 }
 
 
@@ -5882,7 +5881,7 @@ function setPaleographyLinks() {
     setIframeLinks();
     $("#homeBtn").attr("href", "my-transcriptions.html");
     $("#projectsBtn").attr("href", "groups.jsp?projectID=" + getURLVariable("projectID"));
-    $("#helpContact").attr("href", "contact.html");
+    //$("#helpContact").attr("href", "contact.html");
 }
 
 /*
