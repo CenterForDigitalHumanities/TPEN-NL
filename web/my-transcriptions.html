@@ -303,12 +303,22 @@ and open the template in the editor.
                 </div>`, ``)
         }
         else{
+            let lang = getURLVariable("language")
+            let which
+            //If they are coming from the static pages we will know which language they are trying to use.
+            if(lang === "French"){
+                which = `<a target="_blank" href="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/www/manuscripts.html">French Manuscript</a>`
+            }
+            else if(lang === "Italian"){
+                which = `<a target="_blank" href="https://centerfordigitalhumanities.github.io/Newberry-Italian-paleography/www/manuscripts.html">Italian Manuscript</a> `
+            }
+            else{
+                which = `<a target="_blank" href="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/www/manuscripts.html">French Manuscript</a>
+                or <a target="_blank" href="https://centerfordigitalhumanities.github.io/Newberry-Italian-paleography/www/manuscripts.html">Italian Manuscript</a>`
+            }
             projectsList.innerHTML = ` 
                 <p>
-                   You do not have any projects.  Pick a 
-                   <a target="_blank" href="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/www/manuscripts.html">French Manuscript</a> 
-                   or 
-                   <a target="_blank" href="https://centerfordigitalhumanities.github.io/Newberry-Italian-paleography/www/manuscripts.html">Italian Manuscript</a> 
+                   You do not have any projects.  Pick a ${which}
                    from the list to get started!
                </p>`
             toContinue.style.display = "none"
