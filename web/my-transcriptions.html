@@ -217,7 +217,7 @@ and open the template in the editor.
         </nav>
     </header>
     <h1 class="ruled">My Transcriptions</h1>
-    <p>To continue working on a transcription, click the manuscript name.
+    <p id="toContinue">To continue working on a transcription, click the manuscript name.
         Remove by clicking the "&cross;" button.</p>
     <div id="projectsList">
         <div id="gatheringProjects"></div>
@@ -302,6 +302,17 @@ and open the template in the editor.
                     <a class="deleteBtn" onclick="deleteProject(${b.id}, event);" title="Delete Transcription">&cross;</a>
                 </div>`, ``)
         }
+        else{
+            projectsList.innerHTML = ` 
+                <p>
+                   You do not have any projects.  Pick a 
+                   <a target="_blank" href="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/www/manuscripts.html">French Manuscript</a> 
+                   or 
+                   <a target="_blank" href="https://centerfordigitalhumanities.github.io/Newberry-Italian-paleography/www/manuscripts.html">Italian Manuscript</a> 
+                   from the list to get started!
+               </p>`
+            toContinue.style.display = "none"
+        }
     }
 
     let deleteProject = async function (projectID, event) {
@@ -338,11 +349,12 @@ and open the template in the editor.
 
     //Page initializer
     getUserProjects(007).then(projects => { formatAndRenderProjects(projects) })
-        .catch(err => {
-            gatheringProjects.style.display = "none"
-            //projectsList.innerHTML = "Error.  See web console."
-            console.error(err)
-        })
+    .catch(err => {
+        gatheringProjects.style.display = "none"
+        toContinue.style.display = "none"
+        projectsList.innerHTML = "Error.  Refresh the page to try again."
+        console.error(err)
+    })
 </script>
 
 </html>
