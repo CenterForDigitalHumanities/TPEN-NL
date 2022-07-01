@@ -5881,7 +5881,6 @@ function setPaleographyLinks() {
     setIframeLinks();
     $("#homeBtn").attr("href", "my-transcriptions.html");
     $("#projectsBtn").attr("href", "groups.jsp?projectID=" + getURLVariable("projectID"));
-    //$("#helpContact").attr("href", "contact.html");
 }
 
 /*
