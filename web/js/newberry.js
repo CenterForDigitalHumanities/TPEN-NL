@@ -3020,28 +3020,23 @@ async function splitPage(event, tool) {
         "display": "inline-table"
     });
     $("#templateResizeBar").show();
-    var splitWidthAdjustment = window.innerWidth - ($("#transcriptionTemplate").width() + 35) + "px";
     $("#fullScreenBtn")
         .fadeIn(250);
-    //These two arre special.  If they happen to be open and you are activating another tool, fullPage() to keep things the right size
-    if (liveTool === "controls" || liveTool === "help") {
-        if(tool !== "controls" && tool !== "help"){
-            fullPage(false, false);
+    //A special situation since users can pick a different tool when this one is open without having to fullPage first.
+    if (liveTool === "controls") {
+        if(tool !== "controls"){
+            $("#canvasControls").removeClass("selected");
         }
     }
     $('.split').hide();
-
     var splitScreen = $("#" + tool + "Split");
-    if (!splitScreen.size()) {
-        //Not sure what this is for...
-    }
     splitScreen.css("display", "block");
     splitScreen.find('.fullScreenTrans').unbind();
     splitScreen.find(".fullScreenTrans").click(function () {
         fullPage(false, false);
     });
     $("#zoomLock").attr("disabled", "disabled").addClass("peekZoomLockout");
-
+    var splitWidthAdjustment =  window.innerWidth - ((window.innerWidth * .55) + 35) + "px";
     switch (tool) {
         case "controls":
             if (liveTool === "controls") {
@@ -3050,10 +3045,12 @@ async function splitPage(event, tool) {
                 return fullPage(false, false);
             }
             $("#canvasControls").addClass("selected");
+            $("#splitScreenTools").find('option:eq(0)').prop("selected", true);
             $("#transcriptionCanvas").css("width", Page.width() - 200 + "px");
             $("#transcriptionTemplate").css("width", Page.width() - 200 + "px");
             newCanvasWidth = Page.width() - 200;
             $("#controlsSplit").show();
+            $("#controlsSplit").css("height",Page.height() - $("#controlsSplit").offset().top)
             resize = false; //interupts parsing resizing funcitonaliy, dont need to resize for this anyway.
             break
         case "help":
@@ -3071,6 +3068,7 @@ async function splitPage(event, tool) {
             resize = false;
             break
         case "preview":
+            
             scrollTextPreview();
             $("#previewSplit").height(Page.height() - 40).scrollTop(0); // header space
             $("#previewSplit").css("width", splitWidthAdjustment);
