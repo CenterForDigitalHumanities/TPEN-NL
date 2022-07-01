@@ -3021,9 +3021,14 @@ async function splitPage(event, tool) {
     });
     $("#templateResizeBar").show();
     var splitWidthAdjustment = window.innerWidth - ($("#transcriptionTemplate").width() + 35) + "px";
-
     $("#fullScreenBtn")
         .fadeIn(250);
+    //These two arre special.  If they happen to be open and you are activating another tool, fullPage() to keep things the right size
+    if (liveTool === "controls" || liveTool === "help") {
+        if(tool !== "controls" && tool !== "help"){
+            fullPage(false, false);
+        }
+    }
     $('.split').hide();
 
     var splitScreen = $("#" + tool + "Split");
