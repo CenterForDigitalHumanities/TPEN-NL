@@ -307,18 +307,18 @@ and open the template in the editor.
             let which
             //If they are coming from the static pages we will know which language they are trying to use.
             if(lang === "French" || lang === "french"){
-                which = `<a target="_blank" href="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/www/manuscripts.html">French Manuscript</a>`
+                which = `a <a target="_blank" href="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/www/manuscripts.html">French Manuscript</a>`
             }
             else if(lang === "Italian" || lang === "italian"){
-                which = `<a target="_blank" href="https://centerfordigitalhumanities.github.io/Newberry-Italian-paleography/www/manuscripts.html">Italian Manuscript</a> `
+                which = `an <a target="_blank" href="https://centerfordigitalhumanities.github.io/Newberry-Italian-paleography/www/manuscripts.html">Italian Manuscript</a> `
             }
             else{
-                which = `<a target="_blank" href="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/www/manuscripts.html">French Manuscript</a>
+                which = `a <a target="_blank" href="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/www/manuscripts.html">French Manuscript</a>
                 or <a target="_blank" href="https://centerfordigitalhumanities.github.io/Newberry-Italian-paleography/www/manuscripts.html">Italian Manuscript</a>`
             }
             projectsList.innerHTML = ` 
                 <p>
-                   You do not have any projects.  Pick a ${which}
+                   You do not have any projects.  Pick ${which}
                    from the list to get started!
                </p>`
             toContinue.style.display = "none"
