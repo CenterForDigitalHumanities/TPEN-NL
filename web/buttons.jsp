@@ -670,6 +670,7 @@
                                                                     </ul>
                                                                     <input type="button" id="addH" name="addH" class="tpenButton ui-button" value="Add a Button" />
                                                                     <input type="submit" id="updateChars" name="update" value="Save Changes" class="tpenButton ui-button" />
+                                                                    <br><br>
                                                                 </div>
                                                                 <div id="tabs-2">
                                                                     <div class="right" style="width:440px;">
