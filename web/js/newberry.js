@@ -5883,8 +5883,12 @@ function closeHelpVideo() {
 function setPaleographyLinks() {
     setIframeLinks();
     $("#homeBtn").attr("href", "my-transcriptions.html");
-    $("#projectsBtn").attr("href", "groupmembers.jsp?projectID=" + getURLVariable("projectID"));
-    $(".editButtons").attr("href", "buttons.jsp?projectID="+theProjectID);
+    let plink = ""
+    if (getURLVariable("p")) {
+        plink = "&p=" + getURLVariable("p");
+    }
+    $("#projectsBtn").attr("href", "groups.jsp?projectID=" + getURLVariable("projectID") + plink);
+    $(".editButtons").attr("href", "buttons.jsp?projectID="+ getURLVariable("projectID") + plink);
 }
 
 /*
