@@ -5310,10 +5310,10 @@ function updateURL(piece, classic) {
         else {
             toAddressBar = replaceURLVariable("p", tpenFolios[currentFolio - 1].folioNumber);
         }
-        var relocator = "buttons.jsp?" + "projectID=" + projectID;
+        //Also pass p to buttons.jsp
+        var relocator = "buttons.jsp?projectID=" + projectID + "&p=" + tpenFolios[currentFolio - 1].folioNumber;
         $(".editButtons").attr("href", relocator);
     }
-
     window.history.pushState("", "T&#8209;PEN Transcription", toAddressBar);
 }
 
@@ -5883,7 +5883,12 @@ function closeHelpVideo() {
 function setPaleographyLinks() {
     setIframeLinks();
     $("#homeBtn").attr("href", "my-transcriptions.html");
-    $("#projectsBtn").attr("href", "groups.jsp?projectID=" + getURLVariable("projectID"));
+    let plink = ""
+    if (getURLVariable("p")) {
+        plink = "&p=" + getURLVariable("p");
+    }
+    $("#projectsBtn").attr("href", "groups.jsp?projectID=" + getURLVariable("projectID") + plink);
+    $(".editButtons").attr("href", "buttons.jsp?projectID="+ getURLVariable("projectID") + plink);
 }
 
 /*
