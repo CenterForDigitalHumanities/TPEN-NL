@@ -670,7 +670,6 @@
                                                                     </ul>
                                                                     <input type="button" id="addH" name="addH" class="tpenButton ui-button" value="Add a Button" />
                                                                     <input type="submit" id="updateChars" name="update" value="Save Changes" class="tpenButton ui-button" />
-                                                                    <input type="button" id="return" name="return" value="Return to Management" onclick="document.location.href='project.jsp?projectID=<%out.print(projectID);%>';" class="tpenButton ui-button" /><br><br>
                                                                 </div>
                                                                 <div id="tabs-2">
                                                                     <div class="right" style="width:440px;">
@@ -713,11 +712,10 @@
                 }
             }
             out.print("<a class=\"returnButton\" href=\"french-transcription.html?" + pPiece + appendProject + "\">Return to Transcribing</a>");
-        %><a class="returnButton" href="project.jsp?<%out.print(projectAppend);%>">Project Management</a>
+        %>
                                                         <%
         }
         else {%>
-                                                            <a class="returnButton" href="project.jsp?<%out.print(projectAppend);%>">Return to Project Management</a>
                                                             <%}%>
                                                                 <a class="returnButton" href="my-transcriptions.html">T&#8209;PEN Home</a>
                                                 </div>

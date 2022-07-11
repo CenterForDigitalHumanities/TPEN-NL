@@ -975,7 +975,6 @@
                     if (theURL.indexOf("projectID=") > -1){
                         var projID = getURLVariable("projectID");
                         theProjectID = parseInt(projID);
-                        $(".editButtons").attr("href", "buttons.jsp?projectID="+theProjectID);
                         $("#transcriptionText").val(projID);
                         $("#loadBtn").click();
                     }
