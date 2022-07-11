@@ -5311,7 +5311,7 @@ function updateURL(piece, classic) {
             toAddressBar = replaceURLVariable("p", tpenFolios[currentFolio - 1].folioNumber);
         }
         //Also pass p to buttons.jsp
-        var relocator = "buttons.jsp?" + "projectID=" + projectID + "&p="+tpenFolios[currentFolio - 1].folioNumber;
+        var relocator = "buttons.jsp?projectID=" + projectID + "&p=" + tpenFolios[currentFolio - 1].folioNumber;
         $(".editButtons").attr("href", relocator);
     }
     window.history.pushState("", "T&#8209;PEN Transcription", toAddressBar);
