@@ -102,7 +102,7 @@ body{
     padding: 25px 15px 0px 15px;
     position: relative;
     text-align: center;
-    height: 795px; /* however tall it needs to be to fit all text and buttons on small screen scroll */
+    background-color: white;
 }
 .block {
     width: 100%;
