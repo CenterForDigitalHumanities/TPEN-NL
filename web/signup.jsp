@@ -84,7 +84,7 @@
                     </form>
                     <%}%>
                 </div>
-                <a class="returnButton" href="my-transcriptions.html">Return to Paleography Home</a>
+                <a class="returnButton" href="my-transcriptions.html">Return to Transcription projects</a>
             </div>
         </div>
     </body>
