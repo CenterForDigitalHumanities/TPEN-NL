@@ -906,9 +906,6 @@ function populateSpecialCharacters(specialCharacters) {
         //return false;                
     }
     var speCharactersInOrder = new Array(specialCharacters.length);
-    if (!specialCharacters || specialCharacters.length === 0 || specialCharacters[0] === "[]") {
-        $("#toggleChars").hide();
-    }
     var clas = "character";
     for (var char = 0; char < specialCharacters.length; char++) {
         var thisChar = specialCharacters[char];
@@ -950,9 +947,6 @@ function populateXML(xmlTags) {
         //return false;                
     }
     var tagsInOrder = [];
-    if (!xmlTags || xmlTags.length === 0 || xmlTags[0] === "[]") {
-        $("#toggleXML").hide();
-    }
     for (var tagIndex = 0; tagIndex < xmlTags.length; tagIndex++) {
         var newTagBtn = "";
         var tagName = xmlTags[tagIndex].tag;
