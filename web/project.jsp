@@ -988,8 +988,8 @@
                                                                                 <%
                                 int recentFolio = thisProject.getLastModifiedFolio();
                                 String projectLink = (recentFolio>0) ? 
-                                    "<a class='tpenButton' href='frenchTranscription.html?projectID=" + projectID + "&p=" + recentFolio + "'><span class='ui-icon ui-icon-pencil right'></span>Resume Transcribing</a>": 
-                                    "<a class='tpenButton' href='frenchTranscription.html?projectID=" + projectID + "'><span class='ui-icon ui-icon-pencil right'></span>First Page</a>"; 
+                                    "<a class='tpenButton' href='french-transcription.html?projectID=" + projectID + "&p=" + recentFolio + "'><span class='ui-icon ui-icon-pencil right'></span>Resume Transcribing</a>": 
+                                    "<a class='tpenButton' href='french-transcription.html?projectID=" + projectID + "'><span class='ui-icon ui-icon-pencil right'></span>First Page</a>"; 
                                 if(permitRead || permitModify || permitNotes || isMember){%>
                                                                                     <%out.print(projectLink);%>
                                                                                         <select class="clear folioDropdown" style="margin: 10% 10%;text-align: center;max-width: 80%;" onchange="navigateTo(this);">
@@ -1017,14 +1017,14 @@
   </li>
                                 <%if(permitModify || isMember){%>
                             <li class="left ui-widget-content ui-corner-tr ui-corner-bl tall">
-                                <a class="tpenButton" href="frenchTranscription.html?tool=linebreak&projectID=<%out.print("" + projectID);%>"><span class="ui-icon ui-icon-clipboard right"></span>Linebreak and proofread existing text</a>
+                                <a class="tpenButton" href="french-transcription.html?tool=linebreak&projectID=<%out.print("" + projectID);%>"><span class="ui-icon ui-icon-clipboard right"></span>Linebreak and proofread existing text</a>
                                 <p>Adjust the linebreaking or make changes to uploaded text. Also revise previously saved transcriptions.</p>
                                 <a class="tpenButton" href="uploadText.jsp?projectID=<%out.print("" + projectID);%>"><span class="ui-icon ui-icon-folder-open right"></span>Upload a file to linebreak</a>
                                 <p>Upload a file to get started. The text will be available to any group member in this project.</p>
                             </li>
                                                                <%}
                                     if(permitParsing || isMember){%>
- <li class="left ui-widget-content ui-corner-tr ui-corner-bl tall"><a class="tpenButton" href="frenchTranscription.html?parsing=true&projectID=<%out.print("" + projectID);%>"><span class="ui-icon ui-icon-note right"></span>Check line parsings</a>
+ <li class="left ui-widget-content ui-corner-tr ui-corner-bl tall"><a class="tpenButton" href="french-transcription.html?parsing=true&projectID=<%out.print("" + projectID);%>"><span class="ui-icon ui-icon-note right"></span>Check line parsings</a>
                                 <p>Verify the automatic line detection for the project or define the columns and lines manually. Access independent control over each page in the project.</p>
                             </li>
 <%}%>
@@ -1079,7 +1079,7 @@
                                                                                         Customize buttons
                                                                                         <!-- BH note got rid of Import project and validate stuff.  Can revive if we want -->
                                                                                         <%if (isAdmin){%>
-                                                                                            <a class="tpenButton" href="buttons.jsp?projectID=<%out.print(" " + projectID);%>"><span class="ui-icon ui-icon-gear right"></span>Button Management</a>
+                                                                                            <a class="tpenButton" href="buttons.jsp?projectID=<%out.print(""+projectID);%>"><span class="ui-icon ui-icon-gear right"></span>Button Management</a>
                                                                                             <p>The <span title="Any unicode character can be attached to one of these buttons for use in your project." class="loud">Special Character</span> and <span title="Multiple custom tags with parameters can be added to this project."
                                                                                                     class="loud">Custom xml Tags</span> you define will remain specific to each project. These buttons are accessible on the transcription pages. Characters assigned
                                                                                                 to the numbered buttons can be inserted simply by holding CTRL and pressing the corresponding number on the keyboard.</p>
@@ -1361,7 +1361,7 @@
 
                                                             function navigateTo(dropdown) {
                                                                 $("body").addClass(" ui-state-disabled");
-                                                                document.location = 'frenchTranscription.html?p=' + dropdown.value;
+                                                                document.location = 'french-transcription.html?p=' + dropdown.value;
 
                                                             }
 

@@ -62,7 +62,7 @@ public class ProjectServlet extends HttpServlet {
                 String redirect = req.getPathInfo().substring(1);
                 if (redirect.contains(check)) {
                     projID = Integer.parseInt(redirect.replace("/" + check, ""));
-                    String redirectURL = req.getContextPath() + "/frenchTranscription.html?projectID=" + projID;
+                    String redirectURL = req.getContextPath() + "/french-transcription.html?projectID=" + projID;
                     resp.sendRedirect(redirectURL);
                 } else {
                     projID = Integer.parseInt(req.getPathInfo().substring(1).replace("/", "").replace("manifest.json",""));

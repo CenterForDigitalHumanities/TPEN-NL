@@ -11,22 +11,9 @@ and open the template in the editor.
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css" type="text/css" media="screen, projection">
-    <link rel="stylesheet" href="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/www/css/style.css">
+    <link rel="stylesheet"
+        href="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/www/css/style.css">
     <style>
-        body {
-            font-size: clamp(1em, 1.6vw, 2.2em)
-        }
-
-        #search-btn {
-            display: none !important
-        }
-
-        #site-name {
-            text-align: center;
-            margin: 0;
-            padding: 0
-        }
-
         #projectsList {
             margin: 0 auto;
             max-width: 35em
@@ -124,64 +111,6 @@ and open the template in the editor.
             display: flex;
             flex-direction: column
         }
-
-        ul li.leaf {
-            list-style-image: none;
-            list-style-type: none
-        }
-
-        .nav>li>a {
-            color: #000;
-            font-size: .8em;
-            text-decoration: none;
-            position: relative
-        }
-
-        @media (min-width:981px) {
-            nav .nav {
-                display: flex;
-                margin: 0 auto
-            }
-
-            li.leaf {
-                padding: 0;
-                margin: 0
-            }
-
-            .nav>li>a {
-                border-bottom: 2px solid #b43d2e;
-                padding: 5px 15px
-            }
-
-            .nav>li>a:hover {
-                background: 0 0;
-                border-bottom: 2px solid orange
-            }
-        }
-
-        .nav {
-            margin: 0;
-            padding: 0;
-            list-style: none
-        }
-
-        #header,
-        .menu-bar,
-        .nav {
-            z-index: 100 !important;
-            opacity: 1
-        }
-
-        .nav {
-            margin-bottom: 0;
-            padding-left: 0;
-            list-style: none
-        }
-
-        li.leaf {
-            padding: 0;
-            margin: 0
-        }
     </style>
 </head>
 
@@ -217,33 +146,42 @@ and open the template in the editor.
         </nav>
     </header>
     <h1 class="ruled">My Transcriptions</h1>
-    <p>To continue working on a transcription, click the manuscript name.
+    <p id="toContinue">To continue working on a transcription, click the manuscript name.
         Remove by clicking the "&cross;" button.</p>
     <div id="projectsList">
         <div id="gatheringProjects"></div>
         Gathering projects...
     </div>
-    <footer>
-        <link rel="stylesheet" href="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/www/css/style.css">
-        <div class="row">
-            <div class="col-8">
-                <h2> Partners </h2>
-                    <div class="row">
-                        <a class="col" href="http://www.newberry.org/" target="_blank"><img alt="Newberry" src="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/www/images/NewberryLogo_with_tag.png"></a>
-                        <a class="col" href="http://onesearch.library.utoronto.ca" target="_blank"><img alt="University of Toronto Libraries" src="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/www/images/UTL-logo.png"></a>
-                    </div>
-                    <div class="row">
-                        <a class="col" href="http://lib.slu.edu/" style="line-height: 23.1111px;" target="_blank"><img alt="St. Louis University" src="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/www/images/slu.gif" style="width: 346px;"></a>
-                        <a class="col" href="http://www.itergateway.org/" target="_blank"><img alt="Iter" src="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/www/images/iter-logo-new.png"></a>
-                    </div>
+    <link rel="stylesheet"
+        href="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/www/css/style.css">
+    <footer class="row container">
+        <div class="col" style="flex-grow: 2;">
+            <h2> Partners </h2>
+            <div class="row">
+                <a class="col" href="http://www.newberry.org/" target="_blank"><img alt="Newberry"
+                        src="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/www/images/NewberryLogo_with_tag.png"></a>
+                <a class="col" href="http://onesearch.library.utoronto.ca" target="_blank"><img
+                        alt="University of Toronto Libraries" src="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/www/images/UTL-logo.png"></a>
             </div>
-            <div class="col">
-                <slot></slot>
-                <h2 class="pane-title"> Contact </h2>
-                <p><a href="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/contact">Contact</a><br><a href="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/about-team">About the Team</a><br><a href="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/contact">Terms of Use</a></p>
-                <p>Supported by a grant from The Andrew W. Mellon Foundation</p>
-                <p><a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img alt="Creative Commons Licence" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" style="border-width:0"></a><br><a href="https://www.newberry.org/paleography">French Renaissance Paleography</a> is licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.</p>
+            <div class="row">
+                <a class="col" href="http://lib.slu.edu/" style="line-height: 23.1111px;" target="_blank"><img
+                        alt="St. Louis University" src="https://centerfordigitalhumanities.github.io/Newberry-paleography/images/slu_ovpr.png" style="width: 470px;"></a>
+                <a class="col" href="http://www.itergateway.org/" target="_blank"><img alt="Iter"
+                        src="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/www/images/iter-logo-new.png"></a>
             </div>
+        </div>
+        <div class="col">
+            <h2 class="pane-title"> Contact </h2>
+            <p><a href="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/contact">Contact</a><br><a href="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/about-team">About the
+                    Team</a><br>
+            </p>
+            <p>Supported by a grant from The Andrew W. Mellon Foundation</p>
+            <p><a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img
+                        alt="Creative Commons Licence" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png"
+                        style="width:88px"></a><br><a href="https://www.newberry.org/paleography">French Renaissance
+                    Paleography</a> is licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/"
+                    rel="license">Creative Commons
+                    Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.</p>
         </div>
     </footer>
 </body>
@@ -271,7 +209,7 @@ and open the template in the editor.
                 }
                 else if (resp.status === 401) {
                     projectsList.innerHTML = "You must be logged in to see your project list"
-                    document.location.href="login.jsp?referrer=my-transcriptions.html"
+                    document.location.href = "login.jsp?referrer=my-transcriptions.html"
                     return []
                 }
                 else if (resp.status === 403) {
@@ -301,6 +239,27 @@ and open the template in the editor.
                     <a class="title" href="${b.interface}">${b.name}</a>
                     <a class="deleteBtn" onclick="deleteProject(${b.id}, event);" title="Delete Transcription">&cross;</a>
                 </div>`, ``)
+        }
+        else {
+            let lang = getURLVariable("language")
+            let which
+            //If they are coming from the static pages we will know which language they are trying to use.
+            if (lang === "French" || lang === "french") {
+                which = `a <a target="_blank" href="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/www/manuscripts.html">French Manuscript</a>`
+            }
+            else if (lang === "Italian" || lang === "italian") {
+                which = `an <a target="_blank" href="https://centerfordigitalhumanities.github.io/Newberry-Italian-paleography/www/manuscripts.html">Italian Manuscript</a> `
+            }
+            else {
+                which = `a <a target="_blank" href="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/www/manuscripts.html">French Manuscript</a>
+                or <a target="_blank" href="https://centerfordigitalhumanities.github.io/Newberry-Italian-paleography/www/manuscripts.html">Italian Manuscript</a>`
+            }
+            projectsList.innerHTML = ` 
+                <p>
+                   You do not have any projects.  Pick ${which}
+                   from the list to get started!
+               </p>`
+            toContinue.style.display = "none"
         }
     }
 
@@ -340,7 +299,8 @@ and open the template in the editor.
     getUserProjects(007).then(projects => { formatAndRenderProjects(projects) })
         .catch(err => {
             gatheringProjects.style.display = "none"
-            //projectsList.innerHTML = "Error.  See web console."
+            toContinue.style.display = "none"
+            projectsList.innerHTML = "Error.  Refresh the page to try again."
             console.error(err)
         })
 </script>

@@ -46,6 +46,7 @@
                     if (text === "Logout complete") {
                         document.getElementById("status").innerHTML = "You have logged out of Newberry Paleography successfully."
                         document.getElementById("status").style.color = "green"
+                        document.location = "my-transcriptions.html"
                     } else {
                         document.getElementById("status").innerHTML = "There was an issue logging out.  You may still be logged in.  Refresh the page to try again."
                         document.getElementById("status").style.color = "red"

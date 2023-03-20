@@ -1,4 +1,4 @@
-build.xml
+/build.xml
 .settings/
 build/
 'Source Packages/java/version.properties'

@@ -101,7 +101,7 @@ body{
     padding:25px 15px 0px 15px;
     position: relative;
     text-align: center;
-    height: 795px; /* however tall it needs to be to fit all text and buttons on small screen scroll */
+    background-color: white;
 }
 .block {
     width: 100%;
@@ -187,7 +187,7 @@ textarea:focus{
 .demoteUser{
     font-weight: bold;
     font-size: 117%;
-    color: #264aa0; //#A63321
+    color: #264aa0;
     margin-right: 5px;
 }
 .removeUser{
@@ -1810,11 +1810,11 @@ button,.navigation, #contribution,
     content:"Contact";
 }
 #homeBtn::after {
-    content:"Paleography Home";
+    content:"My Transcriptions";
     white-space: nowrap;
 }
 #projectsBtn::after {
-    content:"Projects";
+    content:"Manage Team";
     white-space: nowrap;
 }
 #trimCurrentUser::before {

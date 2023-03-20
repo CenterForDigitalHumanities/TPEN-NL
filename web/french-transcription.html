@@ -78,13 +78,13 @@
 <!--            <span class="trimSection">Help</span> -->
             <div class="trimDividor" style="position:absolute;right:0;top:0;z-index: 1;">
                 <span class="trimSection">
-                    <span class="fa fa-home"></span><a id="homeBtn" title="Paleography Home" href="" ></a>
+                    <span class="fa fa-pencil"></span><a id="homeBtn" title="My Paleography Projects" href="" ></a>
                 </span>
                 <span class="trimSection">
-                    <a id="projectsBtn" class="exitPage wBtn ui-state-default ui-button" target="_blank" title="My Paleography Projects" href=""></a>
-                    <span class="fa fa-book"></span>       
+                    <a id="projectsBtn" class="exitPage wBtn ui-state-default ui-button" target="_blank" title="Share Transcriptions" href=""></a>
+                    <span class="fa fa-group"></span>       
                 </span>
-                <span class="trimSection"><a id="helpContact" title="Contact the French Paleography team" href="" target="_blank"></a><span class="fa fa-comment"></span></span> 
+                <span class="trimSection"><a id="helpContact" title="Contact the French Paleography team" href="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/contact" target="_blank"></a><span class="fa fa-comment"></span></span> 
                 <span class="trimSection"><a id="helpMe" title="Get Help"></a><i class="fa fa-question" aria-hidden="true"></i></span>
                 <span class="trimSection videoSection">
                     <a id="videoBtn_trans" class="videoBtn wBtn ui-state-default ui-button" title="See help video!" onclick="openHelpVideo('https://centerfordigitalhumanities.github.io/TPEN_Videos/tpen_newberry.html');"><span class="vInvert"></span></a>
@@ -394,12 +394,12 @@
         
             <div id="calligraphySplit" class="split">
                 <div style="text-align: center;" class="fullScreenTrans"><i class="fa fa-share fa-flip-vertical"></i></div>
-                <iframe class="loadingIframe" data_src="www/calligraphy.html"></iframe>
+                <iframe class="loadingIframe" data_src="about-calligraphy-books"></iframe>
             </div>
         
             <div id="mapsSplit" class="split">
                 <div style="text-align: center;" class="fullScreenTrans"><i class="fa fa-share fa-flip-vertical"></i></div>
-                <iframe class="loadingIframe" data_src="www/maps.html"></iframe>
+                <iframe class="loadingIframe" data_src="about-historical-maps"></iframe>
             </div>
         
             <div id="scriptsSplit" class="split">
@@ -575,16 +575,8 @@
                             <dd><kbd>SHIFT</kbd>+<kbd>TAB</kbd></dd>
                             <dd><kbd>ALT</kbd>+<kbd>&uArr;</kbd></dd>
 
-                            <dt>Top of Page</dt>
-                            <dd><kbd>CTRL</kbd>+<kbd>HOME</kbd></dd>
-                            <dd>Quickly jump to the first line of the current page.</dd>
-
                             <dt>Close any open tool & return to fullscreen transcription.</dt>
                             <dd><kbd>ESC</kbd></dd>
-
-                            <dt>Peek-Zoom</dt>
-                            <dd><kbd>ALT</kbd>+<kbd>CTRL</kbd></dd>
-                            <dd>Hold both to use the peek-zoom, which scales the bounded area to fill the screen.</dd>
 
                             <dt>While Inspecting</dt>
                             <dd>+ or -</dd>
@@ -792,16 +784,16 @@
                         <div class="helpSubsection"> header bar links </div>
                         <dl>
                             <dt>
-                                Paleography Home
+                                My Transcriptions
                             </dt>
                             <dd>
-                                Go to the French Paleography home page.
+                                Go to the My Transcriptions page for Newberry Paleography.
                             </dd>
                             <dt>
-                                Projects
+                                Manage Team
                             </dt>
                             <dd>
-                                Go to the My Transcriptions page for French Paleography.
+                                Invite collaborators to your project.
                             </dd>
                             <dt>Contact</dt>
                             <dd>
@@ -983,7 +975,6 @@
                     if (theURL.indexOf("projectID=") > -1){
                         var projID = getURLVariable("projectID");
                         theProjectID = parseInt(projID);
-                        $(".editButtons").attr("href", "buttons.jsp?projectID="+theProjectID);
                         $("#transcriptionText").val(projID);
                         $("#loadBtn").click();
                     }

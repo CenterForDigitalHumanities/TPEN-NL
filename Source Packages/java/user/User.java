@@ -803,10 +803,18 @@ PreparedStatement qry=null;
     /**Send the welcome message and set the user's password.*/
     public String activateUser() throws SQLException, NoSuchAlgorithmException, MessagingException, Exception
         {
+        System.out.println("Activate User");
         TokenManager man = new TokenManager();
         textdisplay.mailer m = new textdisplay.mailer();
         String pass=resetPassword(false);
-        m.sendMail(man.getProperties().getProperty("EMAILSERVER"), man.getProperties().getProperty("NOTIFICATIONEMAIL"), this.email, "Welcome to Newberry Paleography", new WelcomeMessage().getMessage(this.fname+" "+this.lname,pass) );
+        System.out.println("Send EMail thru "+man.getProperties().getProperty("EMAILSERVER")+" to "+this.email);
+        try{
+            m.sendMail(man.getProperties().getProperty("EMAILSERVER"), man.getProperties().getProperty("NOTIFICATIONEMAIL"), this.email, "Welcome to Newberry Paleography", new WelcomeMessage().getMessage(this.fname+" "+this.lname,pass) );
+        }
+        catch(Exception ex){
+            System.out.println(ex);
+        }
+        System.out.println("return password");
         return pass;
     }
     /**This sets the last time the user was active to the current time. Used for determining who is online, and keeping track of active vs inactive users*/
