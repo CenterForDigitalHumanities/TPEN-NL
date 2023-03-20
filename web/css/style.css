@@ -1,3 +1,5 @@
+@import url('https://unpkg.com/chota@latest');
+
 :root {
     --bg-color          : #ffffff;
     --bg-secondary-color: #f3f3f6;
@@ -214,3 +216,4 @@ dd p {
         max-width: 100%;
     }
 }
+
