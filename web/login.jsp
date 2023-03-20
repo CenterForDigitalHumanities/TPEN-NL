@@ -103,13 +103,6 @@
                                                                 }
                                                                 
                                                             </style>
-                                                            <script type="text/javascript">
-                                                                $(function() {
-                                                                    $("input:submit").hover(function() {
-                                                                        $(this).toggleClass("ui-state-hover")
-                                                                    });
-                                                                });
-                                                            </script>
                                                         </head>
                                                         <!--    <script type="text/javascript" src="menu.js"></script>-->
 
