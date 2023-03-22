@@ -20,10 +20,10 @@ package edu.slu.tpen.servlet;
  */
 public class Constant {
     public static String OLD_ANNOTATION_SERVER_ADDR = "http://165.134.107.94/annotationstore";
-    public static String ANNOTATION_SERVER_ADDR = "http://devstore.rerum.io/v1/api";
-    public static String RERUM_ID_PATTERN = "http://devstore.rerum.io/v1/id";
-    public static String RERUM_ACCESS_TOKEN_URL = "http://devstore.rerum.io/v1/api/accessToken.action";
-    public static String RERUM_REFRESH_TOKEN_URL = "http://devstore.rerum.io/v1/api/refreshToken.action";
-    public static String RERUM_CONTEXT = "http://devstore.rerum.io/v1/context.json";
+    public static String ANNOTATION_SERVER_ADDR = "http://vlcdhp02:3001/v1/api";
+    public static String RERUM_ID_PATTERN = "http://vlcdhp02:3001/v1/id";
+    public static String RERUM_ACCESS_TOKEN_URL = "http://vlcdhp02:3001/v1/api/accessToken.action";
+    public static String RERUM_REFRESH_TOKEN_URL = "http://vlcdhp02:3001/v1/api/refreshToken.action";
+    public static String RERUM_CONTEXT = "http://vlcdhp02:3001/v1/context.json";
     public static String PROPERTIES_FILE_NAME = "version.properties";
 }
