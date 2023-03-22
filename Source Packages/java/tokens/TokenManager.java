@@ -213,7 +213,7 @@ public class TokenManager{
             }
         }
         setAccessToken(newAccessToken);
-        writeProperty("access_token", newAccessToken);
+        writeProperty("TPEN_NL_ACCESS_TOKEN", newAccessToken);
         System.out.println("TPEN_NL has a new access token, and it is written to the properties file...");
         return newAccessToken;
     }
@@ -273,7 +273,7 @@ public class TokenManager{
             }
         }
         setAccessToken(newAccessToken);
-        writeProperty("access_token", newAccessToken);
+        writeProperty("TPEN_NL_ACCESS_TOKEN", newAccessToken);
         return newAccessToken;
     }
     
