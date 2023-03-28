@@ -34,6 +34,7 @@ public class TokenManager{
     private String currentRefreshToken = "";
     private String registeredAgent = "";
     private String canvasPrefix = "";
+    private String oldCanvasPrefix = "";
     private String propFileLocation = "";
     private String testingFlag = "";
     private String database = "";
@@ -71,6 +72,7 @@ public class TokenManager{
         currentRefreshToken = props.getProperty("TPEN_NL_REFRESH_TOKEN");
         registeredAgent = props.getProperty("TPEN_NL_AGENT");
         canvasPrefix = props.getProperty("PALEO_CANVAS_ID_PREFIX");
+        oldCanvasPrefix = props.getProperty("OLD_PALEO_CANVAS_ID_PREFIX");
         testingFlag = props.getProperty("TESTING");
         database = props.getProperty("DATABASE");
         dbuser = props.getProperty("DBUSER");
@@ -297,6 +299,10 @@ public class TokenManager{
         canvasPrefix = newPrefix;
     }
     
+    public void setOldCanvasPrefix(String newPrefix){
+        oldCanvasPrefix = newPrefix;
+    }
+    
     public void setTestingFlag(String bool){
         testingFlag = bool;
     }
@@ -319,6 +325,10 @@ public class TokenManager{
     
     public String getCanvasPrefix(){
         return canvasPrefix;
+    }
+    
+    public String getOldCanvasPrefix(){
+        return oldCanvasPrefix;
     }
     
     public String getTestingFlag(){

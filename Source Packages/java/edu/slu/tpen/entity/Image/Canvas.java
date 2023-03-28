@@ -158,7 +158,7 @@ public class Canvas {
      * @param UID: The current UID of the user in session.
      * @return : The annotation lists @id property, not the object.  Meant to look like an otherContent field.
      */
-    public static JSONArray getAnnotationListsForProject(Integer projectID, String canvasID, Integer UID, TokenManager man) throws MalformedURLException, IOException {
+    public static JSONArray getAnnotationListsForProject(Integer projectID, String canvasNum, Integer UID, TokenManager man) throws MalformedURLException, IOException {
         /*
             BH note 7/26/18
             In a traditional sense, if we find a list in v1 we don't have to check v0 anymore.  However, given the nature
@@ -187,14 +187,20 @@ public class Canvas {
         int lim = 75;
         int skip = 0;
         String serv = "/getByProperties.action?skip=" + skip + "&limit=" + lim;
-
         URL postUrl = new URL(Constant.ANNOTATION_SERVER_ADDR + serv);
         JSONObject historyWildCard = new JSONObject();
         historyWildCard.element("$exists", true);
         historyWildCard.element("$size", 0);
+        JSONArray targetVariant = new JSONArray();
+        JSONObject target1 = new JSONObject();
+        target1.element("on", man.getProperties().getProperty("PALEO_CANVAS_ID_PREFIX") + canvasNum);
+        JSONObject target2 = new JSONObject();
+        target2.element("on", man.getProperties().getProperty("OLD_PALEO_CANVAS_ID_PREFIX") + canvasNum);
+        targetVariant.add(target1);
+        targetVariant.add(target2);
         JSONObject parameter = new JSONObject();
         parameter.element("@type", "sc:AnnotationList");
-        parameter.element("on", canvasID);
+        parameter.element("$or", targetVariant);
         parameter.element("isPartOf", Integer.toString(projectID));
         parameter.element("__rerum.history.next", historyWildCard); //Wow this improves run time dramatically.  No need for the loop below with this. 
         //This means those that have a next because they were forked won't be found, but that shouldn't be a problem here.  

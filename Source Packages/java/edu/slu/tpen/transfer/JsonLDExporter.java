@@ -138,8 +138,8 @@ public class JsonLDExporter {
         System.out.println("Folio Number: "+f.getFolioNumber());
         System.out.println("Folio URL Resize: "+f.getImageURLResize());
        */
-        
-        String canvasID = man.getProperties().getProperty("PALEO_CANVAS_ID_PREFIX") + f.getImageURL().replaceAll("^.*(paleography[^/]+).*$", "$1"); //for paleo dev and prod
+        String canvasNum = f.getImageURL().replaceAll("^.*(paleography[^/]+).*$", "$1");
+        String canvasID = man.getProperties().getProperty("PALEO_CANVAS_ID_PREFIX") + canvasNum; //for paleo dev and prod
         //String canvasID = projName + "/canvas/" + URLEncoder.encode(f.getPageName(), "UTF-8"); //For SLU testing    
         
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
@@ -188,7 +188,7 @@ public class JsonLDExporter {
 
         JSONArray otherContent = new JSONArray();
         Date date4 = new Date();
-        otherContent = Canvas.getAnnotationListsForProject(projID, canvasID, u.getUID(), man);
+        otherContent = Canvas.getAnnotationListsForProject(projID, canvasNum, u.getUID(), man);
         Date date5 = new Date();
         //System.out.println("++++++++++++++++++++++++++++++++++");
         //System.out.println("It took "+getDateDiff(date4,date5,TimeUnit.SECONDS)+" seconds to get the list for this page");
