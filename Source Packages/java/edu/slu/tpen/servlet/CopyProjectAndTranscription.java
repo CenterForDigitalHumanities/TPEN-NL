@@ -91,10 +91,11 @@ public class CopyProjectAndTranscription extends HttpServlet {
                             //System.out.println("Starting copy for canvas");
                             Folio folio = folios[i];
                             String imageURL = folio.getImageURL();
+                            String canvasNum = imageURL.replaceAll("^.*(paleography[^/]+).*$", "$1");
                             // use regex to extract paleography pid
                             //THIS MUST MATCH THE NAMING CONVENTION IN JSONLDEXporter
                             String canvasID = man.getProperties().getProperty("PALEO_CANVAS_ID_PREFIX") + imageURL.replaceAll("^.*(paleography[^/]+).*$", "$1"); //for paleo
-                            JSONArray ja_allAnnoLists = Canvas.getAnnotationListsForProject(projectID, canvasID, uID, man);
+                            JSONArray ja_allAnnoLists = Canvas.getAnnotationListsForProject(projectID, canvasNum, uID, man);
                             JSONObject jo_annotationList = new JSONObject();
                             //^^ this does all the filtering and will either have 0 or 1 lists for this particular version of TPEN
                             if(!ja_allAnnoLists.isEmpty()){
