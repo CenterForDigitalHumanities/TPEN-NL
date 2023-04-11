@@ -689,7 +689,7 @@
                                                 var src = [
                                                     "https://maps.googleapis.com/maps/api/staticmap?",
                                                     "center=",city,
-                                                    "&markers=icon:http://www.t-pen.org/TPEN/images/quillpin.png|",city,
+                                                    "&markers=icon:https://www.t-pen.org/TPEN/images/quillpin.png|",city,
                                                     "&sensor=false&scale=1&zoom=3&visibility=simplified&maptype=terrain",
                                                     "&size=",$("#cityMap").width(),"x",$("#cityMap").height()
                                                 ].join("");
@@ -730,9 +730,9 @@
                                 <h3>Display City Map</h3>
                                 <form id="updateCityMap" class="cityMap" action="admin.jsp" method="post" onsubmit="mapFilter();">
                                     <div id="cityMapContain">
-                                        <img id="cityMap" src="https://maps.googleapis.com/maps/api/staticmap?center=St.%20Louis&zoom=3&sensor=false&scale=1&size=300x200&maptype=terrain&visibility=simplified&markers=icon:http://www.t-pen.org/TPEN/images/quillpin.png%257St.%20Louis" />
+                                        <img id="cityMap" src="https://maps.googleapis.com/maps/api/staticmap?center=St.%20Louis&zoom=3&sensor=false&scale=1&size=300x200&maptype=terrain&visibility=simplified&markers=icon:https://www.t-pen.org/TPEN/images/quillpin.png%257St.%20Louis" />
                                         <div id="cityMapZoom">
-                                            <img src="https://maps.googleapis.com/maps/api/staticmap?center=St.%20Louis&zoom=10&sensor=false&scale=1&size=100x140&maptype=terrain&visibility=simplified&markers=icon:http://www.t-pen.org/TPEN/images/quillpin.png%257St.%20Louis" />
+                                            <img src="https://maps.googleapis.com/maps/api/staticmap?center=St.%20Louis&zoom=10&sensor=false&scale=1&size=100x140&maptype=terrain&visibility=simplified&markers=icon:https://www.t-pen.org/TPEN/images/quillpin.png%257St.%20Louis" />
                                         </div>
                                     </div>
                                     <div class="right" id="mapSearch">
