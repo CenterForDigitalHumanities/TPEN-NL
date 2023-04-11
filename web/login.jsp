@@ -88,7 +88,7 @@
                                                             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
                                                             <title>Login or Register a New Account</title>
                                                             <link rel="stylesheet" href="css/style.css" type="text/css" media="screen, projection">
-                                                            <link rel="stylesheet" href="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/www/css/style.css">
+                                                            <link rel="stylesheet" href="https://french.newberry.t-pen.org/www/css/style.css">
                                                             <link rel="shortcut icon" type="image/x-icon" href="https://newberry.org/sites/all/themes/newberry2015/favicon.ico">
                                                             <style>
                                                                 #login,
@@ -116,7 +116,7 @@
                                                                         <h1 id="site-name">
                                                                             <div id="logo" style="display: inline;">
                                                                                 <img aria-hidden="true" role="presentation" alt=""
-                                                                                    src="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/www/images/NewberryLogo_with_tag.png">
+                                                                                    src="https://french.newberry.t-pen.org/www/images/NewberryLogo_with_tag.png">
                                                                             </div>
                                                                         </h1>
                                                                     </div>
@@ -124,11 +124,11 @@
                                                                 <nav class="container">
                                                                     <ul class="nav nav-bar">
                                                                         <li class="first leaf">
-                                                                            <a href="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/">French
+                                                                            <a href="https://french.newberry.t-pen.org/">French
                                                                                 Renaissance Paleography</a>
                                                                         </li>
                                                                         <li class="leaf">
-                                                                            <a href="https://centerfordigitalhumanities.github.io/Newberry-Italian-paleography/">Italian
+                                                                            <a href="https://italian.newberry.t-pen.org/">Italian
                                                                                 Paleography</a>
                                                                         </li>
                                                                         <li class="last leaf">
@@ -175,26 +175,26 @@
         </form>
     </div>
 <a href="./">Return to Paleography Home</a>
-<link rel="stylesheet" href="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/www/css/style.css">
+<link rel="stylesheet" href="https://french.newberry.t-pen.org/www/css/style.css">
 <footer class="row container">
     <div class="col" style="flex-grow: 2;">
         <h2> Partners </h2>
         <div class="row">
           <a class="col" href="https://www.newberry.org/" target="_blank"><img alt="Newberry"
-              src="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/www/images/NewberryLogo_with_tag.png"></a>
+              src="https://french.newberry.t-pen.org/www/images/NewberryLogo_with_tag.png"></a>
           <a class="col" href="https://onesearch.library.utoronto.ca" target="_blank"><img
-              alt="University of Toronto Libraries" src="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/www/images/UTL-logo.png"></a>
+              alt="University of Toronto Libraries" src="https://french.newberry.t-pen.org/www/images/UTL-logo.png"></a>
         </div>
         <div class="row">
           <a class="col" href="https://lib.slu.edu/" style="line-height: 23.1111px;" target="_blank"><img
               alt="St. Louis University" src="https://centerfordigitalhumanities.github.io/Newberry-paleography/images/slu_ovpr.png" style="width: 470px;"></a>
           <a class="col" href="https://www.itergateway.org/" target="_blank"><img alt="Iter"
-              src="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/www/images/iter-logo-new.png"></a>
+              src="https://french.newberry.t-pen.org/www/images/iter-logo-new.png"></a>
         </div>
       </div>
       <div class="col">
         <h2 class="pane-title"> Contact </h2>
-        <p><a href="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/contact">Contact</a><br><a href="https://centerfordigitalhumanities.github.io/Newberry-French-paleography/about-team">About the
+        <p><a href="https://french.newberry.t-pen.org/contact">Contact</a><br><a href="https://french.newberry.t-pen.org/about-team">About the
             Team</a><br>
         </p>
         <p>Supported by a grant from The Andrew W. Mellon Foundation</p>

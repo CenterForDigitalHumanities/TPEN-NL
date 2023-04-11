@@ -46,8 +46,8 @@ var creatorID = -1;
 var doit = ""; //A timeout used later.
 var lineUpdateWorking = false;
 const homeLinkMap = new Map([
-    ["italian-transcription.html", "https://centerfordigitalhumanities.github.io/Newberry-Italian-paleography/"],
-    ["french-transcription.html", "https://centerfordigitalhumanities.github.io/Newberry-French-paleography/"],
+    ["italian-transcription.html", "https://italian.newberry.t-pen.org/"],
+    ["french-transcription.html", "https://french.newberry.t-pen.org/"],
 ]);
 const homeLink = homeLinkMap.get(document.location.pathname.split("/").pop())
 var lazyURL = "";
@@ -5990,7 +5990,7 @@ document.addEventListener("DOMContentLoaded", () => {
     /**
      * When we care less about readability, this could be minified a bit.
      * ["header","footer"].forEach(tag=>document.querySelector("body>"+tag)||document.body.prepend(document.createElement(tag)))
-     * NL instanceof Map || document.body.append(document.createElement("script").setAttribute("src", /italian/i.test(document.title) ? "https://centerfordigitalhumanities.github.io/Newberry-Italian-paleography/www/script/templates.js" : "https://centerfordigitalhumanities.github.io/Newberry-French-paleography/www/script/templates.js"))
+     * NL instanceof Map || document.body.append(document.createElement("script").setAttribute("src", /italian/i.test(document.title) ? "https://italian.newberry.t-pen.org/www/script/templates.js" : "https://french.newberry.t-pen.org/www/script/templates.js"))
      */
 
     if (!window['imgTop']) { // prevent on transcription interfaces
