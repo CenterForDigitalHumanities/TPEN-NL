@@ -19,11 +19,11 @@ package edu.slu.tpen.servlet;
  * @author Bryan Haberberger
  */
 public class Constant {
-    public static String OLD_ANNOTATION_SERVER_ADDR = "//165.134.107.94/annotationstore";
-    public static String ANNOTATION_SERVER_ADDR = "//vlcdhprdp02:3001/v1/api";
-    public static String RERUM_ID_PATTERN = "//vlcdhprdp02:3001/v1/id";
-    public static String RERUM_ACCESS_TOKEN_URL = "//vlcdhprdp02:3001/v1/api/accessToken.action";
-    public static String RERUM_REFRESH_TOKEN_URL = "//vlcdhprdp02:3001/v1/api/refreshToken.action";
+    public static String OLD_ANNOTATION_SERVER_ADDR = "http://165.134.107.94/annotationstore";
+    public static String ANNOTATION_SERVER_ADDR = "http://vlcdhprdp02:3001/v1/api";
+    public static String RERUM_ID_PATTERN = "http://vlcdhprdp02:3001/v1/id";
+    public static String RERUM_ACCESS_TOKEN_URL = "http://vlcdhprdp02:3001/v1/api/accessToken.action";
+    public static String RERUM_REFRESH_TOKEN_URL = "http://vlcdhprdp02:3001/v1/api/refreshToken.action";
     public static String RERUM_CONTEXT = "http://store.rerum.io/v1/context.json";
     public static String PROPERTIES_FILE_NAME = "version.properties";
 }
