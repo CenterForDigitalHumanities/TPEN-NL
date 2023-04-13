@@ -6006,7 +6006,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const params = new URLSearchParams(location.search)
 
             // No generic set, but if it matters, we'll add this in.
-            const src = `https://centerfordigitalhumanities.github.io/Newberry-${params.get("language") ?? ""}-paleography/www/script/templates.js`
+            const src = `https://${params.get("language") ?? ""}.newberry.t-pen.org/www/script/templates.js`
 
             let templates = document.createElement("script")
             templates.setAttribute("src", src)
