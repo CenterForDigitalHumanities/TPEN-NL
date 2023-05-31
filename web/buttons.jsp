@@ -648,9 +648,9 @@
                     int ctr = 1; //There are lots of position 0 buttons, they are ignored by all the getters now since they should never happen.  That way the same buttons are displayed consitently. 
                     //In the future, we need to figure out how 0s got in there and stop it from happening. 
                     try {
-                        String ref = request.getHeader("referer");
+                        String ref = request.getParameter("referer");
                         if (ref.contains("transcription")) {
-                            session.setAttribute("ref", request.getHeader("referer"));
+                            session.setAttribute("ref", request.getParameter("referer"));
                         }
                     } catch (NullPointerException e) {
                         //They didnt get here from another page, maybe a bookmark. Not a big deal

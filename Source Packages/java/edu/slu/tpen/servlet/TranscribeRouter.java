@@ -64,7 +64,7 @@ public class TranscribeRouter extends HttpServlet {
             proj = lookup.getUserProjectByProjectName(projectName);         
             if (null != proj && proj.getProjectID() > 0) {
                 //Then this user has a project already.  Redirect to that project.
-                //System.out.println("Route to user project "+proj.getProjectID());
+                System.out.println("Route to user project "+proj.getProjectID());
                 folioNum = proj.firstPage();
                 if(folioNum > -1){
                    interfaceLink = proj.mintInterfaceLinkFromFolio(folioNum);
@@ -79,6 +79,7 @@ public class TranscribeRouter extends HttpServlet {
                 //This user did not have a project yet.  Get the master project ID, run /copyProject, and redirect to the resulting link
                 System.out.println("User does not have a project with name '"+projectName+"'.  Make a new one for them by copying the master");
                 int masterID = Project.getMasterProjectID(projectName);
+                System.out.println("Master is "+masterID);
                 int copiedProjectID = copyProjectAndLineParsing(uid, masterID, req.getLocalName());
                 if(copiedProjectID > 0){
                     proj = new Project(copiedProjectID);
@@ -492,13 +493,11 @@ public class TranscribeRouter extends HttpServlet {
                                     break;
                                 }
                                 parseThis = sbAnnoLines.toString();      
-                                JSONObject batchSaveResponse = JSONObject.fromObject(parseThis);
                                 try{
-                                    new_resources = (JSONArray) batchSaveResponse.get("new_resources");
-
+                                    new_resources = JSONArray.fromObject(parseThis);
                                 }
                                 catch(JSONException e){
-                                   System.out.println("Batch save response does not contain JSONARRAY in new_resouces.");
+                                   System.out.println("Batch save response does not contain any resources.");
                                    result = -1;
                                    er = true;
                                    break;

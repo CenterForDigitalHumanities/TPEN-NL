@@ -16,8 +16,8 @@
                 { 
                 session.setAttribute("UID", ""+thisOne.getUID());
                 String ref="";
-                String tmpref=request.getHeader("referer");
-                if(request.getHeader("referer")==null || request.getHeader("referer").compareTo("")==0 || request.getHeader("referer").contains("login")){
+                String tmpref=request.getParameter("referer");
+                if(request.getParameter("referer")==null || request.getParameter("referer").compareTo("")==0 || request.getParameter("referer").contains("login")){
                     %>
                     <script>
                         document.location = "my-transcriptions.html";
@@ -26,7 +26,7 @@
                 //response.sendRedirect("index.jsp");
                 else
                     {
-                    if(request.getHeader("referer").contains("authenticate.jsp"))
+                    if(request.getParameter("referer").contains("authenticate.jsp"))
                         {
                     %>
                         <script>
@@ -38,9 +38,9 @@
                         {
                     %>
                             <script>
-                                document.location = '<%out.print(request.getHeader("referer"));%>';
+                                document.location = '<%out.print(request.getParameter("referer"));%>';
                             </script>
-                            <%//                        response.sendRedirect(request.getHeader("referer"));
+                            <%//                        response.sendRedirect(request.getParameter("referer"));
                         }
                     }
                 }
