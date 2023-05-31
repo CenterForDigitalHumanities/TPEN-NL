@@ -50,7 +50,7 @@ public class TranscribeRouter extends HttpServlet {
     protected void processRequest(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException, SQLException {
         req.setCharacterEncoding("UTF-8");
-        String projectName = "";
+        String projectName = projectName = req.getPathInfo().substring(1);
         int uid = ServletUtils.getUID(req, resp);
         Project proj = null;
         String interfaceLink = "";
@@ -59,7 +59,7 @@ public class TranscribeRouter extends HttpServlet {
         resp.setHeader("Access-Control-Allow-Origin", "*");
         resp.setHeader("Access-Control-Allow-Methods", "GET");
         if (uid >= 0) {
-            projectName = req.getPathInfo().substring(1);
+            
             User lookup = new User(uid);
             proj = lookup.getUserProjectByProjectName(projectName);         
             if (null != proj && proj.getProjectID() > 0) {
@@ -99,10 +99,11 @@ public class TranscribeRouter extends HttpServlet {
             }
         } 
         else {
-            //They need to be logged into T-PEN to run this!
-            //TODO! When we have the auth workflow right, we will need to redirect them appropriately.
+            // If there is no logged in user, then go to login or signup.
             System.out.println("You must be logged in to activate the /transcribe router!");
-            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            String r = man.getProperties().getProperty("SERVERURL")+"login.jsp?referer=transcribe/"+projectName;
+            resp.sendRedirect(r);
+            //resp.sendError(HttpServletResponse.SC_UNAUTHORIZED);
         }
     }
 
@@ -332,7 +333,6 @@ public class TranscribeRouter extends HttpServlet {
                             er = true;
                             break;
                         }
-
                         //System.out.println("Finished this canvas.");
                     }
                 }
@@ -437,44 +437,111 @@ public class TranscribeRouter extends HttpServlet {
                                 resources.getJSONObject(h).remove("serverName");
                                 resources.getJSONObject(h).remove("serverIP");
                             }
-                            URL postUrlCopyAnno = new URL(Constant.ANNOTATION_SERVER_ADDR + "/batch_create.action");
-                            HttpURLConnection ucCopyAnno = (HttpURLConnection) postUrlCopyAnno.openConnection();
-                            ucCopyAnno.setDoInput(true);
-                            ucCopyAnno.setDoOutput(true);
-                            ucCopyAnno.setRequestMethod("POST");
-                            ucCopyAnno.setUseCaches(false);
-                            ucCopyAnno.setInstanceFollowRedirects(true);
-                            ucCopyAnno.setRequestProperty("Content-Type", "application/json; charset=utf-8");
-                            ucCopyAnno.setRequestProperty("Authorization", "Bearer "+pubTok);
-                            ucCopyAnno.connect();
-                            DataOutputStream dataOutCopyAnno = new DataOutputStream(ucCopyAnno.getOutputStream());
-                            String str_resources = "";
-                            if(resources.size() > 0){
-                                str_resources = resources.toString();
-                            }
-                            else{
-                                str_resources = "[]";
-                            }
-//                                System.out.println("Batch create these");
-//                                System.out.println(str_resources);
-                            byte[] toWrite = str_resources.getBytes("UTF-8");
-                            dataOutCopyAnno.write(toWrite);
-                            dataOutCopyAnno.flush();
-                            dataOutCopyAnno.close();
-                            codeOverwrite = ucCopyAnno.getResponseCode();
-                            String lines = "";
-                            StringBuilder sbAnnoLines = new StringBuilder();
+                            
+                            //Try batch create.  Error out if this fails
                             try{
-                                BufferedReader returnedAnnoList = new BufferedReader(new InputStreamReader(ucCopyAnno.getInputStream(),"utf-8"));
-                                while ((lines = returnedAnnoList.readLine()) != null){
-    //                                    System.out.println(lineAnnoLs);
-                                    sbAnnoLines.append(lines);
+                                URL postUrlCopyAnno = new URL(Constant.ANNOTATION_SERVER_ADDR + "/batch_create.action");
+                                HttpURLConnection ucCopyAnno = (HttpURLConnection) postUrlCopyAnno.openConnection();
+                                ucCopyAnno.setDoInput(true);
+                                ucCopyAnno.setDoOutput(true);
+                                ucCopyAnno.setRequestMethod("POST");
+                                ucCopyAnno.setUseCaches(false);
+                                ucCopyAnno.setInstanceFollowRedirects(true);
+                                ucCopyAnno.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+                                ucCopyAnno.setRequestProperty("Authorization", "Bearer "+pubTok);
+                                ucCopyAnno.connect();
+                                DataOutputStream dataOutCopyAnno = new DataOutputStream(ucCopyAnno.getOutputStream());
+                                String str_resources = "";
+                                if(resources.size() > 0){
+                                    str_resources = resources.toString();
                                 }
-                                returnedAnnoList.close();
+                                else{
+                                    str_resources = "[]";
+                                }
+                                
+    //                                System.out.println("Batch create these");
+    //                                System.out.println(str_resources);
+                                byte[] toWrite = str_resources.getBytes("UTF-8");
+                                dataOutCopyAnno.write(toWrite);
+                                dataOutCopyAnno.flush();
+                                dataOutCopyAnno.close();
+                                codeOverwrite = ucCopyAnno.getResponseCode();
+                                String lines = "";
+                                StringBuilder sbAnnoLines = new StringBuilder();
+                                try{
+                                    BufferedReader returnedAnnoList = new BufferedReader(new InputStreamReader(ucCopyAnno.getInputStream(),"utf-8"));
+                                    while ((lines = returnedAnnoList.readLine()) != null){
+        //                                    System.out.println(lineAnnoLs);
+                                        sbAnnoLines.append(lines);
+                                    }
+                                    returnedAnnoList.close();
+                                    ucCopyAnno.disconnect();
+                                }
+                                catch (IOException ex){
+                                    //Forward error response from RERUM
+                                    BufferedReader error = new BufferedReader(new InputStreamReader(ucCopyAnno.getErrorStream(),"utf-8"));
+                                    String errorLine = "";
+                                    StringBuilder sb = new StringBuilder();
+                                    while ((errorLine = error.readLine()) != null){  
+                                        sb.append(errorLine);
+                                    } 
+                                    error.close();
+                                    System.out.println(sb.toString());
+                                    result = -1;
+                                    er = true;
+                                    break;
+                                }
+                                parseThis = sbAnnoLines.toString();      
+                                JSONObject batchSaveResponse = JSONObject.fromObject(parseThis);
+                                try{
+                                    new_resources = (JSONArray) batchSaveResponse.get("new_resources");
+
+                                }
+                                catch(JSONException e){
+                                   System.out.println("Batch save response does not contain JSONARRAY in new_resouces.");
+                                   result = -1;
+                                   er = true;
+                                   break;
+                                }
+                            }
+                            catch (Exception e){
+                                System.out.println(e);
+                                result = -1;
+                                er = true;
+                                break;
+                            }
+                        }
+                        else{
+                            //System.out.println("No annotation list for this canvas.  do not call batch save.  just save empty list.");
+                        }
+                        
+                        //Try to create a new Annotation List with the Annotations minted above.  Error out if this fails.
+                        try{
+                            JSONObject canvasList = CreateAnnoListUtil.createAnnoList(thisProject.getProjectID(), canvasID, man.getProperties().getProperty("TESTING"), new_resources, uID, localName);
+                            canvasList.element("copiedFrom", projectID);
+                            URL postUrl = new URL(Constant.ANNOTATION_SERVER_ADDR + "/create.action");
+                            HttpURLConnection uc = (HttpURLConnection) postUrl.openConnection();
+                            uc.setDoInput(true);
+                            uc.setDoOutput(true);
+                            uc.setRequestMethod("POST");
+                            uc.setUseCaches(false);
+                            uc.setInstanceFollowRedirects(true);
+                            uc.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+                            uc.setRequestProperty("Authorization", "Bearer "+pubTok);
+                            uc.connect();
+                            DataOutputStream dataOut = new DataOutputStream(uc.getOutputStream());
+                            byte[] toWrite2 = canvasList.toString().getBytes("UTF-8");
+                            dataOut.write(toWrite2);
+                            dataOut.flush();
+                            dataOut.close();
+                            codeOverwrite = uc.getResponseCode();
+                            try{
+                                BufferedReader reader = new BufferedReader(new InputStreamReader(uc.getInputStream(),"utf-8")); 
+                                reader.close();
                             }
                             catch (IOException ex){
-                                //Forward error response from RERUM
-                                BufferedReader error = new BufferedReader(new InputStreamReader(ucCopyAnno.getErrorStream(),"utf-8"));
+                                //forward error response from ererum
+                                BufferedReader error = new BufferedReader(new InputStreamReader(uc.getErrorStream(),"utf-8"));
                                 String errorLine = "";
                                 StringBuilder sb = new StringBuilder();
                                 while ((errorLine = error.readLine()) != null){  
@@ -486,61 +553,13 @@ public class TranscribeRouter extends HttpServlet {
                                 er = true;
                                 break;
                             }
-                            ucCopyAnno.disconnect();
-                            parseThis = sbAnnoLines.toString();                              
-                            JSONObject batchSaveResponse = JSONObject.fromObject(parseThis);
-                            try{
-                                new_resources = (JSONArray) batchSaveResponse.get("new_resources");
-
-                            }
-                            catch(JSONException e){
-                               System.out.println("Batch save response does not contain JSONARRAY in new_resouces.");
-                               result = -1;
-                               er = true;
-                               break;
-                            }
                         }
-                        else{
-                            //System.out.println("No annotation list for this canvas.  do not call batch save.  just save empty list.");
-                        }
-                        JSONObject canvasList = CreateAnnoListUtil.createAnnoList(thisProject.getProjectID(), canvasID, man.getProperties().getProperty("TESTING"), new_resources, uID, localName);
-                        canvasList.element("copiedFrom", projectID);
-                        URL postUrl = new URL(Constant.ANNOTATION_SERVER_ADDR + "/create.action");
-                        HttpURLConnection uc = (HttpURLConnection) postUrl.openConnection();
-                        uc.setDoInput(true);
-                        uc.setDoOutput(true);
-                        uc.setRequestMethod("POST");
-                        uc.setUseCaches(false);
-                        uc.setInstanceFollowRedirects(true);
-                        uc.setRequestProperty("Content-Type", "application/json; charset=utf-8");
-                        uc.setRequestProperty("Authorization", "Bearer "+pubTok);
-                        uc.connect();
-                        DataOutputStream dataOut = new DataOutputStream(uc.getOutputStream());
-                        byte[] toWrite2 = canvasList.toString().getBytes("UTF-8");
-                        dataOut.write(toWrite2);
-                        dataOut.flush();
-                        dataOut.close();
-                        codeOverwrite = uc.getResponseCode();
-                        try{
-                            BufferedReader reader = new BufferedReader(new InputStreamReader(uc.getInputStream(),"utf-8")); 
-                            reader.close();
-                            uc.disconnect();
-                        }
-                        catch (IOException ex){
-                            //forward error response from ererum
-                            BufferedReader error = new BufferedReader(new InputStreamReader(uc.getErrorStream(),"utf-8"));
-                            String errorLine = "";
-                            StringBuilder sb = new StringBuilder();
-                            while ((errorLine = error.readLine()) != null){  
-                                sb.append(errorLine);
-                            } 
-                            error.close();
-                            System.out.println(sb.toString());
+                        catch (Exception e){
+                            System.out.println(e);
                             result = -1;
                             er = true;
                             break;
                         }
-
                         //System.out.println("Finished this canvas.");
                     }
                 }
@@ -555,11 +574,10 @@ public class TranscribeRouter extends HttpServlet {
             }
         } 
         catch(Exception e){
-            e.printStackTrace();
-            System.out.println(e.getMessage());
+            System.out.println(e);
+            result = -1;
         }
         return result;
     }
-
 }
 
