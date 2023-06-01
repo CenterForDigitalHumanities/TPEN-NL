@@ -50,7 +50,8 @@ public class TranscribeRouter extends HttpServlet {
     protected void processRequest(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException, SQLException {
         req.setCharacterEncoding("UTF-8");
-        String projectName = projectName = req.getPathInfo().substring(1);
+        String projectName = new String(req.getPathInfo().substring(1).getBytes("UTF8"), "UTF8");
+        System.out.println("Project name in transcribe router '"+projectName+"'.");
         int uid = ServletUtils.getUID(req, resp);
         Project proj = null;
         String interfaceLink = "";
@@ -59,7 +60,6 @@ public class TranscribeRouter extends HttpServlet {
         resp.setHeader("Access-Control-Allow-Origin", "*");
         resp.setHeader("Access-Control-Allow-Methods", "GET");
         if (uid >= 0) {
-            
             User lookup = new User(uid);
             proj = lookup.getUserProjectByProjectName(projectName);         
             if (null != proj && proj.getProjectID() > 0) {
@@ -80,22 +80,28 @@ public class TranscribeRouter extends HttpServlet {
                 System.out.println("User does not have a project with name '"+projectName+"'.  Make a new one for them by copying the master");
                 int masterID = Project.getMasterProjectID(projectName);
                 System.out.println("Master is "+masterID);
-                int copiedProjectID = copyProjectAndLineParsing(uid, masterID, req.getLocalName());
-                if(copiedProjectID > 0){
-                    proj = new Project(copiedProjectID);
-                    folioNum = proj.firstPage();
-                    if(folioNum > -1){
-                       interfaceLink = proj.mintInterfaceLinkFromFolio(folioNum);
-                       resp.sendRedirect(man.getProperties().getProperty("SERVERURL")+interfaceLink);
-                    }
-                    else{
-                        System.out.println("Could not mint interface link.  There was no folio.  Redirect not possible.");
-                        resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                    }
+                if(masterID <= 0){
+                    System.out.println("Could not find Master Project.  Cannot copy project '"+projectName+"' for user.");
+                    resp.sendError(404, "Could not find master project to copy.");
                 }
                 else{
-                    System.out.println("Could not copy project.  Redirect not possible.");
-                    resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                    int copiedProjectID = copyProjectAndLineParsing(uid, masterID, req.getLocalName());
+                    if(copiedProjectID > 0){
+                        proj = new Project(copiedProjectID);
+                        folioNum = proj.firstPage();
+                        if(folioNum > -1){
+                           interfaceLink = proj.mintInterfaceLinkFromFolio(folioNum);
+                           resp.sendRedirect(man.getProperties().getProperty("SERVERURL")+interfaceLink);
+                        }
+                        else{
+                            System.out.println("Could not mint interface link.  There was no folio.  Redirect not possible.");
+                            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                        }
+                    }
+                    else{
+                        System.out.println("Could not copy project.  Redirect not possible.");
+                        resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                    }
                 }
             }
         } 
