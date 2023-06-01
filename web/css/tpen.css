@@ -1368,14 +1368,14 @@ div.logEntry:nth-child(2n-1) {
     z-index: 500;
     display: table-cell;
     box-shadow:3px 3px 15px black inset,0 0 120px 175px rgba(255,255,255,.75);}
-#login,#forbidden span {
+#loginDiv,#forbidden span {
     font-size: 14px;
 }
-#login label,#login input.text {
+#loginDiv label,#loginDiv input.text {
     float: none;
     width:auto;
 }
-#login input.text,-webkit-autofill {
+#loginDiv input.text,-webkit-autofill {
     background: white !important;
     box-shadow:-1px -1px 10px -4px black inset;
 }
