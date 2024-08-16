@@ -4316,6 +4316,7 @@ function updateLine(line, cleanup, loadingLine) {
                                         var together = colLetter + lineNum;
                                         updateTranscriptionPreviewLine(together, currentLineText);
                                         lineUpdateWorking = false;
+                                        clearTimeout(lineUpdateTimer);
                                         $("#lineUpdateNotice").hide();
                                     })
                                     .fail(function (responseData, status, jqXHR) {
