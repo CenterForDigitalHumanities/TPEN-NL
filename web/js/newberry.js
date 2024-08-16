@@ -4278,7 +4278,7 @@ function updateLine(line, cleanup, loadingLine) {
                                     $("#lineUpdateNotice").hide();
                                 }
                                 var updatedLine = responseData["new_obj_state"];
-                                var originalID = responseData["original_object_id"];
+                                var originalID = responseData.__rerum.history.previous;
                                 if (!updatedLine) {
                                     $(".trexHead").show();
                                     $("#genericIssue").show(1000);
