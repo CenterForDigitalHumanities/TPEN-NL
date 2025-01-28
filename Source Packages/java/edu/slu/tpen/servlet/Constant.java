@@ -22,8 +22,7 @@ public class Constant {
     public static String OLD_ANNOTATION_SERVER_ADDR = "http://165.134.107.94/annotationstore";
     public static String ANNOTATION_SERVER_ADDR = "https://store.rerum.io/v1/api";
     public static String RERUM_ID_PATTERN = "https://store.rerum.io/v1/id";
-    public static String RERUM_ACCESS_TOKEN_URL = "https://store.rerum.io/v1/client/request-new-access-token";
-    public static String RERUM_REFRESH_TOKEN_URL = "https://store.rerum.io/v1/api/refreshToken.action";
+    public static String RERUM_ACCESS_TOKEN_URL = "https://store.rerum.io/client/request-new-access-token";
     public static String RERUM_CONTEXT = "http://store.rerum.io/v1/context.json";
     public static String PROPERTIES_FILE_NAME = "version.properties";
 }
