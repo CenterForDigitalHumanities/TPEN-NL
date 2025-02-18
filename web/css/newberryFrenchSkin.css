@@ -1922,8 +1922,8 @@ a.navigation {
 .navigation.collapsed.severe #currentUser,
 .navigation.collapsed.severe #contactSection,
 .navigation.collapsed.severe #maintenance,
-.navigation.collapsed.severe #videoBtn_trans,
-.navigation.collapsed.severe #myTranscriptionsBtn
+.navigation.collapsed.severe #videoSection,
+.navigation.collapsed.severe #myTranscriptionsSection
 {
     display:none;
 }
@@ -2283,6 +2283,3 @@ iframe {width: 100%;height:95%; }
     margin: 0; 
     text-align: center;
 }
-.videoSection{
-}
-
