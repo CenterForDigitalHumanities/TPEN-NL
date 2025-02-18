@@ -95,7 +95,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Login or Register a New Account</title>
-        <link rel="stylesheet" href="css/paleography-main.css" type="text/css" media="screen, projection">
+        <link rel="stylesheet" href="css/paleography.css" type="text/css" media="screen, projection">
         <link rel="shortcut icon" type="image/x-icon" href="https://newberry.org/sites/all/themes/newberry2015/favicon.ico">
         <style>
             #loginDiv,
