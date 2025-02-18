@@ -1922,7 +1922,8 @@ a.navigation {
 .navigation.collapsed.severe #currentUser,
 .navigation.collapsed.severe #contactSection,
 .navigation.collapsed.severe #maintenance,
-.navigation.collapsed.severe #videoBtn_trans
+.navigation.collapsed.severe #videoBtn_trans,
+.navigation.collapsed.severe #myTranscriptionsBtn
 {
     display:none;
 }
