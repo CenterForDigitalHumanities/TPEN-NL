@@ -5877,7 +5877,6 @@ function closeHelpVideo() {
  */
 function setPaleographyLinks() {
     setIframeLinks();
-    $("#homeBtn").attr("href", "my-transcriptions.html");
     let plink = ""
     if (getURLVariable("p")) {
         plink = "&p=" + getURLVariable("p");
