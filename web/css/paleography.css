@@ -680,6 +680,14 @@ kbd {
     font-family: monospace;
 }
 
+.logoutBtn {
+    position: fixed;
+    top: 2em;
+    right: 2em;
+    font-size: 13pt;
+    text-decoration: underline;
+}
+
 /** end Imported CSS */
 @media screen and (max-width: 599px) {
     #site-name {
