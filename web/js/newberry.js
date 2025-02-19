@@ -27,7 +27,7 @@ var imgBottomPositionRatio = 0;
 var imgTopPositionRatio = 0;
 var navMemory = 0;
 var zoomLock = false;
-var annoBaseCheck = "https://devstore.rerum.io/v1/";
+var annoBaseCheck = "https://store.rerum.io/v1/";
 var controlsMemory = {
     minLines: false,
     zenLine: false,
