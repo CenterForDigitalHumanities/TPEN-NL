@@ -189,6 +189,7 @@
                     <fieldset>
                         <legend>Request a Password Reset:</legend>
                         <input type="text" class="text" placeholder="Username" name="uname">
+                        <br>
                         <input class="right ui-corner-all ui-state-default" type="submit" name="resetSubmitted" value="Reset Password" />
                     </fieldset>
                 </form>
