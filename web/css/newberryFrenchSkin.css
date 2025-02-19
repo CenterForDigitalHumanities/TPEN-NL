@@ -1813,6 +1813,10 @@ button,.navigation, #contribution,
     content:"Contact";
 }
 #homeBtn::after {
+    content:"Home";
+    white-space: nowrap;
+}
+#myTranscriptionsBtn::after {
     content:"My Transcriptions";
     white-space: nowrap;
 }
@@ -1884,6 +1888,7 @@ a.navigation {
 .navigation.collapsed #helpMe::before,
 .navigation.collapsed #currentUser::before,
 .navigation.collapsed #homeBtn::after,
+.navigation.collapsed #myTranscriptionsBtn::after,
 .navigation.collapsed #projectsBtn::after,
 .navigation.collapsed #toggleNotes::after,
 .navigation.collapsed #helpContact::before,
@@ -1917,7 +1922,8 @@ a.navigation {
 .navigation.collapsed.severe #currentUser,
 .navigation.collapsed.severe #contactSection,
 .navigation.collapsed.severe #maintenance,
-.navigation.collapsed.severe #videoBtn_trans
+.navigation.collapsed.severe #videoSection,
+.navigation.collapsed.severe #myTranscriptionsSection
 {
     display:none;
 }
@@ -2277,6 +2283,3 @@ iframe {width: 100%;height:95%; }
     margin: 0; 
     text-align: center;
 }
-.videoSection{
-}
-

@@ -1,28 +1,23 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
+
 <html lang="en">
 
 <head>
     <title>My Transcriptions</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css" type="text/css" media="screen, projection">
-    <link rel="stylesheet"
-        href="https://french.newberry.t-pen.org/www/css/style.css">
+    <link rel="stylesheet" href="css/paleography.css" type="text/css" media="screen, projection">
     <style>
         #projectsList {
             margin: 0 auto;
-            max-width: 35em
+            max-width: 80%;
+            text-align: center;
         }
 
         .user-project {
             width: auto;
             border: 1px solid #d3d3d3;
-            padding: .3em;
+            padding: .3em 2em .3em .3em;
             margin: 0 6px;
             position: relative
         }
@@ -87,15 +82,6 @@ and open the template in the editor.
             margin: 0 auto
         }
 
-        h1,
-        h2,
-        h3,
-        h4 {
-            font-weight: 200 !important;
-            font-family: 'EB Garamond', 'Times New Roman', serif !important;
-            color: #000
-        }
-
         .ruled {
             padding: 2% 0 1.5% 3%;
             color: #002a5c;
@@ -103,170 +89,179 @@ and open the template in the editor.
             border-bottom: 1px solid #add8e6
         }
 
-        .container {
-            max-width: var(--grid-maxWidth);
-            margin: 0 auto;
-            width: 96%;
-            padding: 0 calc(var(--grid-gutter)/ 2);
-            display: flex;
-            flex-direction: column
+        .newberry-header img {
+            max-width: 20%;
+        }
+
+        nav {
+            height: auto;
         }
     </style>
 </head>
 
 <body>
-    <header class="header clearfix">
-        <div id="branding" class="branding-elements clearfix">
+    <div class="logoutBtn"> 
+        <a href="logout.html"> Logout </a>
+    </div>
+    <header class="header no-embed">
+        <div id="branding" class="branding-elements">
             <div style="margin: 0px auto;">
-                <div class="newberry-header hiddem-sm hidden-xs">
+                <div class="newberry-header">
+                    <a href="https://www.newberry.org/">
+                        <img aria-hidden="true" role="presentation" alt="" src="https://french.newberry.t-pen.org/www/images/Logo-Newberry-horiz-BW.jpg"/>
+                    </a>
                 </div>
-
                 <h1 id="site-name">
-                    <div id="logo" style="display: inline;">
-                        <img aria-hidden="true" role="presentation" alt=""
-                            src="https://french.newberry.t-pen.org/www/images/NewberryLogo_with_tag.png">
-                    </div>
+                    Newberry Paleography
                 </h1>
             </div>
         </div>
-        <nav class="container">
-            <ul class="nav nav-bar">
-                <li class="first leaf">
-                    <a href="https://french.newberry.t-pen.org/">French
-                        Renaissance Paleography</a>
-                </li>
-                <li class="leaf">
-                    <a href="https://italian.newberry.t-pen.org/">Italian
-                        Paleography</a>
-                </li>
-                <li class="last leaf">
-                    <a href="https://newberry.t-pen.org/paleography/logout.html" title="">Logout</a>
-                </li>
-            </ul>
-        </nav>
     </header>
-    <h1 class="ruled">My Transcriptions</h1>
-    <p id="toContinue">To continue working on a transcription, click the manuscript name.
-        Remove by clicking the "&cross;" button.</p>
-    <div id="projectsList">
-        <div id="gatheringProjects"></div>
-        Gathering projects...
+    <nav class="container">
+        <ul class="nav nav-bar">
+            <li class="first leaf">
+                <a href="https://french.newberry.t-pen.org/">French
+                    Renaissance Paleography Home</a>
+            </li>
+            <li class="leaf">
+                <a href="https://italian.newberry.t-pen.org/">Italian
+                    Paleography Home</a>
+            </li>
+            <li class="last leaf">
+                <a href="my-transcriptions.html">My T-PEN Transcriptions</a>
+            </li>
+        </ul>
+    </nav>
+    <div class="container">
+        <h1 class="ruled">My Transcriptions</h1>
+        <p id="toContinue">To continue working on a transcription, click the manuscript name.
+            Remove by clicking the "&cross;" button.</p>
+        <div id="projectsList">
+            <div id="gatheringProjects"></div>
+            Gathering projects...
+        </div>
     </div>
-    <link rel="stylesheet"
-        href="https://french.newberry.t-pen.org/www/css/style.css">
-    <footer class="row container">
+    <footer class="row">
         <div class="col" style="flex-grow: 2;">
             <h2> Partners </h2>
             <div class="row">
-                <a class="col" href="https://www.newberry.org/" target="_blank"><img alt="Newberry"
-                        src="https://french.newberry.t-pen.org/www/images/NewberryLogo_with_tag.png"></a>
-                <a class="col" href="https://onesearch.library.utoronto.ca" target="_blank"><img
-                        alt="University of Toronto Libraries" src="https://french.newberry.t-pen.org/www/images/UTL-logo.png"></a>
+                <a class="col" href="https://www.newberry.org/" target="_blank">
+                    <img alt="Newberry" src="https://french.newberry.t-pen.org/www/images/Logo-Newberry-horiz-BW.jpg"/>
+                </a>
+                <a class="col" href="https://onesearch.library.utoronto.ca" target="_blank">
+                    <img alt="University of Toronto Libraries" src="https://french.newberry.t-pen.org/www/images/UTL-logo.png"/>
+                </a>
             </div>
             <div class="row">
-                <a class="col" href="https://lib.slu.edu/" style="line-height: 23.1111px;" target="_blank"><img
-                        alt="St. Louis University" src="https://centerfordigitalhumanities.github.io/Newberry-paleography/images/slu_ovpr.png" style="width: 470px;"></a>
-                <a class="col" href="https://www.itergateway.org/" target="_blank"><img alt="Iter"
-                        src="https://french.newberry.t-pen.org/www/images/iter-logo-new.png"></a>
+                <a class="col" href="https://lib.slu.edu/" style="line-height: 23.1111px;" target="_blank">
+                    <img alt="St. Louis University" src="https://centerfordigitalhumanities.github.io/Newberry-paleography/images/slu_ovpr.png" style="width: 470px;"/>
+                </a>
+                <a class="col" href="https://www.itergateway.org/" target="_blank">
+                    <img alt="Iter" src="https://french.newberry.t-pen.org/www/images/iter-logo-new.png"/>
+                </a>
             </div>
         </div>
         <div class="col">
             <h2 class="pane-title"> Contact </h2>
-            <p><a href="https://french.newberry.t-pen.org/contact">Contact</a><br><a href="https://french.newberry.t-pen.org/about-team">About the
-                    Team</a><br>
-            </p>
-            <p>Supported by a grant from The Andrew W. Mellon Foundation</p>
-            <p><a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img
-                        alt="Creative Commons Licence" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png"
-                        style="width:88px"></a><br><a href="https://www.newberry.org/paleography">French Renaissance
-                    Paleography</a> is licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/"
-                    rel="license">Creative Commons
-                    Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.</p>
+            <div class="row">
+                <div class="col" style="margin-top: 25px;">
+                    <p>
+                        <a href="https://french.newberry.t-pen.org/contact">Contact</a><br>
+                        <a href="https://french.newberry.t-pen.org/about-team">About the Team</a><br>
+                    </p>
+                    <p>Supported by a grant from The Andrew W. Mellon Foundation</p>
+                    <p>
+                        <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">
+                            <img alt="Creative Commons Licence" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" style="width:88px;"/>
+                        </a>
+                        <br>
+                        <a href="https://www.newberry.org/paleography">French Renaissance Paleography</a> 
+                        is licensed under a 
+                        <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">
+                            Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License
+                        </a>.
+                    </p>
+                </div>
+            </div>
         </div>
     </footer>
 </body>
 <script type="text/javascript" src="js/newberry.js"></script>
 <script type="text/javascript">
-    /**
-     * Request for all projects that belong to the provided userID.
-     * @param {type} lookupID The user id whose project list needs to be retrieved.  
-     * @returns {Promise}
-     */
-    let getUserProjects = async function (lookupID) {
-        //Note that for now the use case for providing the userID is not active.  The logged in user wants their own projects.
-        let url = "projects";
-        let projectName = "";
-        return projectList = await fetch(url, {
+/**
+ * Request for all projects that belong to the provided userID.
+ * @param {type} lookupID The user id whose project list needs to be retrieved.  
+ * @returns {Promise}
+ */
+let getUserProjects = async function(lookupID) {
+    //Note that for now the use case for providing the userID is not active.  The logged in user wants their own projects.
+    let url = "projects";
+    let projectName = "";
+    return projectList = await fetch(url, {
             method: "GET",
             mode: "cors",
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             }
         })
-            .then(resp => {
-                if (resp.ok) {
-                    return resp.json()
-                }
-                else if (resp.status === 401) {
-                    projectsList.innerHTML = "You must be logged in to see your project list"
-                    document.location.href = "login.jsp?referer=my-transcriptions.html"
-                    return []
-                }
-                else if (resp.status === 403) {
-                    projectsList.innerHTML = "You are not allowed to see this project list"
-                    return []
-                }
-                else {
-                    projectsList.innerHTML = "Error retrieving and parsing project list."
-                    return []
-                }
-            })
-            .catch(err => {
-                console.error(err)
-            })
-    }
+        .then(resp => {
+            if (resp.ok) {
+                return resp.json()
+            } else if (resp.status === 401) {
+                projectsList.innerHTML = "You must be logged in to see your project list"
+                document.location.href = "login.jsp?referer=my-transcriptions.html"
+                return []
+            } else if (resp.status === 403) {
+                projectsList.innerHTML = "You are not allowed to see this project list"
+                return []
+            } else {
+                projectsList.innerHTML = "Error retrieving and parsing project list."
+                return []
+            }
+        })
+        .catch(err => {
+            console.error(err)
+        })
+}
 
-    /**
-     * Turn project data into a rendered HTML project list
-     * @param {JSONArray} Array of project data, each data node is a JSON Object.
-     */
-    let formatAndRenderProjects = function (projectList) {
-        //FIXME how do I know if a given project is French, Italian, Spanish, etc.
-        if (projectList.length > 0) {
-            //Note that there will be a b.interface for the link.
-            projectsList.innerHTML = projectList.reduce((a, b) => a += `
+/**
+ * Turn project data into a rendered HTML project list
+ * @param {JSONArray} Array of project data, each data node is a JSON Object.
+ */
+let formatAndRenderProjects = function(projectList) {
+    //FIXME how do I know if a given project is French, Italian, Spanish, etc.
+    if (projectList.length > 0) {
+        //Note that there will be a b.interface for the link.
+        projectsList.innerHTML = projectList.reduce((a, b) => a += `
                 <div class="user-project" data-id="${b.id}">
                     <a class="title" href="${b.interface}">${b.name}</a>
                     <a class="deleteBtn" onclick="deleteProject(${b.id}, event);" title="Delete Transcription">&cross;</a>
                 </div>`, ``)
-        }
-        else {
-            let lang = getURLVariable("language")
-            let which
-            //If they are coming from the static pages we will know which language they are trying to use.
-            if (lang === "French" || lang === "french") {
-                which = `a <a target="_blank" href="https://french.newberry.t-pen.org/www/manuscripts.html">French Manuscript</a>`
-            }
-            else if (lang === "Italian" || lang === "italian") {
-                which = `an <a target="_blank" href="https://italian.newberry.t-pen.org/www/manuscripts.html">Italian Manuscript</a> `
-            }
-            else {
-                which = `a <a target="_blank" href="https://french.newberry.t-pen.org/www/manuscripts.html">French Manuscript</a>
+    } else {
+        let lang = getURLVariable("language")
+        let which
+        //If they are coming from the static pages we will know which language they are trying to use.
+        if (lang === "French" || lang === "french") {
+            which = `a <a target="_blank" href="https://french.newberry.t-pen.org/www/manuscripts.html">French Manuscript</a>`
+        } else if (lang === "Italian" || lang === "italian") {
+            which = `an <a target="_blank" href="https://italian.newberry.t-pen.org/www/manuscripts.html">Italian Manuscript</a> `
+        } else {
+            which = `a <a target="_blank" href="https://french.newberry.t-pen.org/www/manuscripts.html">French Manuscript</a>
                 or <a target="_blank" href="https://italian.newberry.t-pen.org/www/manuscripts.html">Italian Manuscript</a>`
-            }
-            projectsList.innerHTML = ` 
+        }
+        projectsList.innerHTML = ` 
                 <p>
                    You do not have any projects.  Pick ${which}
                    from the list to get started!
                </p>`
-            toContinue.style.display = "none"
-        }
+        toContinue.style.display = "none"
     }
+}
 
-    let deleteProject = async function (projectID, event) {
-        let confirm = window.confirm("The project will be deleted.  Press 'OK' to confirm. ")
-        if (confirm) {
-            return await fetch("deleteProject?projectID=" + projectID, {
+let deleteProject = async function(projectID, event) {
+    let confirm = window.confirm("The project will be deleted.  Press 'OK' to confirm. ")
+    if (confirm) {
+        return await fetch("deleteProject?projectID=" + projectID, {
                 method: "POST",
                 mode: "cors",
                 headers: {
@@ -274,35 +269,32 @@ and open the template in the editor.
                 },
                 body: projectID
             })
-                .then(resp => {
-                    if (resp.ok) {
-                        event.target.closest(".user-project").remove()
-                    }
-                    else if (resp.status === 401) {
-                        alert("You must be logged in to delete a project")
-                    }
-                    else if (resp.status === 403) {
-                        alert("You are not allowed to delete this project")
-                    }
-                    else {
-                        alert("Error deleting project.")
-                    }
-                })
-                .catch(err => {
-                    console.error(err)
-                })
-        }
-        return false
+            .then(resp => {
+                if (resp.ok) {
+                    event.target.closest(".user-project").remove()
+                } else if (resp.status === 401) {
+                    alert("You must be logged in to delete a project")
+                } else if (resp.status === 403) {
+                    alert("You are not allowed to delete this project")
+                } else {
+                    alert("Error deleting project.")
+                }
+            })
+            .catch(err => {
+                console.error(err)
+            })
     }
+    return false
+}
 
-    //Page initializer
-    getUserProjects(007).then(projects => { formatAndRenderProjects(projects) })
-        .catch(err => {
-            gatheringProjects.style.display = "none"
-            toContinue.style.display = "none"
-            projectsList.innerHTML = "Error.  Refresh the page to try again."
-            console.error(err)
-        })
+//Page initializer
+getUserProjects(007).then(projects => { formatAndRenderProjects(projects) })
+    .catch(err => {
+        gatheringProjects.style.display = "none"
+        toContinue.style.display = "none"
+        projectsList.innerHTML = "Error.  Refresh the page to try again."
+        console.error(err)
+    })
 </script>
 
 </html>

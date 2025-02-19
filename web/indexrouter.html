@@ -1,100 +1,110 @@
 <!DOCTYPE html>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
--->
+
 <html lang="en">
 
 <head>
     <title>Newberry Paleography Homepage</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css" type="text/css" media="screen, projection">
-    <link rel="stylesheet"
-        href="https://french.newberry.t-pen.org/www/css/style.css">
+    <link rel="stylesheet" href="css/paleography.css" type="text/css" media="screen, projection">
+    <style>
+        .newberry-header img {
+            max-width: 20%;
+        }
+
+        nav {
+            height: auto;
+        }
+    </style>
 </head>
 
 <body>
-    <header class="header clearfix">
-        <div id="branding" class="branding-elements clearfix">
+    <div class="logoutBtn"> 
+        <a href="logout.html"> Logout </a>
+    </div>
+    <header class="header no-embed">
+        <div id="branding" class="branding-elements">
             <div style="margin: 0px auto;">
-                <div class="newberry-header hiddem-sm hidden-xs">
+                <div class="newberry-header">
+                    <a href="https://www.newberry.org/">
+                        <img aria-hidden="true" role="presentation" alt="" src="https://french.newberry.t-pen.org/www/images/Logo-Newberry-horiz-BW.jpg"/>
+                    </a>
                 </div>
-
                 <h1 id="site-name">
-                    <div id="logo" style="display: inline;">
-                        <img aria-hidden="true" role="presentation" alt=""
-                            src="https://french.newberry.t-pen.org/www/images/NewberryLogo_with_tag.png">
-                    </div>
+                    Newberry Paleography
                 </h1>
             </div>
         </div>
-        <nav class="container">
-            <ul class="nav nav-bar">
-                <li class="first leaf">
-                    <a href="https://french.newberry.t-pen.org/">French
-                        Renaissance Paleography</a>
-                </li>
-                <li class="leaf">
-                    <a href="https://italian.newberry.t-pen.org/">Italian
-                        Paleography</a>
-                </li>
-                <li class="last leaf">
-                    <a href="https://newberry.t-pen.org/paleography/logout.html" title="">Logout</a>
-                </li>
-            </ul>
-        </nav>
     </header>
-
-    <h1 class="ruled">Newberry Paleography Home Pages</h1>
-    <p><a href="https://french.newberry.t-pen.org/">French Renaissance
-            Paleography</a></p>
-    <p><a href="https://italian.newberry.t-pen.org/">Italian Paleography</a></p>
-
-    <h1 class="ruled">Newberry Paleography T-PEN Pages</h1>
-    <p><a href="my-transcriptions.html">My Transcriptions</a></p>
-    <p><a href="login.jsp">Login</a></p>
-    <p><a href="logout.html">Logout</a></p>
-
-    <link rel="stylesheet"
-        href="https://french.newberry.t-pen.org/www/css/style.css">
-    <footer class="row container">
+    <nav class="container">
+        <ul class="nav nav-bar">
+            <li class="first leaf">
+                <a href="https://french.newberry.t-pen.org/">French
+                    Renaissance Paleography Home</a>
+            </li>
+            <li class="leaf">
+                <a href="https://italian.newberry.t-pen.org/">Italian
+                    Paleography Home</a>
+            </li>
+            <li class="last leaf">
+                <a href="my-transcriptions.html">My T-PEN Transcriptions</a>
+            </li>
+        </ul>
+    </nav>
+    <div class="container">
+        <h1 class="ruled">Newberry Paleography</h1>
+        <p>
+            Thank you for using the Newberry Paleography platform! Choose an entry point from below to get started.
+        </p>
+        <p> > <a href="https://french.newberry.t-pen.org/">French Renaissance
+                Paleography Home</a></p>
+        <p> > <a href="https://italian.newberry.t-pen.org/">Italian Paleography Home</a></p>
+        <p> > <a href="my-transcriptions.html">My T-PEN Transcriptions</a></p>
+    </div>
+    <footer class="row">
         <div class="col" style="flex-grow: 2;">
             <h2> Partners </h2>
             <div class="row">
-                <a class="col" href="https://www.newberry.org/" target="_blank"><img alt="Newberry"
-                        src="https://french.newberry.t-pen.org/www/images/NewberryLogo_with_tag.png"></a>
-                <a class="col" href="https://onesearch.library.utoronto.ca" target="_blank"><img
-                        alt="University of Toronto Libraries"
-                        src="https://french.newberry.t-pen.org/www/images/UTL-logo.png"></a>
+                <a class="col" href="https://www.newberry.org/" target="_blank">
+                    <img alt="Newberry" src="https://french.newberry.t-pen.org/www/images/Logo-Newberry-horiz-BW.jpg"/>
+                </a>
+                <a class="col" href="https://onesearch.library.utoronto.ca" target="_blank">
+                    <img alt="University of Toronto Libraries" src="https://french.newberry.t-pen.org/www/images/UTL-logo.png"/>
+                </a>
             </div>
             <div class="row">
-                <a class="col" href="https://lib.slu.edu/" style="line-height: 23.1111px;" target="_blank"><img
-                        alt="St. Louis University"
-                        src="https://centerfordigitalhumanities.github.io/Newberry-paleography/images/slu_ovpr.png"
-                        style="width: 470px;"></a>
-                <a class="col" href="https://www.itergateway.org/" target="_blank"><img alt="Iter"
-                        src="https://french.newberry.t-pen.org/www/images/iter-logo-new.png"></a>
+                <a class="col" href="https://lib.slu.edu/" style="line-height: 23.1111px;" target="_blank">
+                    <img alt="St. Louis University" src="https://centerfordigitalhumanities.github.io/Newberry-paleography/images/slu_ovpr.png" style="width: 470px;"/>
+                </a>
+                <a class="col" href="https://www.itergateway.org/" target="_blank">
+                    <img alt="Iter" src="https://french.newberry.t-pen.org/www/images/iter-logo-new.png"/>
+                </a>
             </div>
         </div>
         <div class="col">
             <h2 class="pane-title"> Contact </h2>
-            <p><a
-                    href="https://french.newberry.t-pen.org/contact">Contact</a><br><a
-                    href="https://french.newberry.t-pen.org/about-team">About the
-                    Team</a><br>
-            </p>
-            <p>Supported by a grant from The Andrew W. Mellon Foundation</p>
-            <p><a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img
-                        alt="Creative Commons Licence" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png"
-                        style="width:88px"></a><br><a href="https://www.newberry.org/paleography">French Renaissance
-                    Paleography</a> is licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/"
-                    rel="license">Creative Commons
-                    Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.</p>
+            <div class="row">
+                <div class="col" style="margin-top: 25px;">
+                    <p>
+                        <a href="https://french.newberry.t-pen.org/contact">Contact</a><br>
+                        <a href="https://french.newberry.t-pen.org/about-team">About the Team</a><br>
+                    </p>
+                    <p>Supported by a grant from The Andrew W. Mellon Foundation</p>
+                    <p>
+                        <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">
+                            <img alt="Creative Commons Licence" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" style="width:88px;"/>
+                        </a>
+                        <br>
+                        <a href="https://www.newberry.org/paleography">French Renaissance Paleography</a> 
+                        is licensed under a 
+                        <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">
+                            Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License
+                        </a>.
+                    </p>
+                </div>
+            </div>
         </div>
     </footer>
 </body>
-<script>
-</script>
 
 </html>
