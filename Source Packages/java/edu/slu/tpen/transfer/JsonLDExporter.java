@@ -77,7 +77,7 @@ public class JsonLDExporter {
          supportedContexts[1] = "http://www.w3.org/ns/anno.jsonld";
          supportedContexts[2] = "http://iiif.io/api/presentation/2/context.json";
          manifestData = new LinkedHashMap<>();
-         manifestData.put("@context", supportedContexts);
+         manifestData.put("@context", "http://iiif.io/api/presentation/2/context.json");
          manifestData.put("@id", projName + "/manifest.json");
          manifestData.put("@type", "sc:Manifest");
          manifestData.put("label", proj.getProjectName());

@@ -4473,7 +4473,7 @@ function saveNewLine(lineBefore, newLine) {
                     var newAnnoList =
                     {
                         "@type": "sc:AnnotationList",
-                        "@context": "http://store.rerum.io/v1/context.json",
+                        "@context": "http://iiif.io/api/presentation/2/context.json",
                         "on": onCanvas,
                         //                           "originalAnnoID" : "",
                         //                            "version" : 1,
