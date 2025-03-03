@@ -328,6 +328,7 @@ public class Canvas {
                             //This is a most recent version, but there could be multiple in a forking scenario.  Ensure this one belongs to TPEN_NL before considering it.
                             //System.out.println("TPEN_NL determined an anno list belonged by checking rerum history and matching generators");
                             v1ListToCheck.remove("_id");
+                            v1ListToCheck.remove("@context");
                             listsToReturn.add(v1ListToCheck);
                         }
                         else if(v1ListToCheck.has("__rerum") && v1ListToCheck.getJSONObject("__rerum").getJSONObject("history").getJSONArray("next").size() > 0){
@@ -344,6 +345,7 @@ public class Canvas {
                             if(consider){
                                 //System.out.println("TPEN_NL determined an anno list belonged by checking rerum history and matching generators the hard way");
                                 v1ListToCheck.remove("_id");
+                                v1ListToCheck.remove("@context");
                                 listsToReturn.add(v1ListToCheck);
                             }
                             else{
