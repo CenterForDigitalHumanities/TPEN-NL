@@ -24,5 +24,6 @@ public class Constant {
     public static String RERUM_ID_PATTERN = "https://store.rerum.io/v1/id";
     public static String RERUM_ACCESS_TOKEN_URL = "https://store.rerum.io/client/request-new-access-token";
     public static String RERUM_CONTEXT = "http://store.rerum.io/v1/context.json";
+    public static String IIIF_CONTEXT = "http://iiif.io/api/presentation/2/context.json";
     public static String PROPERTIES_FILE_NAME = "version.properties";
 }
