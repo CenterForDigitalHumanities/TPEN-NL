@@ -20,7 +20,7 @@ public class CreateAnnoListUtil {
         canvasList.element("on", canvasID);
         canvasList.element("resources", resource);
         canvasList.element("isPartOf", ""+projectID);
-        canvasList.element("@context", Constant.RERUM_CONTEXT);
+        canvasList.element("@context", Constant.IIIF_CONTEXT);
         canvasList.element("oa:createdBy", localName + "/" + uID);
         canvasList.element("TPEN_NL_TESTING", testingFlag);
         return canvasList;
