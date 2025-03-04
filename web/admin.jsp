@@ -271,7 +271,7 @@
                         <!--<li><a title="Alter IPR statements, restrict access, update global metadata" href="#tabs-2">Manuscripts</a></li>-->
                         <%if (thisUser.isAdmin()) { //hiding non-Admin tab%>
                         <li><a title="Manage Users" href="#tabs-3">Manage Users</a><div id="userAlert" class='ui-icon-alert ui-icon right' style="display:none;margin: 8px 8px 0 0;"></div></li>
-                        <li><a title="Reports" href="#reportsTab">Reports</a></li>
+                        <%-- <li><a title="Reports" href="#reportsTab">Reports</a></li> --%>
                         <%}%>
                         <!--<li><a title="About the T&#8209;PEN project" href="#aboutTab">About T&#8209;PEN</a></li>-->
                     </ul>
@@ -282,9 +282,10 @@
                                 <form id="login" action="login.jsp" method="POST" >
                                     <fieldset>
                                         <legend>Login Here:</legend>
+                                        <p>Login to change your username, E-mail, or password</p>
                                         <label for="uname">Username</label><input class="text" type="text" name="uname"/><br/>
                                         <label for="password">Password</label><input  class="text" type="password" name="password"/><br/>
-                                        <input type="hidden" name="ref" value="admin.jsp"/>
+                                        <input type="hidden" name="referer" value="admin.jsp"/>
                                         <span class='buttons right'>
                                             <button type="submit" title="Log In" value="log in">Log In</button>
                                         </span>
@@ -487,7 +488,7 @@
                         %>
                         <div class="right" id="resetPassword" style="width:45%;">
                             <h3>Reset your Password</h3>
-                            To reset your password and have the new password sent to your email address, please enter the username associated with your account.
+                            Please enter the username associated with your account.  A new temporary password will be sent to the E-mail address associated with that username. 
                             <form action="admin.jsp" method="POST">
                                 <input type="text" name="uname">
                                 <input type="submit" name="resetSubmitted" value="Reset Password"/>
@@ -495,7 +496,7 @@
                         </div>
                         <%
                                 //if they arent logged in, dont bother with showing them any of the other stuff
-                                out.print("</div></div>\n<a class='returnButton' href='my-transcriptions.html'>Return to TPEN Homepage</a>\n</div>"); //close up the tab                                   
+                                out.print("</div></div>\n<a class='returnButton' href='my-transcriptions.html'>Return to My Transcriptions</a>\n</div>"); //close up the tab                                   
                                 return;
                             }
                         %>
@@ -562,7 +563,7 @@
                                 <span class='accountInfoLine'>Username: <%out.print(thisUser.getUname());%></span>
                                 <span class='accountInfoLine'>E-mail: <%out.print(thisUser.getEmail());%></span>
                                 <%if (thisUser.isAdmin()) {%>
-                                    <span class='accountInfoLine'>Welcome, Administrator</span>
+                                    <span class='accountInfoLine'>You are an Administrator</span>
                                 <%}
                                 Project[] userProjects = thisUser.getUserProjects();
                                     if (userProjects.length > 0) {
@@ -1135,7 +1136,7 @@
 
                 </div>
                 <!--                close up tabs panels-->
-                <a class="returnButton" href="my-transcriptions.html">Return to TPEN Homepage</a>
+                <a class="returnButton" href="my-transcriptions.html">Return to My Transcriptions</a>
             </div>
         </div>
         <div id="adminMS" class="popover"> <!-- container for managing unrestricted MSs -->

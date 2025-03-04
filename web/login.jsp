@@ -22,23 +22,28 @@
                     <script>
                         document.location = "my-transcriptions.html";
                     </script>
-                    <%}
-
-                else {
-                    if(ref.contains("authenticate.jsp")){
+                    <%
+                }
+                else if(ref.contains("admin.jsp")){
+                    %>
+                        <script>
+                            document.location = "admin.jsp";
+                        </script>
+                    <%
+                }
+                else if(ref.contains("authenticate.jsp")) {
                     %>
                         <script>
                             document.location = "login.jsp";
                         </script>
-                    <% 
-                    }
-                    else{
-                    %>
-                        <script>
-                            document.location = ref;
-                        </script>
-                    <%
-                    }
+                    <%      
+                }
+                else{
+                %>
+                    <script>
+                        document.location = ref;
+                    </script>
+                <%
                 }
             }
             else{
@@ -126,7 +131,7 @@
                 height: auto;
             }
 
-            .adminLink{
+            .adminLink {
                 position: relative;
                 display: block;
                 text-align: right;
