@@ -8,9 +8,15 @@ if (errorMessage != null){
 %>
 <style type="text/css">
     body {visibility: visible !important;}
+    .bumperIt{ margin: 2em 0em; }
 </style>
 <div id="urgentError">
     <p id="errorMessage"><%out.print(message);%></p>
-    <a href="login.jsp">Paleography Login</a>
+    <div class="bumperIt">
+        <a href="login.jsp">Try Again at the Paleography Login</a>
+    </div>
+    <div>
+        <a href="admin.jsp">I am having trouble logging in or want to set a new password</a>
+    </div>
 </div>
 <div id="trexHead"></div>
