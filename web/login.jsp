@@ -138,6 +138,11 @@
                 text-decoration: underline;
             }
 
+            div.small{
+                font-size: 8pt;
+                margin-bottom: 7px;
+            }
+
         </style>
     </head>
     <!--    <script type="text/javascript" src="menu.js"></script>-->
@@ -175,11 +180,11 @@
         <div class="container">
             <div id="loginDiv" class="left">
                 <h3 class="ui-widget-header ui-tabs ui-corner-all ui-state-default">Log In</h3>
-                <p> You may log into your account to start transcribing or to manage your projects.</p>
                 <form id="loginForm" action="login.jsp" method="POST">
                     <fieldset>
                         <legend>Login Here:</legend>
-                        <label for="uname">Username</label><input class="text" type="text" name="uname" /><br/>
+                        <label for="uname">Username</label><input class="text" type="text" name="uname" />
+                        <div class="small">* Not your e-mail</div>
                         <label for="password">Password</label><input class="text" type="password" name="password" /><br/>
                         <input type="hidden" name="referer" value='<%out.print(ref);%>'/>
                         <input class="ui-button ui-state-default ui-corner-all right" type="submit" title="Log In" value="Log In">

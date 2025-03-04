@@ -145,6 +145,10 @@
             td{
                 margin: .5em;
             }
+            div.small {
+                font-size: 8pt;
+                margin-bottom: 7px;
+            }
         </style>
         <script>
             var selecTab<%if (request.getParameter("selecTab") != null) {
@@ -283,7 +287,8 @@
                                     <fieldset>
                                         <legend>Login Here:</legend>
                                         <p>Login to change your username, E-mail, or password</p>
-                                        <label for="uname">Username</label><input class="text" type="text" name="uname"/><br/>
+                                        <label for="uname">Username</label><input class="text" type="text" name="uname"/>
+                                        <div class="small">* Not your e-mail </div>
                                         <label for="password">Password</label><input  class="text" type="password" name="password"/><br/>
                                         <input type="hidden" name="referer" value="admin.jsp"/>
                                         <span class='buttons right'>
@@ -355,9 +360,9 @@
                                     String conf = request.getParameter("confirmPassword");
                                     if (pass.equals(conf)) {
                                         thisUser.updatePassword(pass);
-                                        out.print("<br><br><h3>Password updated!</h3><br><br>");
+                                        out.print("<h4>Password updated!</h4>");
                                     } else {
-                                        out.print("<br><br><ul><h3>Passwords did not match; no change has been made.</h3></ul><br><br>");
+                                        out.print("<ul><h4>Passwords did not match; no change has been made.</h3></ul>");
                                     }
                                 }
 
@@ -367,16 +372,16 @@
                                     int result =  thisUser.changeEmail(email);
                                     switch(result){
                                         case -1:
-                                            out.print("<br><br><h3>An error has occurred.  Try again or contact the admins.</h3><br><br>");
+                                            out.print("<h4>An error has occurred.  Try again or contact the admins.</h4>");
                                         break;
                                         case 0:
-                                            out.print("<br><br><h3>Please provide a NEW email.</h3><br><br>");
+                                            out.print("<h4>Please provide a NEW email.</h4>");
                                         break;
                                         case 1:
-                                            out.print("<br><br><ul><h3>A user with this E-mail already exists.  Try a different E-mail.</h3></ul><br><br>");
+                                            out.print("<ul><h4>A user with this E-mail already exists.  Try a different E-mail.</h4></ul>");
                                         break;
                                         case 2:
-                                            out.print("<br><br><h3>Email updated!</h3><br><br>");
+                                            out.print("<h4>Email updated!</h4>");
                                         break;
                                     }
                                 }
@@ -387,16 +392,16 @@
                                     int result =  thisUser.changeUsername(username);
                                     switch(result){
                                         case -1:
-                                            out.print("<br><br><h3>An error has occurred trying to change the username.  Try again or contact the admins.</h3><br><br>");
+                                            out.print("<h4>An error has occurred trying to change the username.  Try again or contact the admins.</h4>");
                                         break;
                                         case 0:
-                                            out.print("<br><br><h3>Please provide a NEW username.</h3><br><br>");
+                                            out.print("<h4>Please provide a NEW username.</h4>");
                                         break;
                                         case 1:
-                                            out.print("<br><br><ul><h3>A user with this Username already exists.  Try a different Username.</h3></ul><br><br>");
+                                            out.print("<ul><h4>A user with this Username already exists.  Try a different Username.</h4></ul>");
                                         break;
                                         case 2:
-                                            out.print("<br><br><h3>Username updated!</h3><br><br>");
+                                            out.print("<h4>Username updated!</h4>");
                                         break;
                                     }
                                 }
@@ -415,19 +420,19 @@
                                     }
                                     switch(fnameResult){
                                         case -1:
-                                            out.print("<br><br><h3>An error has occurred trying to change the First Name.  Try again or contact the admins.</h3><br><br>");
+                                            out.print("<h4>An error has occurred trying to change the First Name.  Try again or contact the admins.</h4>");
                                         break;
                                         case 1:
-                                            out.print("<br><br><h3>First Name updated!</h3><br><br>");
+                                            out.print("<h4>First Name updated!</h4>");
                                         break;
                                         default:
                                     }
                                     switch(lnameResult){
                                         case -1:
-                                            out.print("<br><br><h3>An error has occurred trying to change the Last Name.  Try again or contact the admins.</h3><br><br>");
+                                            out.print("<h3>An error has occurred trying to change the Last Name.  Try again or contact the admins.</h4>");
                                         break;
                                         case 1:
-                                            out.print("<br><br><h3>Last Name updated!</h3><br><br>");
+                                            out.print("<h3>Last Name updated!</h4>");
                                         break;
                                         default:
                                     }
@@ -474,7 +479,7 @@
                                         TokenManager man = new TokenManager();
                                         if (!toReset.requiresApproval()) {
                                             toReset.resetPassword();
-                                            out.print("<br><br><h3>Password reset!</h3><br>Please check your e-mail from "+man.getProperties().getProperty("NOTIFICATIONEMAIL")+" for a new password.  If your e-mail does not arrive, please verify that it has not been caught by a spam filter.<br>");
+                                            out.print("<h4>Password reset!</h4><br>Please check your e-mail from "+man.getProperties().getProperty("NOTIFICATIONEMAIL")+" for a new password.  If your e-mail does not arrive, please verify that it has not been caught by a spam filter.<br>");
                                         } else {
                                             out.print("This user does not exist or needs administrator approval before they can log in!");
                                             return;
