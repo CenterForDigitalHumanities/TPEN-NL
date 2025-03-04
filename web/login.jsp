@@ -105,6 +105,10 @@
                 margin: 0 auto;
             }
 
+            #resetPassword {
+                display: none;
+            }
+
             #content {
                 max-width: 800px;
             }
@@ -120,7 +124,14 @@
 
             nav {
                 height: auto;
-            } 
+            }
+
+            .adminLink{
+                position: relative;
+                display: block;
+                text-align: right;
+                text-decoration: underline;
+            }
 
         </style>
     </head>
@@ -167,6 +178,7 @@
                         <label for="password">Password</label><input class="text" type="password" name="password" /><br/>
                         <input type="hidden" name="referer" value='<%out.print(ref);%>'/>
                         <input class="ui-button ui-state-default ui-corner-all right" type="submit" title="Log In" value="Log In">
+                        <a class="adminLink" href="admin.jsp">I am having trouble logging in or want to set a new password</a>
                     </fieldset>
                 </form>
             </div>

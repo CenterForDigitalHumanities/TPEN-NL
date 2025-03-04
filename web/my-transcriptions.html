@@ -96,6 +96,15 @@
         nav {
             height: auto;
         }
+
+        .inline-heading{
+            float: right;
+            font-size: 12pt;
+            position: relative;
+            right: 0px;
+            top: 12px;
+            text-decoration: underline;
+        }
     </style>
 </head>
 
@@ -133,9 +142,12 @@
         </ul>
     </nav>
     <div class="container">
-        <h1 class="ruled">My Transcriptions</h1>
-        <p id="toContinue">To continue working on a transcription, click the manuscript name.
-            Remove by clicking the "&cross;" button.</p>
+        <h1 class="ruled">
+            <span>My Transcriptions</span>
+            <span class="inline-heading"><a href="admin.jsp">Manage My Account</a></span>
+        </h1>
+        <p id="toContinue">To continue working on a transcription click the manuscript name.
+            To delete the project click "&cross;" button.</p>
         <div id="projectsList">
             <div id="gatheringProjects"></div>
             Gathering projects...

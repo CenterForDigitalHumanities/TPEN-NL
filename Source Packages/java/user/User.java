@@ -760,11 +760,11 @@ PreparedStatement qry=null;
         textdisplay.mailer m = new textdisplay.mailer();
         String body = "Your Newberry Paleography password has been set to " + newPass + "\n" 
         + "You should head to Newberry Paleography now to change it.";
-//        System.out.print("new pass is "+pass+"\n");
-        try{
-            TokenManager man = new TokenManager();
-            m.sendMail(man.getProperties().getProperty("EMAILSERVER"), man.getProperties().getProperty("NOTIFICATIONEMAIL"), this.email, "Newberry Paleography Password Reset", body);
-        }
+        System.out.print("1 temp password is ' "+pass+"'\n");
+try{
+    TokenManager man = new TokenManager();
+    // m.sendMail(man.getProperties().getProperty("EMAILSERVER"), man.getProperties().getProperty("NOTIFICATIONEMAIL"), this.email, "Newberry Paleography Password Reset", body);
+}
         catch (IOException e){
             //Had trouble mailing...return new password anyway
         }
@@ -808,12 +808,13 @@ PreparedStatement qry=null;
         textdisplay.mailer m = new textdisplay.mailer();
         String pass=resetPassword(false);
         System.out.println("Send EMail thru "+man.getProperties().getProperty("EMAILSERVER")+" to "+this.email);
-        try{
-            m.sendMail(man.getProperties().getProperty("EMAILSERVER"), man.getProperties().getProperty("NOTIFICATIONEMAIL"), this.email, "Welcome to Newberry Paleography", new WelcomeMessage().getMessage(this.fname+" "+this.lname,pass) );
-        }
-        catch(Exception ex){
-            System.out.println(ex);
-        }
+        System.out.print("2 temp password is ' "+pass+"'\n");
+//        try{
+//            m.sendMail(man.getProperties().getProperty("EMAILSERVER"), man.getProperties().getProperty("NOTIFICATIONEMAIL"), this.email, "Welcome to Newberry Paleography", new WelcomeMessage().getMessage(this.fname+" "+this.lname,pass) );
+//        }
+//        catch(Exception ex){
+//            System.out.println(ex);
+//        }
         System.out.println("return password");
         return pass;
     }
