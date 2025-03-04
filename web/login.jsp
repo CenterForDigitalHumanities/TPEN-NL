@@ -31,13 +31,6 @@
                         </script>
                     <%
                 }
-                else if(ref.contains("authenticate.jsp")) {
-                    %>
-                        <script>
-                            document.location = "login.jsp";
-                        </script>
-                    <%      
-                }
                 else{
                 %>
                     <script>
@@ -203,16 +196,6 @@
                         <label for="fname">First Name</label><input class="text" type="text" name="fname" /><br/>
                         <label for="lname">Last Name</label><input class="text" type="text" name="lname" /><br/>
                         <input type="submit" value="Register" class="ui-button ui-state-default ui-corner-all right" />
-                    </fieldset>
-                </form>
-            </div>
-            <div id="resetPassword" style="padding: 10px;">
-                <form id="forgetForm" action="admin.jsp" method="POST" class="ui-corner-all">
-                    <fieldset>
-                        <legend>Request a Password Reset:</legend>
-                        <input type="text" class="text" placeholder="Username" name="uname">
-                        <br>
-                        <input class="right ui-corner-all ui-state-default" type="submit" name="resetSubmitted" value="Reset Password" />
                     </fieldset>
                 </form>
             </div>
