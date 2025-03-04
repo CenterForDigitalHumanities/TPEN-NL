@@ -13,10 +13,14 @@ if (errorMessage != null){
 <div id="urgentError">
     <p id="errorMessage"><%out.print(message);%></p>
     <div class="bumperIt">
-        <a href="login.jsp">Try Again at the Paleography Login</a>
+        <a href="login.jsp">Paleography Login</a>
     </div>
-    <div>
-        <a href="admin.jsp">I am having trouble logging in or want to set a new password</a>
-    </div>
+<%
+// Extra help for users trying to login, change password, or register.
+if (message.contains("The password was not correct.") || message.contains("There is no user with username")) {
+    String link = "<div><a href='admin.jsp'>I am having trouble logging in or want to set a new password</a></div>";
+    out.print(link);
+}
+%>
 </div>
 <div id="trexHead"></div>
