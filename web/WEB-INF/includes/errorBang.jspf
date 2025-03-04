@@ -11,6 +11,6 @@ if (errorMessage != null){
 </style>
 <div id="urgentError">
     <p id="errorMessage"><%out.print(message);%></p>
-    <a href='index.jsp'>T&#8209;PEN Home</a>
+    <a href="login.jsp">Paleography Login</a>
 </div>
 <div id="trexHead"></div>

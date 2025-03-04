@@ -57,22 +57,22 @@
                         return;
                     }
                     else{
-                        String errorMessage = "Incorrect log in. Try again or <a href='login.jsp'>Request an Account</a>.";
+                        String errorMessage = "The password was not correct. Please try again.";
                         %>
-                                <%@include file="WEB-INF/includes/errorBang.jspf" %>
-                                    <%
+                            <%@include file="WEB-INF/includes/errorBang.jspf" %>
+                        <%
                         return;
                     }
                 }
                 else{
-                    String errorMessage = "Incorrect log in. Try again or <a href='login.jsp'>Request an Account</a>.";
+                    String errorMessage = "There is no user with username ' "+request.getParameter("uname")+" '.  If you have not requested an account yet you can do so on the login page.";
                     %>
-                                        <%@include file="WEB-INF/includes/errorBang.jspf" %>
-                                            <%
+                        <%@include file="WEB-INF/includes/errorBang.jspf" %>
+                    <%
                     return;
                 }
             }
-       }
+        }
    %>
         <%
             user.User thisUser = null;
