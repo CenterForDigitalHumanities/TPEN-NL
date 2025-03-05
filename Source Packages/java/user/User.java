@@ -753,7 +753,6 @@ PreparedStatement qry=null;
         textdisplay.mailer m = new textdisplay.mailer();
         String body = "Your Newberry Paleography password has been set to " + newPass + "\n" 
         + "You should head to Newberry Paleography now to change it.";
-        System.out.print("1 temp password is ' "+pass+"'\n");
         try{
             TokenManager man = new TokenManager();
             m.sendMail(man.getProperties().getProperty("EMAILSERVER"), man.getProperties().getProperty("NOTIFICATIONEMAIL"), this.email, "Newberry Paleography Password Reset", body);
@@ -800,15 +799,13 @@ PreparedStatement qry=null;
         TokenManager man = new TokenManager();
         textdisplay.mailer m = new textdisplay.mailer();
         String pass=resetPassword(false);
-        System.out.println("Send EMail thru "+man.getProperties().getProperty("EMAILSERVER")+" to "+this.email);
-        System.out.print("2 temp password is ' "+pass+"'\n");
+        System.out.println("Send E-Mail thru "+man.getProperties().getProperty("EMAILSERVER")+" to "+this.email);
        try{
            m.sendMail(man.getProperties().getProperty("EMAILSERVER"), man.getProperties().getProperty("NOTIFICATIONEMAIL"), this.email, "Welcome to Newberry Paleography", new WelcomeMessage().getMessage(this.fname+" "+this.lname,pass) );
        }
        catch(Exception ex){
            System.out.println(ex);
        }
-        System.out.println("return password");
         return pass;
     }
     /**This sets the last time the user was active to the current time. Used for determining who is online, and keeping track of active vs inactive users*/
