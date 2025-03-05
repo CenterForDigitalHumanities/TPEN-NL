@@ -22,23 +22,21 @@
                     <script>
                         document.location = "my-transcriptions.html";
                     </script>
-                    <%}
-
-                else {
-                    if(ref.contains("authenticate.jsp")){
+                    <%
+                }
+                else if(ref.contains("admin.jsp")){
                     %>
                         <script>
-                            document.location = "login.jsp";
-                        </script>
-                    <% 
-                    }
-                    else{
-                    %>
-                        <script>
-                            document.location = ref;
+                            document.location = "admin.jsp";
                         </script>
                     <%
-                    }
+                }
+                else{
+                %>
+                    <script>
+                        document.location = ref;
+                    </script>
+                <%
                 }
             }
             else{
@@ -52,22 +50,22 @@
                         return;
                     }
                     else{
-                        String errorMessage = "Incorrect log in. Try again or <a href='login.jsp'>Request an Account</a>.";
+                        String errorMessage = "The password was not correct. Please try again.";
                         %>
-                                <%@include file="WEB-INF/includes/errorBang.jspf" %>
-                                    <%
+                            <%@include file="WEB-INF/includes/errorBang.jspf" %>
+                        <%
                         return;
                     }
                 }
                 else{
-                    String errorMessage = "Incorrect log in. Try again or <a href='login.jsp'>Request an Account</a>.";
+                    String errorMessage = "There is no user with username ' "+request.getParameter("uname")+" '.  If you have not requested an account yet you can do so on the login page.";
                     %>
-                                        <%@include file="WEB-INF/includes/errorBang.jspf" %>
-                                            <%
+                        <%@include file="WEB-INF/includes/errorBang.jspf" %>
+                    <%
                     return;
                 }
             }
-       }
+        }
    %>
         <%
             user.User thisUser = null;
@@ -105,6 +103,10 @@
                 margin: 0 auto;
             }
 
+            #resetPassword {
+                display: none;
+            }
+
             #content {
                 max-width: 800px;
             }
@@ -120,7 +122,19 @@
 
             nav {
                 height: auto;
-            } 
+            }
+
+            .adminLink {
+                position: relative;
+                display: block;
+                text-align: right;
+                text-decoration: underline;
+            }
+
+            div.small{
+                font-size: 8pt;
+                margin-bottom: 7px;
+            }
 
         </style>
     </head>
@@ -159,14 +173,15 @@
         <div class="container">
             <div id="loginDiv" class="left">
                 <h3 class="ui-widget-header ui-tabs ui-corner-all ui-state-default">Log In</h3>
-                <p> You may log into your account to start transcribing or to manage your projects.</p>
                 <form id="loginForm" action="login.jsp" method="POST">
                     <fieldset>
                         <legend>Login Here:</legend>
-                        <label for="uname">Username</label><input class="text" type="text" name="uname" /><br/>
+                        <label for="uname">Username</label><input class="text" type="text" name="uname" />
+                        <div class="small">* Not your e-mail</div>
                         <label for="password">Password</label><input class="text" type="password" name="password" /><br/>
                         <input type="hidden" name="referer" value='<%out.print(ref);%>'/>
                         <input class="ui-button ui-state-default ui-corner-all right" type="submit" title="Log In" value="Log In">
+                        <a class="adminLink" href="admin.jsp">I am having trouble logging in or want to set a new password</a>
                     </fieldset>
                 </form>
             </div>
@@ -181,16 +196,6 @@
                         <label for="fname">First Name</label><input class="text" type="text" name="fname" /><br/>
                         <label for="lname">Last Name</label><input class="text" type="text" name="lname" /><br/>
                         <input type="submit" value="Register" class="ui-button ui-state-default ui-corner-all right" />
-                    </fieldset>
-                </form>
-            </div>
-            <div id="resetPassword" style="padding: 10px;">
-                <form id="forgetForm" action="admin.jsp" method="POST" class="ui-corner-all">
-                    <fieldset>
-                        <legend>Request a Password Reset:</legend>
-                        <input type="text" class="text" placeholder="Username" name="uname">
-                        <br>
-                        <input class="right ui-corner-all ui-state-default" type="submit" name="resetSubmitted" value="Reset Password" />
                     </fieldset>
                 </form>
             </div>

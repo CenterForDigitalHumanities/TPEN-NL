@@ -411,30 +411,23 @@ DatabaseWrapper.closePreparedStatement(ps);
         return false;
     }
     //Returns 0 on success, 1 on email error, or 2 if the user object is skrewy.
-    public int contactTeam(String body)
-    {
-        
-        
-        if (this.getUID() > 0)
-            {
+    public int contactTeam(String body){
+        if (this.getUID() > 0) {
             textdisplay.mailer m = new textdisplay.mailer();
             body = this.getFname() + " " + this.getLname() + " (" + this.getUname() + ") says:\n"+body;
-            
-            try
-            {
+            try {
                 TokenManager man = new TokenManager();
                 m.sendMail(man.getProperties().getProperty("EMAILSERVER"), man.getProperties().getProperty("NOTIFICATIONEMAIL"), man.getProperties().getProperty("NOTIFICATIONEMAIL"), "Newberry Paleography contact", body);
             } 
-            catch (Exception e)
-            {
+            catch (Exception e){
                 return 2; //created user, but email issue occured
             }
             return 0; //total success
-            } else
-            {
+        } 
+        else{
             return 1; //improper user
-            }
         }
+    }
     
     /**
      * Sign up a new user. Returns 0 for success, 1 for failure to create user account, and 2 for success creating user but failure to send notification email, likely due to being
@@ -760,7 +753,6 @@ PreparedStatement qry=null;
         textdisplay.mailer m = new textdisplay.mailer();
         String body = "Your Newberry Paleography password has been set to " + newPass + "\n" 
         + "You should head to Newberry Paleography now to change it.";
-//        System.out.print("new pass is "+pass+"\n");
         try{
             TokenManager man = new TokenManager();
             m.sendMail(man.getProperties().getProperty("EMAILSERVER"), man.getProperties().getProperty("NOTIFICATIONEMAIL"), this.email, "Newberry Paleography Password Reset", body);
@@ -807,14 +799,13 @@ PreparedStatement qry=null;
         TokenManager man = new TokenManager();
         textdisplay.mailer m = new textdisplay.mailer();
         String pass=resetPassword(false);
-        System.out.println("Send EMail thru "+man.getProperties().getProperty("EMAILSERVER")+" to "+this.email);
-        try{
-            m.sendMail(man.getProperties().getProperty("EMAILSERVER"), man.getProperties().getProperty("NOTIFICATIONEMAIL"), this.email, "Welcome to Newberry Paleography", new WelcomeMessage().getMessage(this.fname+" "+this.lname,pass) );
-        }
-        catch(Exception ex){
-            System.out.println(ex);
-        }
-        System.out.println("return password");
+        System.out.println("Send E-Mail thru "+man.getProperties().getProperty("EMAILSERVER")+" to "+this.email);
+       try{
+           m.sendMail(man.getProperties().getProperty("EMAILSERVER"), man.getProperties().getProperty("NOTIFICATIONEMAIL"), this.email, "Welcome to Newberry Paleography", new WelcomeMessage().getMessage(this.fname+" "+this.lname,pass) );
+       }
+       catch(Exception ex){
+           System.out.println(ex);
+       }
         return pass;
     }
     /**This sets the last time the user was active to the current time. Used for determining who is online, and keeping track of active vs inactive users*/
@@ -1092,18 +1083,15 @@ DatabaseWrapper.closePreparedStatement(qry);
 
     /**Inivte a new user to join TPEN. Returns 0 on successful user creation, 1 on user creation failure, and 2 if user creation succeeded
     but email failed, which is common on test systems and should produce a warning*/
-    public int invite(String email) throws SQLException, IOException
-        {
+    public int invite(String email) throws SQLException, IOException {
         TokenManager man = new TokenManager();
         Boolean emailFailure = false;
         String userName = email.split("@", 2)[0];
         User newUser = new User(userName, email, "user", "new", "");
         //System.out.println("Defined user to continue on.  Can we?");
-        if (newUser.getUID() > 0)
-            {
-                //System.out.println("Yes.  We made a new user.");
-                //System.out.println(this.getFname() + " " + this.getLname() + " (" + this.getUname() + ") has invited  " + newUser.getFname() + " " + newUser.getLname() + " (" + newUser.getUname() + ") to join TPEN.");
-
+        if (newUser.getUID() > 0){
+            //System.out.println("Yes.  We made a new user.");
+            //System.out.println(this.getFname() + " " + this.getLname() + " (" + this.getUname() + ") has invited  " + newUser.getFname() + " " + newUser.getLname() + " (" + newUser.getUname() + ") to join TPEN.");
             textdisplay.mailer m = new textdisplay.mailer();
             //send a notification email to the invitee
             String body = this.getFname() + " " + this.getLname() + " (" + this.getEmail() + ") has invited you to join their transcription project on Newberry Paleography. Look for an activation message shortly.";
@@ -1111,26 +1099,26 @@ DatabaseWrapper.closePreparedStatement(qry);
             {
                 m.sendMail(man.getProperties().getProperty("EMAILSERVER"), man.getProperties().getProperty("NOTIFICATIONEMAIL"), newUser.getEmail(), "An invitation to transcribe on Newberry Paleography", body);
                 newUser.activateUser();
-                } catch (Exception e)
-                {
+            } 
+            catch (Exception e) {
                 emailFailure = true;
-                }
+            }
             //System.out.println("What is email failure: "+emailFailure);
             if (!emailFailure)
-                {
+            {
                 return 0;
-                } else
-                {
+            } 
+            else
+            {
                 return 2;
-                }
             }
+        }
         else{
             //This is where invite did not have to make a new user.  The user being invited is already a part of Newberry Paleography.  Send an email still?  Right now, no.  
             //System.out.println("No.  We did not make a new user, do not send an email.");
         }
-
         return 1;
-        }
+    }
 
     /**
      * Is this user an application administrator

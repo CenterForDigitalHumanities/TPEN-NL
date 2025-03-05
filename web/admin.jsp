@@ -145,6 +145,10 @@
             td{
                 margin: .5em;
             }
+            div.small {
+                font-size: 8pt;
+                margin-bottom: 7px;
+            }
         </style>
         <script>
             var selecTab<%if (request.getParameter("selecTab") != null) {
@@ -271,22 +275,28 @@
                         <!--<li><a title="Alter IPR statements, restrict access, update global metadata" href="#tabs-2">Manuscripts</a></li>-->
                         <%if (thisUser.isAdmin()) { //hiding non-Admin tab%>
                         <li><a title="Manage Users" href="#tabs-3">Manage Users</a><div id="userAlert" class='ui-icon-alert ui-icon right' style="display:none;margin: 8px 8px 0 0;"></div></li>
-                        <li><a title="Reports" href="#reportsTab">Reports</a></li>
+                        <%-- <li><a title="Reports" href="#reportsTab">Reports</a></li> --%>
                         <%}%>
                         <!--<li><a title="About the T&#8209;PEN project" href="#aboutTab">About T&#8209;PEN</a></li>-->
                     </ul>
                     <div id="tabs-1">
                         <% } else {%>
                         <div id="userUnknown2">
-                            <div class="left inline" style="width:300px;"> <form id="login" action="login.jsp" method="POST" >
+                            <div class="left inline" style="width:300px;"> 
+                                <form id="login" action="login.jsp" method="POST" >
                                     <fieldset>
                                         <legend>Login Here:</legend>
-                                        <label for="uname">Username</label><input class="text" type="text" name="uname"/><br/>
+                                        <p>Login to change your username, E-mail, or password</p>
+                                        <label for="uname">Username</label><input class="text" type="text" name="uname"/>
+                                        <div class="small">* Not your e-mail </div>
                                         <label for="password">Password</label><input  class="text" type="password" name="password"/><br/>
-                                        <input type="hidden" name="ref" value="admin.jsp"/>
-                                        <span class='buttons right'><button type="submit" title="Log In" value="log in">Log In</button></span>
+                                        <input type="hidden" name="referer" value="admin.jsp"/>
+                                        <span class='buttons right'>
+                                            <button type="submit" title="Log In" value="log in">Log In</button>
+                                        </span>
                                     </fieldset>
-                                </form></div>
+                                </form>
+                            </div>
                         </div>
                         <%                        }
                             //process any submitted requests
@@ -350,9 +360,9 @@
                                     String conf = request.getParameter("confirmPassword");
                                     if (pass.equals(conf)) {
                                         thisUser.updatePassword(pass);
-                                        out.print("<br><br><h3>Password updated!</h3><br><br>");
+                                        out.print("<h4>Password updated!</h4>");
                                     } else {
-                                        out.print("<br><br><ul><h3>Passwords did not match; no change has been made.</h3></ul><br><br>");
+                                        out.print("<ul><h4>Passwords did not match; no change has been made.</h3></ul>");
                                     }
                                 }
 
@@ -362,16 +372,16 @@
                                     int result =  thisUser.changeEmail(email);
                                     switch(result){
                                         case -1:
-                                            out.print("<br><br><h3>An error has occurred.  Try again or contact the admins.</h3><br><br>");
+                                            out.print("<h4>An error has occurred.  Try again or contact the admins.</h4>");
                                         break;
                                         case 0:
-                                            out.print("<br><br><h3>Please provide a NEW email.</h3><br><br>");
+                                            out.print("<h4>Please provide a NEW email.</h4>");
                                         break;
                                         case 1:
-                                            out.print("<br><br><ul><h3>A user with this E-mail already exists.  Try a different E-mail.</h3></ul><br><br>");
+                                            out.print("<ul><h4>A user with this E-mail already exists.  Try a different E-mail.</h4></ul>");
                                         break;
                                         case 2:
-                                            out.print("<br><br><h3>Email updated!</h3><br><br>");
+                                            out.print("<h4>Email updated!</h4>");
                                         break;
                                     }
                                 }
@@ -382,16 +392,16 @@
                                     int result =  thisUser.changeUsername(username);
                                     switch(result){
                                         case -1:
-                                            out.print("<br><br><h3>An error has occurred trying to change the username.  Try again or contact the admins.</h3><br><br>");
+                                            out.print("<h4>An error has occurred trying to change the username.  Try again or contact the admins.</h4>");
                                         break;
                                         case 0:
-                                            out.print("<br><br><h3>Please provide a NEW username.</h3><br><br>");
+                                            out.print("<h4>Please provide a NEW username.</h4>");
                                         break;
                                         case 1:
-                                            out.print("<br><br><ul><h3>A user with this Username already exists.  Try a different Username.</h3></ul><br><br>");
+                                            out.print("<ul><h4>A user with this Username already exists.  Try a different Username.</h4></ul>");
                                         break;
                                         case 2:
-                                            out.print("<br><br><h3>Username updated!</h3><br><br>");
+                                            out.print("<h4>Username updated!</h4>");
                                         break;
                                     }
                                 }
@@ -410,19 +420,19 @@
                                     }
                                     switch(fnameResult){
                                         case -1:
-                                            out.print("<br><br><h3>An error has occurred trying to change the First Name.  Try again or contact the admins.</h3><br><br>");
+                                            out.print("<h4>An error has occurred trying to change the First Name.  Try again or contact the admins.</h4>");
                                         break;
                                         case 1:
-                                            out.print("<br><br><h3>First Name updated!</h3><br><br>");
+                                            out.print("<h4>First Name updated!</h4>");
                                         break;
                                         default:
                                     }
                                     switch(lnameResult){
                                         case -1:
-                                            out.print("<br><br><h3>An error has occurred trying to change the Last Name.  Try again or contact the admins.</h3><br><br>");
+                                            out.print("<h3>An error has occurred trying to change the Last Name.  Try again or contact the admins.</h4>");
                                         break;
                                         case 1:
-                                            out.print("<br><br><h3>Last Name updated!</h3><br><br>");
+                                            out.print("<h3>Last Name updated!</h4>");
                                         break;
                                         default:
                                     }
@@ -469,7 +479,7 @@
                                         TokenManager man = new TokenManager();
                                         if (!toReset.requiresApproval()) {
                                             toReset.resetPassword();
-                                            out.print("<br><br><h3>Password reset!</h3><br>Please check your e-mail from "+man.getProperties().getProperty("NOTIFICATIONEMAIL")+" for a new password.  If your e-mail does not arrive, please verify that it has not been caught by a spam filter.<br>");
+                                            out.print("<h4>Password reset!</h4><br>Please check your e-mail from "+man.getProperties().getProperty("NOTIFICATIONEMAIL")+" for a new password.  If your e-mail does not arrive, please verify that it has not been caught by a spam filter.<br>");
                                         } else {
                                             out.print("This user does not exist or needs administrator approval before they can log in!");
                                             return;
@@ -483,7 +493,7 @@
                         %>
                         <div class="right" id="resetPassword" style="width:45%;">
                             <h3>Reset your Password</h3>
-                            To reset your password and have the new password sent to your email address, please enter the username associated with your account.
+                            Please enter the username associated with your account.  A new temporary password will be sent to the E-mail address associated with that username. 
                             <form action="admin.jsp" method="POST">
                                 <input type="text" name="uname">
                                 <input type="submit" name="resetSubmitted" value="Reset Password"/>
@@ -491,7 +501,7 @@
                         </div>
                         <%
                                 //if they arent logged in, dont bother with showing them any of the other stuff
-                                out.print("</div></div>\n<a class='returnButton' href='my-transcriptions.html'>Return to TPEN Homepage</a>\n</div>"); //close up the tab                                   
+                                out.print("</div></div>\n<a class='returnButton' href='my-transcriptions.html'>Return to My Transcriptions</a>\n</div>"); //close up the tab                                   
                                 return;
                             }
                         %>
@@ -558,7 +568,7 @@
                                 <span class='accountInfoLine'>Username: <%out.print(thisUser.getUname());%></span>
                                 <span class='accountInfoLine'>E-mail: <%out.print(thisUser.getEmail());%></span>
                                 <%if (thisUser.isAdmin()) {%>
-                                    <span class='accountInfoLine'>Welcome, Administrator</span>
+                                    <span class='accountInfoLine'>You are an Administrator</span>
                                 <%}
                                 Project[] userProjects = thisUser.getUserProjects();
                                     if (userProjects.length > 0) {
@@ -1131,7 +1141,7 @@
 
                 </div>
                 <!--                close up tabs panels-->
-                <a class="returnButton" href="my-transcriptions.html">Return to TPEN Homepage</a>
+                <a class="returnButton" href="my-transcriptions.html">Return to My Transcriptions</a>
             </div>
         </div>
         <div id="adminMS" class="popover"> <!-- container for managing unrestricted MSs -->
